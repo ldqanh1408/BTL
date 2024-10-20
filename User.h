@@ -8,8 +8,11 @@ private:
     Account account; 
 public:
     User() {}
-    void set_user_name_from_user(string _user_name) {
-        this->account.set_user_name_from_account(_user_name);
+    void set_user_name(string _user_name) {
+        this->account.set_user_name(_user_name);
+    }
+    void set_password(string _password) {
+        this->account.set_password(_password);
     }
     
 };
