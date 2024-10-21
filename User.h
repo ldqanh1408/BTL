@@ -43,6 +43,7 @@ public:
         if(!fs::exists(tmp) ||  (wallet.get_mdd() == b.wallet.get_mdd())) {
             cout << "Tài khoản không tồn tại! " << endl;
             return;
+            //hj
         }
         else {
             if(this->wallet.get_total() < totals) {
