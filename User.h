@@ -51,9 +51,9 @@ public:
                 return;
             }
             else {
+                outfile.close();
                 this->wallet.tru_tien(totals);
                 b.wallet.cong_tien(totals);
-                outfile.close();
 
                 ofstream All_history(mainn, ios::app);
                 All_history << this->get_full_name() + " đã chuyển tiền cho " + b.get_full_name() << " " << totals << "VND" << endl;
@@ -61,11 +61,13 @@ public:
 
                 ofstream user1("user_history/" + this->wallet.get_mdd() + ".txt", ios::app);
                 ofstream user2("user_history/" + b.wallet.get_mdd() + ".txt", ios::app);
-                user1 << this->get_full_name() + " đã chuyển " << totals << "VND"
+
+                user1 << this->get_full_name() + " đã chuyển " << totals << "VND cho " << b.get_full_name() << endl;
+                user2 << b.get_full_name() + " đã nhận " << totals << "VND từ " << this->get_full_name() << endl;
+
+                user1.close();
+                user2.close();
             }
         }
-        
-
-          
     }
 };
