@@ -9,5 +9,5 @@ public:
     Account() {
 
     }
-    
+    string get_user_name() { return user_name; }
 };
