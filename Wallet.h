@@ -1,48 +1,35 @@
 #include<iostream>
 #include<vector>
 #include<fstream>
+#include"bcrypt.h"
+#include<random>
 using namespace std;
 
-extern const string mainn = "user_history/all.txt";
+string random_ID() {   //random 12 số, chia ra 3 phần random
+    string res = "";
+    random_device rd;
+    mt19937 rng(rd());
+    uniform_int_distribution<int> uni(1, 9999);
+
+    for(int i = 0; i < 3; i++) {
+        int tmp = uni(rng);
+        string s = to_string(tmp);
+        res += string(4 - s.size(), '0') + s;
+    }
+
+    return res;
+}
 
 class Wallet {
     private:
-        static unsigned long long id;
-        static unsigned long long sum;
-
+        string ID;
         long long total;
-        vector<string> data;
-        string mdd;
-        string path;
     public:
         Wallet() {
-            total = 0;
-            id++;
-            
-            string s = to_string(id);
-            string mdd = string(18 - s.size(), '0') + s;    // Mã định danh
-            path = "user_wallet/" + mdd + ".txt";
-            ofstream outfile(path);
-            outfile << "0";
-            outfile.close();
+            string ID = bcrypt::generateHash(random_ID());
+            ofstream outfile_ID("user_wallet/" + ID + ".txt"); //ten file
+            outfile_ID.close();
         }
 
-        string get_mdd() { return mdd; }
-        int get_total() { return total; }
-
-        void tru_tien(long long x) { 
-            total -= x;  
-            sum -= x;
-            ofstream outfile(path);
-            outfile << to_string(total);
-            outfile.close();
-            }
-
-        void cong_tien(long long x) { 
-            total += x;  
-            sum += x;
-            ofstream outfile(path);
-            outfile << to_string(total);
-            outfile.close();
-        }
+        string get_ID() { return ID; }
 };
