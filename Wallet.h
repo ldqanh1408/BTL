@@ -10,7 +10,8 @@ class Wallet {
         string ID;
     public:
         Wallet() {
-            string hash = bcrypt::generateHash(generate_ID());
+            this->ID = generate_ID();
+            string hash = bcrypt::generateHash(ID);
             ofstream outfile_ID(folder3 + hash + ".txt"); //ten file
             // if (filesystem::exists(outfile_ID)) {
             //     // Handle the case where the file already exists

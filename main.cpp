@@ -52,8 +52,8 @@ extern bool verify_otp() {
 }
 
 
-const extern string folder1 = "data/user_information/", folder2 = "data/user_password/", 
-                    folder3 = "data/user_wallet/", folder4 = "data/user_history/";
+const extern string folder1 = "data/store_information/", folder2 = "data/store_password/", 
+                    folder3 = "data/store_wallet/", folder4 = "data/user_transaction_history/";
 
 const extern string file_path = "data/transaction_log.txt";
 
@@ -108,5 +108,6 @@ bool create_account() {
 
 
 int main() {
+    cout << "HI" << endl;
     return 0;
 }
