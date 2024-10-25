@@ -1,11 +1,25 @@
 #include<iostream>
 #include<fstream>
-#include <filesystem>
+#include<filesystem>
+#include <random>
 #include"User.h"
-#include"bcrypt.h"
+#include"bcrypt.cpp"
+#include"blowfish.cpp"
 using namespace std;
 
 namespace fs = filesystem;
+
+extern string generate_otp() {
+    // All possible characters of my OTP
+    const string str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    constexpr int length_otp = 6, length_str = 62;
+
+    random_device rd;           // Sử dụng random_device để làm seed
+    mt19937 gen(rd());          // Bộ sinh số Mersenne Twister
+    string otp = "";
+    for(int i = 0; i < length_otp; ++i) otp += str[gen() % length_str];
+    return otp;
+}   
 
 const string folder1 = "user_information/", folder2 = "user_password/";
 
@@ -51,7 +65,8 @@ bool create_account() {
     outfile1 << person.get_age() << endl;
     outfile1 << person.get_gender() << endl;
 
-    outfile2 << bcrypt::generateHash(auto_password);
+    string hash = bcrypt::generateHash(auto_password);
+    outfile2 << hash << endl;
 
     outfile1.close();
     outfile2.close();
