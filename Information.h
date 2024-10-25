@@ -13,7 +13,14 @@ public:
     string get_country() {return this->country;}
     string get_phone_number() {return this->phone_number;}
     int get_age() {return this->age;}
-    bool get_gender() {return this->gender;}    
+    bool get_gender() {return this->gender;}  
+
+    void set_full_name(const string& _full_name) { this->full_name = _full_name; }
+    void set_address(const string& _address) { this->address = _address; }
+    void set_country(const string& _country) { this->country = _country; }
+    void set_phone_number(const string& _phone_number) { this->phone_number = _phone_number; }
+    void set_age(int _age) { this->age = _age; }
+    void set_gender(bool _gender) { this->gender = _gender; }  
 
     friend istream& operator>> (istream &in, Information &data) {
         cout << "Nhap thong tin nguoi dung:" << endl;

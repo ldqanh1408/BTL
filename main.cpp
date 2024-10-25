@@ -9,19 +9,53 @@ using namespace std;
 
 namespace fs = filesystem;
 
+extern random_device rd;           // Sử dụng random_device để làm seed
+extern mt19937 gen(rd());          // Bộ sinh số Mersenne Twister
+
+extern string generate_ID() {   //random 12 số, chia ra 3 phần random
+    string res = "";
+    uniform_int_distribution<int> uni(1, 9999);
+
+    for(int i = 0; i < 3; i++) {
+        int tmp = uni(gen);
+        string s = to_string(tmp);
+        res += string(4 - s.size(), '0') + s;
+    }
+
+    return res;
+}
+
 extern string generate_otp() {
     // All possible characters of my OTP
     const string str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     constexpr int length_otp = 6, length_str = 62;
 
-    random_device rd;           // Sử dụng random_device để làm seed
-    mt19937 gen(rd());          // Bộ sinh số Mersenne Twister
     string otp = "";
     for(int i = 0; i < length_otp; ++i) otp += str[gen() % length_str];
     return otp;
-}   
+}
+extern bool verify_otp() {
+    string otp = generate_otp();
+    cout << "OTP đã được gửi: " << otp << endl;
 
-const string folder1 = "user_information/", folder2 = "user_password/";
+    string entered_otp;
+    cout << "Nhập OTP: ";
+    cin >> entered_otp;
+
+    if(otp == entered_otp) {
+        cout << "Xác thực OTP thành công";
+    } else {
+        cout << "Xác thực OTP thất bại";
+    }
+    cout << endl;
+    return otp == entered_otp;
+}
+
+
+const extern string folder1 = "data/user_information/", folder2 = "data/user_password/", 
+                    folder3 = "data/user_wallet/", folder4 = "data/user_history/";
+
+const extern string file_path = "data/transaction_log.txt";
 
 string generate_password(User &person) {
     string first_name = "", full_name = person.get_full_name();
@@ -29,7 +63,7 @@ string generate_password(User &person) {
         first_name = full_name + first_name;
     }
 
-    return first_name +  "&&" + to_string(person.get_age()) + "&&" + to_string(int(person.get_gender()));
+    return first_name +  "&" + to_string(person.get_age()) + "&" + to_string(int(person.get_gender()));
 }
 
 bool create_account() {
@@ -53,9 +87,8 @@ bool create_account() {
     }
 
     User person; cin >> person;
-    string auto_password = generate_password(person);
-    person.set_user_name(new_account);
-    person.set_password(auto_password);
+    string new_password = generate_password(person);
+    person.set_account(Account(new_account, new_password));
 
     // thiếu kiểm tra điều kiện nhập vào
     outfile1 << person.get_full_name() << endl;
@@ -65,7 +98,7 @@ bool create_account() {
     outfile1 << person.get_age() << endl;
     outfile1 << person.get_gender() << endl;
 
-    string hash = bcrypt::generateHash(auto_password);
+    string hash = bcrypt::generateHash(new_password);
     outfile2 << hash << endl;
 
     outfile1.close();
