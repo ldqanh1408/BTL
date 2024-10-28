@@ -1,7 +1,9 @@
 #include <iostream>
 #include <bitset>
-
+#include "gotp.h"
+#include <string>
 using namespace std;
+extern string folder2 = "data/store_password/";
 class Account {
 private:
     string user_name, password;
@@ -39,7 +41,8 @@ public:
         if (!valid.test(0)) cout << "Mật khẩu phải chứa ít nhất một ký tự viết thường." << endl; 
         if (!valid.test(1)) cout << "Mật khẩu phải chứa ít nhất một ký tự viết hoa." << endl;
         if (!valid.test(2)) cout << "Mật khẩu phải chứa ít nhất một số." << endl; 
-        if (!valid.test(3)) cout << "Mật khẩu phải chứa ít nhất một ký tự đặc biệt." << endl; 
+        if (!valid.test(3)) cout << "Mật khẩu phải chứa ít nhất một ký tự đặc biệt." << endl;
+        if (!gotp::verify_otp()) return false;
 
         return valid.all(); 
     }

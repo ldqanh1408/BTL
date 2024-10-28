@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 
+extern string folder1 = "data/store_information/";
+
 class Information {
 private:
     string full_name, address, country, phone_number;
@@ -38,6 +40,16 @@ public:
         in >> data.gender;
 
         return in;
+    }
+    friend ostream& operator<<(ostream& os, Information& person) {
+        
+        os << "Full Name: " << person.get_full_name() << "\n"
+           << "Address: " << person.get_address() << "\n"
+           << "Country: " << person.get_country() << "\n"
+           << "Phone Number: " << person.get_phone_number() << "\n"
+           << "Age: " << person.get_age() << "\n"
+           << "Gender: " << (person.get_gender() ? "Male" : "Female") << "\n";
+        return os;
     }
 
     
