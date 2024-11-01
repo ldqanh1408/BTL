@@ -67,7 +67,7 @@ int main() {
 
     	Menu::print_login_frame();
     	
-    	string username = Console::input(41, 7, true, false, 8);
+    	string username = Console::input(41, 7, true, false, 1);
     	
     	if(username == "") { // end
     		break;
