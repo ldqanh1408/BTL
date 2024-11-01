@@ -114,8 +114,7 @@ int main() {
 			Sleep(200);
 
 			if(c == 9) {
-				Menu::notification("The program has ended", 49, 5); // Thong bao ket thuc
-				return 0;
+				break;
 			}
 			if(c < '1' || c > '4') {
 				Menu::gotoxy(5, 10);
