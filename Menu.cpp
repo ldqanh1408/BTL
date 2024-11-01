@@ -107,8 +107,8 @@ void Menu::notification(string s, int x, int y) {
     
     gotoxy(x, y);
     cout << s;
+    gotoxy(5, 15);
     Sleep(3000);
-    gotoxy(5, 25);
 }
 
 void Menu::create_account_screen() {
@@ -186,4 +186,66 @@ void Menu::print_otp() {
                                        |                                        |
                                        | Note that pressing the 'Tab' will back |
                                        |________________________________________|)";
+}
+
+void Menu::identification_information() {    
+    system("cls");
+    string str = R"(
+    IDENTIFICATION INFORMATION
+    --------------------------------------------------------------------------------------
+    
+    Full Name:                              
+    Date of Birth:
+    Gender:
+    
+
+    ACCOUNT INFORMATION
+    --------------------------------------------------------------------------------------
+    Account Balance:
+    Phone Number:
+    Country:
+    
+    --------------------------------------------------------------------------------------
+                             Note that pressing the 'Tab' will back	
+)";
+    cout << str;
+}
+
+void Menu::transfer_money_screen(){
+    system("cls");
+    cout << R"(
+                                        ________________________________________
+                                       |                                        |
+                                       |             TRANSFER MONEY             |
+                                       |________________________________________|
+                                       |                                        |
+                                       | Enter Amount:                          |
+                                       |________________________________________|
+                                       |                                        |
+                                       | Enter ID:                              |
+                                       |________________________________________|
+                                       |                                        |
+                                       |                  OTP:                  |
+                                       |   __________________________________   |
+                                       |  |                                  |  |
+                                       |  | __   __   __   __   __   __   __ |  |
+                                       |  |__________________________________|  |
+                                       |________________________________________|
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will back |
+                                       |________________________________________|
+	)";
+}
+
+void Menu::print_transaction_history(){
+    system("cls");
+    string str = R"(
+                                                Note that pressing the 'Tab' will back
+  _________________________________________________________________________________________________________________
+ |                              |                                                              |                   |
+ |   Date of implementation     |                         Transaction                          |      Status       |
+ |______________________________|______________________________________________________________|___________________|
+
+)";
+    cout << str;
 }

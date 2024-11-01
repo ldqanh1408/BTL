@@ -59,6 +59,7 @@ string Console::input(int x, int y, bool isPlus, bool ispassword, int mn) {
     return res;
 }
 
+
 string Console::change(string& title, string& enter_new, string& old_ans, string& old_password, bool age, bool gender, bool phone_number) {
     Menu::print_otp();
     Menu::gotoxy(53,3);
@@ -284,8 +285,6 @@ bool Console::create_account() {
 }
 
 
-
-
 void Console::change_information() {
     char c; 
     while (true) {
@@ -368,34 +367,36 @@ void Console::change_information() {
 
 
 void Console::print_information(){
-    system("cls");
-    string str = R"(
-    IDENTIFICATION INFORMATION
-    --------------------------------------------------------------------------------------
+    Menu::identification_information();
 
-    Full Name:                                 
-    Date of Birth:
-    Gender:
+    string fullname = "a"; //fullname==============================================================
+    print(48, 4, fullname);
 
-    ACCOUNT INFORMATION
-    --------------------------------------------------------------------------------------
-    Account Balance:
-    Phone Number:
-    Country:
-    
-    --------------------------------------------------------------------------------------
-                              Note that pressing the 'Tab' will back	
-    )";
-    cout << str;
-    
-    
-    Menu::gotoxy(52,4);
-    string fullname = "a"; //==============================================================
-    cout << fullname;
-    Menu::gotoxy(52,5);
-    string age = "a"; //=================================================;
-    Menu::gotoxy(52,6);
-    string ge;
+    string age = "a";      //age=================================================;
+    print(48, 5, age);
+
+    string gender = "a";    //gender=================================================;
+    print(48, 6, gender);
+
+    string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
+    string account_balance = "";
+
+    for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
+        account_balance = tmp[i] + account_balance;
+        if (count == 2 && i != 0) {
+            account_balance = "," + account_balance;
+            count = -1; //
+        }
+    }
+    print(48, 11, account_balance + "VND");
+
+    string phone_number = "aaaaaaaaaa"; //phone number==========================================
+    print(48, 12, phone_number);
+
+    string country = "aaaaaaaaa"; //country ======================================
+    print(48, 13, country);
+
+    Menu::gotoxy(5, 20);
     char ch;
     while(1) {
         ch = _getch();
@@ -403,4 +404,191 @@ void Console::print_information(){
             continue;
         else break;
     }
-}	
+}
+
+
+void Console::transfer_money() {
+    Menu::transfer_money_screen();
+
+    string amount = input(41, 6, 0, 0, 1);
+    if(amount == "") return;
+
+    /*
+    if(so tien khong hop le) {===================================================================================
+        Menu::notification("Invalid amount !", 50, 5);
+        transfer_money();
+        return;
+    }
+
+    if(so tien khong du) {===================================================================================
+        Menu::notification("Insufficient balance !", 48, 5);
+        transfer_money();
+        return;
+    }
+    */
+
+    string ID = input(41, 9, 0, 0, 12);
+    if(ID == "") return;
+
+    /*
+    if(khong ton tai) {===================================================================================
+        Menu::notification("ID does not exist!", 48, 5);
+        transfer_money();
+    }
+    */
+
+
+    Menu::gotoxy(56,12); //otp
+    string OTP = gotp::generate_otp();
+    cout << OTP;
+
+    Menu::gotoxy(47,15);
+    char c;
+    string check_otp = "";
+    
+    while(true) {
+        c = _getch();
+        
+        if(c == 9) return; //tab
+        
+        else if(check_otp.size() == 6 && c != 8) {
+            if(c == 13) break;
+            continue;
+        }
+        else if(c == 13) continue;
+        else if(c == 8) {
+            if(!check_otp.empty()) {
+                check_otp.pop_back();
+                Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
+                cout << " ";
+                Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
+            }
+        }
+        else {
+            check_otp.push_back(c);
+            cout << c;
+            if(check_otp.size() == 6)
+                Menu::gotoxy(48 + check_otp.size()*5 + 1 -5, 15);
+            else
+                Menu::gotoxy(48 + check_otp.size()*5 - 1, 15);
+        }
+    }
+
+    if(OTP != check_otp) {
+        Menu::notification("OTP is incorrect !", 50, 5);
+        transfer_money();
+        return;
+    }
+    else {
+        // thao tac chuyen tien luu vao file ==================================================================
+        Menu::notification("--You have successfully transferred the money--", 37, 5);
+        transfer_money();
+        return;
+    }
+
+    return;
+}
+
+
+void Console::transaction_history() {
+    Menu::print_transaction_history();
+
+    //
+    // thao tac in lich su giao dich ===================================================================
+    //
+    //
+
+    char ch;
+    while(true) {
+        ch = _getch();
+        if(ch == 9) return;
+    }
+}
+
+void Console::Start_The_Program() {
+
+    while(true) {	// Login
+
+    	Menu::print_login_frame();
+    	
+    	string username = Console::input(41, 7, true, false, 1); //username
+    	
+    	if(username == "") { // end
+    		break;
+		}
+		if(username == "+") {	// create account
+			while(true) {
+				Menu::gotoxy(41, 7);
+				if(Console::create_account() == 1) { // bam tab
+					break;
+				}
+			}
+			continue; // tro ve giao dien dang nhap
+		}
+		
+
+		string password = Console::input(41, 10, true, true, 8); //password
+		
+		if(password == "") { // end
+    		break;
+		}
+		if(password == "+") {	// create accont
+			while(true) {
+				if(Console::create_account() == 1) { // bam tab
+					break;
+				}
+			}
+			continue; // tro ve giao dien dang nhap
+		}
+		
+		// if(kiem tra tai khoan va mau khau co hop le khong ======================================================) {
+		// 		Menu::notification("Incorrect username or password", 45, 5);
+		//		continue;
+		// }
+
+		while(true) {	// menu
+            Sleep(200);
+            system("cls");
+			Menu::print_user_menu();
+
+			Menu::gotoxy(4,27);
+			cout << "--> Enter your choice: ";
+            char c;
+			c = _getch();
+			cout << c;
+            Sleep(200);
+
+			if(c == 9) {
+				break;
+			}
+			if(c < '1' || c > '4') {
+				Menu::gotoxy(5, 10);
+				Menu::notification("Invalid result !", 52, 5);
+				continue;
+			}
+
+			switch (c) {
+				case '1': {
+					Console::change_information();
+					break;
+				}
+				case '2' : {
+					Console::print_information();
+					break;
+				}
+				case '3' : {
+					Console::transfer_money();
+					break;
+				}
+				case '4' : {
+					Console::transaction_history();
+					break;
+				}
+			}
+		}
+	}
+
+	Menu::gotoxy(5, 10);
+	Menu::notification("The program has ended", 49, 5); // Thong bao ket thuc
+    return;
+}

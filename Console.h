@@ -21,6 +21,12 @@ namespace Console {
     void change_information();
 
     void print_information();
+
+    void transfer_money();
+
+    void transaction_history();
+
+    void Start_The_Program();
 }
 
 #endif

@@ -5,7 +5,6 @@
 #include <conio.h>
 #include <windows.h>
 
-
 using namespace std;
 
 
@@ -20,6 +19,9 @@ namespace Menu {
     void create_account_screen();
     void create_information_screen();
     void print_otp();
+    void identification_information();
+    void transfer_money_screen();
+    void print_transaction_history();
 }
 
 #endif
