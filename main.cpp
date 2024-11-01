@@ -6,8 +6,8 @@
 #include"gotp.h"
 #include"bcrypt.cpp"
 #include"blowfish.cpp"
-#include"Console.h"
-#include"Menu.h"
+#include"Console.cpp"
+#include"Menu.cpp"
 
 using namespace std;
 namespace fs = filesystem;
@@ -60,104 +60,85 @@ namespace fs = filesystem;
 int main() {
     //thao tác của m ở đây, chỉnh sửa là trong kia
     //2 file header kia mà thiếu hàm thì m include thư viện vào
-    // bool oke = 1;
-    
-    // while(oke) {
 
-    // 	Menu::printLoginFrame();
+    bool oke = 1;
+    
+    while(oke) {	// Login
+
+    	Menu::print_login_frame();
     	
-    // 	string username = Console::input(41, 7, true, false);
+    	string username = Console::input(41, 7, true, false, 8);
     	
-    // 	if(username == "") { // end
-    // 		break;
-	// 	}
-	// 	if(username == "+") {
-	// 		while(true) {
-	// 			if(Console::Create_Account() == 1) { // bam tab
-	// 				break;
-	// 			}
-	// 		}
-	// 		continue; // tro ve giao dien dang nhap
-	// 	}
+    	if(username == "") { // end
+    		break;
+		}
+		if(username == "+") {	// create account
+			while(true) {
+				Menu::gotoxy(41, 7);
+				if(Console::create_account() == 1) { // bam tab
+					break;
+				}
+			}
+			continue; // tro ve giao dien dang nhap
+		}
 		
-	// 	string password = Console::input(41, 10, true, true);
+		string password = Console::input(41, 10, true, true, 8);
 		
-	// 	if(password == "") { // end
-    // 		break;
-	// 	}
-	// 	if(password == "+") {
-	// 		while(true) {
-	// 			if(Console::Create_Account() == 1) { // bam tab
-	// 				break;
-	// 			}
-	// 		}
-	// 		continue; // tro ve giao dien dang nhap
-	// 	}
-			
-	// 	// L?u username và password ==================================================================================================
+		if(password == "") { // end
+    		break;
+		}
+		if(password == "+") {	// create accont
+			while(true) {
+				if(Console::create_account() == 1) { // bam tab
+					break;
+				}
+			}
+			continue; // tro ve giao dien dang nhap
+		}
 		
-	// 	/*if(/* Thong tin khong hop le ----------------------------------------------------------------------------------------------------) {
-	// 		continue; //  Nhap lai
-	// 	}
-	// 	*/
-		
-		
-	// 	bool Manager = 1; // kiem tra neu la quan tri vien ===============================================
-	// 	bool oke1 = 1;
-		
-	// 	/*while(oke1) {
-	// 		char c;
-			
-	// 		while(1) {
-	// 			if(Manager) {
-	// 				Print_Manager_Menu();
-	// 			}
-	// 			else {
-	// 				Print_User_Menu();
-	// 			}
-				
-	// 			gotoxy(4,27);
-	// 			cout << "--> Enter your choice: ";
-				
-	// 			char mx;
-	// 			if(Manager) {	// neu quan tri vien thi 5 phan
-	// 				mx = '5';
-	// 			}
-	// 			else {			// nguoi dung 4 phan
-	// 				mx = '4';
-	// 			}
-				
-	// 			c = _getch(); 
-	// 			cout << c;
-	// 			Sleep(200);
-				
-	// 			if(c == 9) {
-	// 				Exit();
-	// 				return 0;
-	// 			}
-	// 			if (c < '1' || c > mx) {
-	//             	Invalid_Result();
-	//             	Sleep(3000);
-	// 	        } 
-	// 			else {
-	// 	            break;
-	// 	        }
-	// 		}
-			
-	// 		switch(c) {
-	// 			case '1': {
-	// 				A.Change_Information();
-	// 				break;
-	// 			}
-	// 			case  '2': {
-	// 				A.Print_Information();
-	// 				break;
-	// 			}
-	// 		}	
-	// 	}*/
-	// }
-	
-	// Menu::Notification("The program has ended", 50, 5); // Thong bao ket thuc
-	cout << "HI" << endl;
+		// if(kiem tra tai khoan va mau khau co hop le khong ======================================================) {
+		// 		Menu::notification("Incorrect username or password", 45, 5);
+		//		continue;
+		// }
+
+		bool oke1 = 1;
+		char c;
+
+		while(oke1) {	// menu
+			Menu::print_user_menu();
+
+			Menu::gotoxy(4,27);
+			cout << "--> Enter your choice: ";
+			c = _getch();
+			cout << c;
+			Sleep(200);
+
+			if(c == 9) {
+				Menu::notification("The program has ended", 49, 5); // Thong bao ket thuc
+				return 0;
+			}
+			if(c < '1' || c > '4') {
+				Menu::gotoxy(5, 10);
+				Menu::notification("Invalid result !", 50, 5);
+				continue;
+			}
+
+			switch (c) {
+				case '1': {
+					Console::change_information();
+					break;
+				}
+				case '2' : {
+					Console::print_information();
+					break;
+				}
+				case '3' : {
+					
+				}
+			}
+		}
+	}
+	Menu::gotoxy(5, 10);
+	Menu::notification("The program has ended", 49, 5); // Thong bao ket thuc
     return 0;
 }
