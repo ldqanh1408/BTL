@@ -5,8 +5,6 @@
 #include <conio.h>
 #include <windows.h>
 
-using namespace std;
-
 
 namespace Menu {
 	// thêm mấy cái frontend vào đây còn mấy cái xử lý đăng nhập là làm ở main

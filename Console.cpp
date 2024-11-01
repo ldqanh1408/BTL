@@ -1,17 +1,18 @@
 #include<iostream>
 #include "Menu.h"
 #include "Account.h"
+#include "User.h"
 #include "gotp.h"
 #include "Console.h"
-using namespace std;
+// namespace fs = filesystem;
 
-void Console::print(int x, int y, string s) {
+void Console::print(int x, int y, std::string s) {
     Menu::gotoxy(x, y);
-    cout << s;
+    std::cout << s;
 }
 
-string Console::input(int x, int y, bool isPlus, bool ispassword, int mn) {
-    string res = "";
+std::string Console::input(int x, int y, bool isPlus, bool ispassword, int mn) {
+    std::string res = "";
     char ch;
     bool clearedPrompt = false;
 
@@ -37,22 +38,22 @@ string Console::input(int x, int y, bool isPlus, bool ispassword, int mn) {
             if (!res.empty()) {
                 res.pop_back();
                 Menu::gotoxy(x + res.length(), y);
-                cout << ' ';
+                std::cout << ' ';
                 Menu::gotoxy(x + res.length(), y);
             }
         } else {
             if (!clearedPrompt) {
-                cout << "                              "; // Xóa nhãn "Enter username:"
+                std::cout << "                              "; // Xóa nhãn "Enter username:"
                 Menu::gotoxy(x, y);
                 clearedPrompt = true;
             }
             res.push_back(ch);
             
             if(ispassword) {
-                cout << "*";	
+                std::cout << "*";	
             }
             else {
-                cout << ch;
+                std::cout << ch;
             }
         }
     }
@@ -60,17 +61,17 @@ string Console::input(int x, int y, bool isPlus, bool ispassword, int mn) {
 }
 
 
-string Console::change(string& title, string& enter_new, string& old_ans, string& old_password, bool age, bool gender, bool phone_number) {
+std::string Console::change(std::string& title, std::string& enter_new, std::string& old_ans, std::string& old_password, bool age, bool gender, bool phone_number) {
     Menu::print_otp();
     Menu::gotoxy(53,3);
-    cout << title;
+    std::cout << title;
     Menu::gotoxy(51,9);
-    cout << enter_new << ":";
+    std::cout << enter_new << ":";
     Menu::gotoxy(41,6); //password
             
     char ch;
     bool clearedPrompt = false;
-    string password = "";
+    std::string password = "";
     int mn;
 
     if(age) mn = 10;
@@ -95,23 +96,23 @@ string Console::change(string& title, string& enter_new, string& old_ans, string
             if (!password.empty()) {
                 password.pop_back();
                 Menu::gotoxy(41 + password.length(), 6);
-                cout << ' ';
+                std::cout << ' ';
                 Menu::gotoxy(41 + password.length(), 6);
             }
         } else {
             if (!clearedPrompt) {
-                cout << "               ";
+                std::cout << "               ";
                 Menu::gotoxy(41, 6);
                 clearedPrompt = true;
             }
             password.push_back(ch);
-            cout << "*";
+            std::cout << "*";
         }
     }
         
     Menu::gotoxy(41,9); //ans
     clearedPrompt = false;
-    string ans = "";
+    std::string ans = "";
     
     while (true) {
         ch = _getch();
@@ -129,27 +130,27 @@ string Console::change(string& title, string& enter_new, string& old_ans, string
             if (!ans.empty()) {
                 ans.pop_back();
                 Menu::gotoxy(41 + ans.length(), 9);
-                cout << ' ';
+                std::cout << ' ';
                 Menu::gotoxy(41 + ans.length(), 9);
             }
         } else {
             if (!clearedPrompt) {
-                cout << "                                    ";
+                std::cout << "                                    ";
                 Menu::gotoxy(41, 9);
                 clearedPrompt = true;
             }
             ans.push_back(ch);
-            cout << ch;
+            std::cout << ch;
         }
     }
     
     Menu::gotoxy(56,12); //otp
-    string OTP = gotp::generate_otp();
-    cout << OTP;
+    std::string OTP = gotp::generate_otp();
+    std::cout << OTP;
     
     Menu::gotoxy(47,15);
     char c;
-    string check_otp = "";
+    std::string check_otp = "";
     
     while(true) {
         c = _getch();
@@ -165,13 +166,13 @@ string Console::change(string& title, string& enter_new, string& old_ans, string
             if(!check_otp.empty()) {
                 check_otp.pop_back();
                 Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
-                cout << " ";
+                std::cout << " ";
                 Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
             }
         }
         else {
             check_otp.push_back(c);
-            cout << c;
+            std::cout << c;
             if(check_otp.size() == 6)
                 Menu::gotoxy(48 + check_otp.size()*5 + 1 -5, 15);
             else
@@ -217,17 +218,21 @@ string Console::change(string& title, string& enter_new, string& old_ans, string
 bool Console::create_account() {
     Menu::create_account_screen();
     
-    string username = input(21, 6, false, false, 8);
+    std::string username = input(21, 6, false, false, 8);
     if(username == "") return 1; //tab
-    // if(username =================================================== tồn tại===============================) {
-    //     Menu::notification("Username already exist !", 44, 5);
-    //     return 0;
+    // else {
+    //     std::string file_path = folder1 + username + ".txt";
+    //     if(fs::exists(file_path)) {
+    //         Menu::notification("Username already exist !", 44, 5);
+    //         return 0;
+    //     }
     // }
+
     
-    string password = input(21, 9, false, true, 8);
+    std::string password = input(21, 9, false, true, 8);
     if(password == "") return 1;
     
-    string password_again = input(21, 12, false, true, 8);
+    std::string password_again = input(21, 12, false, true, 8);
     if(password_again == "") return 1;
     
     if(password != password_again) {
@@ -235,7 +240,7 @@ bool Console::create_account() {
         return 0;
     }
 
-    string phone;
+    std::string phone;
     while(true) {
         phone = input(21, 15, false, false, 10);
         if(phone == "") return 1;
@@ -244,9 +249,9 @@ bool Console::create_account() {
         else break;
     }
 
-    string fullname = input(62, 6, false, false, 5);
+    std::string fullname = input(62, 6, false, false, 5);
     
-    string age;
+    std::string age;
     while(true) {
         age = input(62, 9, false, false, 10);
 
@@ -264,19 +269,19 @@ bool Console::create_account() {
     while(true) {
         Menu::gotoxy(62, 12);
         ch = _getch();
-        cout << "                                       ";
+        std::cout << "                                       ";
         Menu::gotoxy(62, 12);
 
         if(ch == 9) return 1; // tab
         if(ch == '0' || ch == '1') {
             gender = ch;
-            cout << ch;
+            std::cout << ch;
             break;
         }
     }
 
-    string address = input(62, 15, false, false, 8);
-    string country = input(62, 18, false, false, 5);
+    std::string address = input(62, 15, false, false, 8);
+    std::string country = input(62, 18, false, false, 5);
     Menu::gotoxy(5, 33);
     // luu 9 thong tin lại =======================================================================================;
     Menu::notification("Account created successfully", 45, 5);
@@ -290,10 +295,10 @@ void Console::change_information() {
     while (true) {
         Menu::print_change_information();
         Menu::gotoxy(4, 27);
-        cout << "--> Enter your choice: ";
+        std::cout << "--> Enter your choice: ";
 
         c = _getch(); 
-        cout << c;
+        std::cout << c;
         Sleep(200);
         
         if(c == 9) return;
@@ -302,63 +307,63 @@ void Console::change_information() {
             Menu::notification("Invalid result !!!", 50, 5);
         }
     
-        string old_password = "00000000" /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
+        std::string old_password = "00000000" /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
         
         switch (c) {
             
             case '1': {//full name
-                string old_name = "aa" /* NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMMMMMMMMMMMMMeeeeeeeeeeeeeeeeeeee*/;
-                string title = "FULL NAME";
-                string enter_new = "fullname";
-                string name = change(title, enter_new, old_name, old_password, 0, 0, 0);
+                std::string old_name = "aa" /* NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMMMMMMMMMMMMMeeeeeeeeeeeeeeeeeeee*/;
+                std::string title = "FULL NAME";
+                std::string enter_new = "fullname";
+                std::string name = change(title, enter_new, old_name, old_password, 0, 0, 0);
                 // if !name.emmtpy() thi luu lai, lam voi tat ca cac truong hop o ben duoi ===============================================
                 break;
             }
             
             case '2': {// password
-                string title = "PASSWORD";
-                string enter_new = "password";
-                string password_current = change(title, enter_new, old_password, old_password, 0, 0, 0);
+                std::string title = "PASSWORD";
+                std::string enter_new = "password";
+                std::string password_current = change(title, enter_new, old_password, old_password, 0, 0, 0);
                 break;
             }	
             
             case '3': {//address
-                string old_address = "a" /*ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/;
-                string title = "ADDRESS";
-                string enter_new = "address";
-                string address = change(title, enter_new, old_address, old_password, 0, 0, 0);
+                std::string old_address = "a" /*ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/;
+                std::string title = "ADDRESS";
+                std::string enter_new = "address";
+                std::string address = change(title, enter_new, old_address, old_password, 0, 0, 0);
                 break;
             }
 
             case '4': {
-                string old_age = "a";
-                string title = "AGE";
-                string enter_new = "age (dd/mm/yyyy)";
-                string age = change(title, enter_new, old_age, old_password, 1, 0, 0);
+                std::string old_age = "a";
+                std::string title = "AGE";
+                std::string enter_new = "age (dd/mm/yyyy)";
+                std::string age = change(title, enter_new, old_age, old_password, 1, 0, 0);
                 break;
             }
 
             case '5': {
-                string old_gender = "a";
-                string title = "GENDER";
-                string enter_new = "gender (Male: 1, Female: 0)";
-                string gender = change(title, enter_new, old_gender, old_password, 0, 1, 0);
+                std::string old_gender = "a";
+                std::string title = "GENDER";
+                std::string enter_new = "gender (Male: 1, Female: 0)";
+                std::string gender = change(title, enter_new, old_gender, old_password, 0, 1, 0);
                 break;
             }
 
             case '6': {
-                string old_phone_number = "a";
-                string title = "PHONE NUMBER";
-                string enter_new = "phone number";
-                string phone_number = change(title, enter_new, old_phone_number, old_password, 0, 0, 1);
+                std::string old_phone_number = "a";
+                std::string title = "PHONE NUMBER";
+                std::string enter_new = "phone number";
+                std::string phone_number = change(title, enter_new, old_phone_number, old_password, 0, 0, 1);
                 break;
             }
 
             case '7': {
-                string old_country = "aaaaaa"; //Country ========================================================
-                string title = "COUNTRY";
-                string enter_new = "country";
-                string country = change(title, enter_new, old_country, old_password, 0, 0, 0);
+                std::string old_country = "aaaaaa"; //Country ========================================================
+                std::string title = "COUNTRY";
+                std::string enter_new = "country";
+                std::string country = change(title, enter_new, old_country, old_password, 0, 0, 0);
                 break;
             }
         }
@@ -369,17 +374,17 @@ void Console::change_information() {
 void Console::print_information(){
     Menu::identification_information();
 
-    string fullname = "a"; //fullname==============================================================
+    std::string fullname = "a"; //fullname==============================================================
     print(48, 4, fullname);
 
-    string age = "a";      //age=================================================;
+    std::string age = "a";      //age=================================================;
     print(48, 5, age);
 
-    string gender = "a";    //gender=================================================;
+    std::string gender = "a";    //gender=================================================;
     print(48, 6, gender);
 
-    string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
-    string account_balance = "";
+    std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
+    std::string account_balance = "";
 
     for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
         account_balance = tmp[i] + account_balance;
@@ -390,10 +395,10 @@ void Console::print_information(){
     }
     print(48, 11, account_balance + "VND");
 
-    string phone_number = "aaaaaaaaaa"; //phone number==========================================
+    std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
     print(48, 12, phone_number);
 
-    string country = "aaaaaaaaa"; //country ======================================
+    std::string country = "aaaaaaaaa"; //country ======================================
     print(48, 13, country);
 
     Menu::gotoxy(5, 20);
@@ -410,7 +415,7 @@ void Console::print_information(){
 void Console::transfer_money() {
     Menu::transfer_money_screen();
 
-    string amount = input(41, 6, 0, 0, 1);
+    std::string amount = input(41, 6, 0, 0, 1);
     if(amount == "") return;
 
     /*
@@ -427,7 +432,7 @@ void Console::transfer_money() {
     }
     */
 
-    string ID = input(41, 9, 0, 0, 12);
+    std::string ID = input(41, 9, 0, 0, 12);
     if(ID == "") return;
 
     /*
@@ -439,12 +444,12 @@ void Console::transfer_money() {
 
 
     Menu::gotoxy(56,12); //otp
-    string OTP = gotp::generate_otp();
-    cout << OTP;
+    std::string OTP = gotp::generate_otp();
+    std::cout << OTP;
 
     Menu::gotoxy(47,15);
     char c;
-    string check_otp = "";
+    std::string check_otp = "";
     
     while(true) {
         c = _getch();
@@ -460,13 +465,13 @@ void Console::transfer_money() {
             if(!check_otp.empty()) {
                 check_otp.pop_back();
                 Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
-                cout << " ";
+                std::cout << " ";
                 Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
             }
         }
         else {
             check_otp.push_back(c);
-            cout << c;
+            std::cout << c;
             if(check_otp.size() == 6)
                 Menu::gotoxy(48 + check_otp.size()*5 + 1 -5, 15);
             else
@@ -511,7 +516,7 @@ void Console::Start_The_Program() {
 
     	Menu::print_login_frame();
     	
-    	string username = Console::input(41, 7, true, false, 1); //username
+    	std::string username = Console::input(41, 7, true, false, 1); //username
     	
     	if(username == "") { // end
     		break;
@@ -527,7 +532,7 @@ void Console::Start_The_Program() {
 		}
 		
 
-		string password = Console::input(41, 10, true, true, 8); //password
+		std::string password = Console::input(41, 10, true, true, 8); //password
 		
 		if(password == "") { // end
     		break;
@@ -552,10 +557,10 @@ void Console::Start_The_Program() {
 			Menu::print_user_menu();
 
 			Menu::gotoxy(4,27);
-			cout << "--> Enter your choice: ";
+			std::cout << "--> Enter your choice: ";
             char c;
 			c = _getch();
-			cout << c;
+			std::cout << c;
             Sleep(200);
 
 			if(c == 9) {

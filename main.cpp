@@ -1,13 +1,5 @@
 #include<iostream>
-#include<fstream>
-#include<filesystem>
-#include <random>
-#include"User.h"
-#include"gotp.h"
-#include"bcrypt.cpp"
-#include"blowfish.cpp"
 #include"Console.cpp"
-#include"Menu.cpp"
 
 using namespace std;
 namespace fs = filesystem;
@@ -15,14 +7,14 @@ namespace fs = filesystem;
 
 
 // bool create_account() {
-    // auto generate_password = [&](User &person)->string {
-    //     string first_name = "", full_name = person.get_full_name();
-    //     for(int i = full_name.size() - 1; i >= 0 && full_name[i] != ' '; --i) {
-    //         first_name = full_name[i] + first_name;
-    //     }
+//     auto generate_password = [&](User &person)->string {
+//         string first_name = "", full_name = person.get_full_name();
+//         for(int i = full_name.size() - 1; i >= 0 && full_name[i] != ' '; --i) {
+//             first_name = full_name[i] + first_name;
+//         }
 
-    //     return first_name + "&" + to_string(person.get_age()) + "&" + to_string(int(person.get_gender()));
-    // };
+//         return first_name + "&" + to_string(person.get_age()) + "&" + to_string(int(person.get_gender()));
+//     };
 
 //     cout << "Tên tài khoản: ";
 //     string new_account; cin >> new_account;

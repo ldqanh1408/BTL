@@ -6,15 +6,14 @@
 #include "Account.h"
 #include "gotp.h"
 
-using namespace std;
 // Avoid using namespace std in headers to prevent conflicts
 
 namespace Console {
-    void print(int x, int y, string s);
+    void print(int x, int y, std::string s);
 
-    string input(int x, int y, bool is_plus, bool is_password, int mn);
+    std::string input(int x, int y, bool is_plus, bool is_password, int mn);
 
-    string change(string& title, string& enter_new, string& old_ans, string& old_password, bool age, bool gender, bool phone_number);
+    std::string change(std::string& title, std::string& enter_new, std::string& old_ans, std::string& old_password, bool age, bool gender, bool phone_number);
 
     bool create_account();
 

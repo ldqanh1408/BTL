@@ -4,18 +4,16 @@
 #include <windows.h>
 #include "Menu.h"
 
-using namespace std;
-
 void Menu::gotoxy(int x, int y) {
     COORD coord;
-    coord.X = x;	// col
-    coord.Y = y;	// row
+    coord.X = x;    // col
+    coord.Y = y;    // row
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 void Menu::print_login_frame() {
     system("cls");
-    string s = R"(
+    std::string s = R"(
                                         _________________________________________
                                        |                                         |
                                        |           WELCOME TO OUR BANK           |
@@ -26,18 +24,18 @@ void Menu::print_login_frame() {
                                        |_________________________________________|
                                        |                                         |  
                                        | Enter password:                         |
-                                       |_________________________________________|	
+                                       |_________________________________________|    
                                        |                                         |
                                        | Note that pressing the 'Tab' will exit  |
                                        |_________________________________________|
                                                    Press '+' to create an account                                       
     )";
-    cout << s;
+    std::cout << s;
 }
 
 void Menu::print_change_information() {
     system("cls");
-    string s = R"(
+    std::string s = R"(
                                         ________________________________________
                                        |                                        |
                                        |           CHANGE INFORMATION           |
@@ -45,7 +43,7 @@ void Menu::print_change_information() {
                                        |                                        |
                                        | 1. Fullname                            |
                                        |________________________________________|
-                                       |                                        |	
+                                       |                                        |    
                                        | 2. Password                            |
                                        |________________________________________|
                                        |                                        |
@@ -66,12 +64,12 @@ void Menu::print_change_information() {
                                        |                                        |
                                        | Note that pressing the 'Tab' will exit |
                                        |________________________________________|)";
-    cout << s;
+    std::cout << s;
 }
 
 void Menu::print_user_menu() {
     system("cls");
-    string str = R"(
+    std::string str = R"(
                                         ________________________________________
                                        |                                        |
                                        |               MENU BANK                |
@@ -90,13 +88,13 @@ void Menu::print_user_menu() {
                                        |________________________________________|
                                        |                                        |
                                        | Note that pressing the 'Tab' will exit |
-                                       |________________________________________|)"	;
-    cout << str;
+                                       |________________________________________|)"    ;
+    std::cout << str;
 }
 
-void Menu::notification(string s, int x, int y) {
+void Menu::notification(std::string s, int x, int y) {
     system("cls");
-    cout << R"(
+    std::cout << R"(
                              _____________________________________________________________
                             |                                                             |
                             |                    O~~~NOTIFICATION~~~O                     |
@@ -106,14 +104,14 @@ void Menu::notification(string s, int x, int y) {
                             |_____________________________________________________________|)";
     
     gotoxy(x, y);
-    cout << s;
+    std::cout << s;
     gotoxy(5, 15);
     Sleep(3000);
 }
 
 void Menu::create_account_screen() {
     system("cls");
-    string s = R"(
+    std::string s = R"(
                     _________________________________________________________________________________
                    |                                                                                 |
                    |                      CREATE AN ACCOUNT FOR THE LOGIN USER                       |
@@ -133,12 +131,12 @@ void Menu::create_account_screen() {
                    |                                        |                                        |
                    | Note that pressing the 'Tab' will back | Enter Country:                         |
                    |________________________________________|________________________________________|)";                          
-    cout << s;                                          
+    std::cout << s;                                          
 }
 
 void Menu::create_information_screen() {
     system("cls");
-    cout << R"(
+    std::cout << R"(
                                  ______________________________________________________________
                                 |                                                              |
                                 |                    CREATE INFORMATION                        |
@@ -165,7 +163,7 @@ void Menu::create_information_screen() {
 
 void Menu::print_otp() {
     system("cls");
-    cout << R"(
+    std::cout << R"(
                                         ________________________________________
                                        |                                        |
                                        | --> CHANGE:                            |
@@ -190,7 +188,7 @@ void Menu::print_otp() {
 
 void Menu::identification_information() {    
     system("cls");
-    string str = R"(
+    std::string str = R"(
     IDENTIFICATION INFORMATION
     --------------------------------------------------------------------------------------
     
@@ -206,14 +204,14 @@ void Menu::identification_information() {
     Country:
     
     --------------------------------------------------------------------------------------
-                             Note that pressing the 'Tab' will back	
+                             Note that pressing the 'Tab' will back    
 )";
-    cout << str;
+    std::cout << str;
 }
 
 void Menu::transfer_money_screen(){
     system("cls");
-    cout << R"(
+    std::cout << R"(
                                         ________________________________________
                                        |                                        |
                                        |             TRANSFER MONEY             |
@@ -234,12 +232,12 @@ void Menu::transfer_money_screen(){
                                        |                                        |
                                        | Note that pressing the 'Tab' will back |
                                        |________________________________________|
-	)";
+    )";
 }
 
 void Menu::print_transaction_history(){
     system("cls");
-    string str = R"(
+    std::string str = R"(
                                                 Note that pressing the 'Tab' will back
   _________________________________________________________________________________________________________________
  |                              |                                                              |                   |
@@ -247,5 +245,5 @@ void Menu::print_transaction_history(){
  |______________________________|______________________________________________________________|___________________|
 
 )";
-    cout << str;
+    std::cout << str;
 }
