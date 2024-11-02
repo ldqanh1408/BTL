@@ -2,7 +2,6 @@
 #define CONSOLE_H
 
 #include <iostream>
-#include "gotp.h"
 
 class Console {
 private:
@@ -26,6 +25,6 @@ public:
     void transaction_history();
 
     void Start_The_Program();    
-}
+};
 
 #endif

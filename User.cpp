@@ -13,6 +13,8 @@
 //     }
 //     return true;
 // }
+std::string folder4 = "data/user_transaction_history/",
+            folder5 = "data/transaction_log/";
 
 User::User() {}
 User::User(Information &i, Account &j) {
@@ -21,24 +23,25 @@ User::User(Information &i, Account &j) {
     set_information(i);
 }
 
-void User::set_account(Account _account) {
+void User::set_account(Account &_account) {
     this->account = _account; // chưa thêm toán tư = cho account
-    ofstream of(folder2 + account.get_user_name() + ".txt");
-    of << bcrypt::generateHash(account.get_password);
+    std::ofstream of(folder2 + account.get_user_name() + ".txt");
+    of << bcrypt::generateHash(account.get_password());
     of.close();
     // chưa xử lý ghi file lỗi
 }   
 
 
-void User::set_information(const Information &_information) {
+void User::set_information(Information &_information) {
     this->full_name = _information.get_full_name();
-    this->address = _information.get_adrress();
+    this->address = _information.get_address();
     this->country = _information.get_country();
     this->phone_number = _information.get_phone_number();
     this->age = _information.get_age();
     this->gender = _information.get_gender();
-    ofstream of(folder1 + this->account.get_user_name() + ".txt");
-    of << _information;
+    std::ofstream outfile(folder1 + this->account.get_user_name() + ".txt");
+    outfile << _information;
+    outfile << this->wallet.get_ID();
 }
 
 void User::set_wallet() {
@@ -52,13 +55,12 @@ void User::set_wallet() {
         }
         return res;
     };
-    while(true) {
-        this->ID = generate_ID();
-        std::string hash = bcrypt::generateHash(ID);
-        if (!std::filesystem::exists(folder3 + hash + ".txt")) break;
-    }
-
-    std::ofstream outfile_ID(folder3 + bcrypt::generateHash(get_ID()) + ".txt"); // tên file
+    std::string ID;
+    do {
+        ID = generate_ID();
+    } while(std::filesystem::exists(folder3 + bcrypt::generateHash(ID) + ".txt"));
+    this->wallet.set_ID(ID);
+    std::ofstream outfile_ID(folder3 + bcrypt::generateHash(ID) + ".txt"); // tên file
     outfile_ID << 0;
     outfile_ID.close();
 }
