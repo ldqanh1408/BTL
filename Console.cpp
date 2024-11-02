@@ -1,12 +1,14 @@
 #include<iostream>
 #include "Menu.cpp"
-#include "Account.h"
-#include "Information.h"
-#include "User.h"
+#include "Account.cpp"
+#include "Information.cpp"
+#include "User.cpp"
 #include "gotp.cpp"
+#include "bcrypt.cpp"
 #include "Console.h"
+#include "blowfish.cpp"
 #include <filesystem>
-namespace fs = filesystem;
+
 
 Console::Console() {
     this->user_name = "";
@@ -229,7 +231,7 @@ bool Console::create_account() {
     if(username == "") return 1; //tab
     else {
         std::string file_path = folder1 + username + ".txt";
-        if(fs::exists(file_path)) {
+        if(std::filesystem::exists(file_path)) {
             Menu::notification("Username already exist !", 44, 5); // chưa check
             return 0;
         } else {
@@ -272,9 +274,9 @@ bool Console::create_account() {
     std::string age;
     while(true) {
         age = input(62, 9, false, false, 10);
-
+        
         if(age == "") return 1; // tab
-        if(!tmp2.set_age()) {
+        if(!tmp2.Information::set_age(stoi(age))) {
             print(41, 19, "Age is incorrect !!!                   ");
             
         } else break;
@@ -303,7 +305,7 @@ bool Console::create_account() {
     Menu::gotoxy(5, 33);
     // luu 9 thong tin lại =======================================================================================;
     Menu::notification("Account created successfully", 45, 5);
-    User new_user(tmp1, tmp2);
+    User new_user(tmp2, tmp1);
     return 1; // tro ve đăng nhập
 }
 
@@ -392,31 +394,35 @@ void Console::change_information() {
 void Console::print_information(){
     Menu::identification_information();
     
-    ifstream infile(foler1 + this->user_name + ".txt");
-    std::string full_name, age, gender, country, address, phone_number, ID; //fullname==============================================================
-    infile >> full_name >> address >> country >> phone_number >> age >> gender;
-    print(48, 4, fullname);
+    std::ifstream infile(folder1 + this->user_name + ".txt");
+    std::string full_name, age, gender, country, address, phone_number, ID, balance; //fullname=============================================================
+    infile >> full_name >> address >> country >> phone_number >> age >> gender >> ID;
+    infile.close();
+    infile = std::ifstream(folder3 + bcrypt::generateHash(ID) + ".txt");
+    infile >> balance;
+
+    print(48, 4, full_name);
 
     print(48, 5, age);
 
     print(48, 6, gender);
 
-    std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
-    std::string account_balance = "";
+    // std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
+    // std::string balance = "";
 
-    for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
-        account_balance = tmp[i] + account_balance;
-        if (count == 2 && i != 0) {
-            account_balance = "," + account_balance;
-            count = -1; //
-        }
-    }
-    print(48, 11, account_balance + "VND");
+    // for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
+    //     balance = tmp[i] + balance;
+    //     if (count == 2 && i != 0) {
+    //         balance = "," + balance;
+    //         count = -1; //
+    //     }
+    // }
+    print(48, 11, balance + "Points");
 
-    std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
+    // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
     print(48, 12, phone_number);
 
-    std::string country = "aaaaaaaaa"; //country ======================================
+    // std::string country = "aaaaaaaaa"; //country ======================================
     print(48, 13, country);
 
     Menu::gotoxy(5, 20);
@@ -566,8 +572,8 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-        if(std::fs::exist(foler2 + username + ".txt")) {
-            ifstream infile(foler2 + username + ".txt");
+        if(std::filesystem::exists(folder2 + username + ".txt")) {
+            std::ifstream infile(folder2 + username + ".txt");
             this->user_name = username;
             std::string valid_password;
             infile >> valid_password;

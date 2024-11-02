@@ -1,20 +1,21 @@
 #include <iostream>
 #include "Information.h"
 
+std::string folder1 = "data/store_information/";
 Information::Information() {}
 
-std::string Information::get_full_name() { return this->full_name; }
-std::string Information::get_address() { return this->address; }
-std::string Information::get_country() { return this->country; }
-std::string Information::get_phone_number() { return this->phone_number; }
-int Information::get_age() { return this->age; }
-bool Information::get_gender() { return this->gender; }  
+std::string Information::get_full_name() const { return this->full_name; }
+std::string Information::get_address() const { return this->address; }
+std::string Information::get_country() const { return this->country; }
+std::string Information::get_phone_number() const { return this->phone_number; }
+int Information::get_age() const{ return this->age; }
+bool Information::get_gender() const { return this->gender; }  
 
 void Information::set_full_name(const std::string& _full_name) { this->full_name = _full_name; }
 void Information::set_address(const std::string& _address) { this->address = _address; }
 void Information::set_country(const std::string& _country) { this->country = _country; }
 bool Information::set_phone_number(const std::string& _phone_number) {
-    for(char &c : _phone_number) {
+    for(const char &c : _phone_number) {
         if(!isdigit(c)) return 0;
     }
     this->phone_number = _phone_number;
@@ -27,7 +28,7 @@ bool Information::set_age(int _age) {
 }
 void Information::set_gender(bool _gender) { this->gender = _gender; }  
 
-std::istream& Information::operator>>(std::istream& in, Information& data) {
+std::istream& operator>>(std::istream& in, Information& data) {
     std::cout << "Nhap thong tin nguoi dung:" << std::endl;
     std::cout << "Ho va ten: ";
     std::getline(in, data.full_name);
@@ -46,7 +47,7 @@ std::istream& Information::operator>>(std::istream& in, Information& data) {
     return in;
 }
 
-std::ostream& Information::operator<<(std::ostream& os, Information& person) {
+std::ostream& operator<<(std::ostream& os, Information& person) {
     os << person.get_full_name() << " "
        << person.get_address() << " "
        << person.get_country() << " "
@@ -55,3 +56,4 @@ std::ostream& Information::operator<<(std::ostream& os, Information& person) {
        << (person.get_gender() ? "Male" : "Female") << " ";
     return os;
 }
+

@@ -2,12 +2,11 @@
 #define USER_H
 
 #include <filesystem>
-#include "Wallet.h"
+#include "Wallet.cpp"
 #include "Account.h"
 #include "Information.h"
 
-extern std::string folder4 = "data/user_transaction_history/",
-                   folder5 = "data/transaction_log/";
+extern std::string folder4, folder5;
 namespace fs = std::filesystem;
 
 // bool valid_money(std::string money) {
@@ -27,7 +26,7 @@ public:
 
     void set_account(Account &_account);
     
-    void set_information(const Information &_information);
+    void set_information(Information &_information);
 
     void set_wallet();
 

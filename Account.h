@@ -6,7 +6,7 @@
 #include "gotp.h"
 #include <string>
 
-extern std::string folder2 = "data/store_password/";
+extern std::string folder2;
 
 class Account {
 private:

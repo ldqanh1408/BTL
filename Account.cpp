@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include "Account.h"
 
-
+std::string folder2 = "data/store_password/";
 
 Account::Account() {
 }

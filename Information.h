@@ -3,10 +3,10 @@
 
 #include <iostream>
 
-extern std::string folder1 = "data/store_information/";
+extern std::string folder1;
 
 class Information {
-private:
+protected:
     std::string full_name, address, country, phone_number;
     int age; 
     bool gender;
@@ -14,12 +14,12 @@ private:
 public:
     Information();
     
-    std::string get_full_name();
-    std::string get_address();
-    std::string get_country();
-    std::string get_phone_number();
-    int get_age();
-    bool get_gender();
+    std::string get_full_name() const;
+    std::string get_address() const;
+    std::string get_country() const;
+    std::string get_phone_number() const;
+    int get_age() const;
+    bool get_gender() const;
 
     void set_full_name(const std::string& _full_name);
     void set_address(const std::string& _address);
