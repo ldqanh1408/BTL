@@ -2,7 +2,6 @@
 #define CONSOLE_H
 
 #include <iostream>
-#include "Menu.h"
 #include "Account.h"
 #include "gotp.h"
 

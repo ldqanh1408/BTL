@@ -1,9 +1,10 @@
 #include<iostream>
-#include "Menu.h"
+#include "Menu.cpp"
 #include "Account.h"
 #include "User.h"
-#include "gotp.h"
+#include "gotp.cpp"
 #include "Console.h"
+#include <filesystem>
 // namespace fs = filesystem;
 
 void Console::print(int x, int y, std::string s) {
@@ -220,13 +221,13 @@ bool Console::create_account() {
     
     std::string username = input(21, 6, false, false, 8);
     if(username == "") return 1; //tab
-    // else {
-    //     std::string file_path = folder1 + username + ".txt";
-    //     if(fs::exists(file_path)) {
-    //         Menu::notification("Username already exist !", 44, 5);
-    //         return 0;
-    //     }
-    // }
+    else {
+        std::string file_path = folder1 + username + ".txt";
+        if(fs::exists(file_path)) {
+            Menu::notification("Username already exist !", 44, 5); // chưa check
+            return 0;
+        }
+    }
 
     
     std::string password = input(21, 9, false, true, 8);
