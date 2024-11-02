@@ -1,12 +1,16 @@
 #include<iostream>
 #include "Menu.cpp"
 #include "Account.h"
+#include "Information.h"
 #include "User.h"
 #include "gotp.cpp"
 #include "Console.h"
 #include <filesystem>
-// namespace fs = filesystem;
+namespace fs = filesystem;
 
+Console::Console() {
+    this->user_name = "";
+}
 void Console::print(int x, int y, std::string s) {
     Menu::gotoxy(x, y);
     std::cout << s;
@@ -219,19 +223,28 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
 bool Console::create_account() {
     Menu::create_account_screen();
     
+    Account tmp1; Information tmp2;
     std::string username = input(21, 6, false, false, 8);
+
     if(username == "") return 1; //tab
     else {
         std::string file_path = folder1 + username + ".txt";
         if(fs::exists(file_path)) {
             Menu::notification("Username already exist !", 44, 5); // chưa check
             return 0;
+        } else {
+            tmp1.set_user_name(username);
         }
     }
 
-    
     std::string password = input(21, 9, false, true, 8);
     if(password == "") return 1;
+    else {
+        if(!tmp1.set_password(password)) {
+            Menu::notification("Password must contain at least 1 uppercase, lowercase, number, special character and must not contain invalid characters!", 44, 5);
+            return 0;
+        }
+    }
     
     std::string password_again = input(21, 12, false, true, 8);
     if(password_again == "") return 1;
@@ -245,9 +258,13 @@ bool Console::create_account() {
     while(true) {
         phone = input(21, 15, false, false, 10);
         if(phone == "") return 1;
-
+        else {
+            if(!tmp2.set_phone_number(phone)) {
+                Menu:: notification("Phone number is incorrect !", 49, 5); // không rõ
+                return 0;
+            } else break;
+        }
         // if(phong khong hop le ===================================================================) continue;
-        else break;
     }
 
     std::string fullname = input(62, 6, false, false, 5);
@@ -257,15 +274,13 @@ bool Console::create_account() {
         age = input(62, 9, false, false, 10);
 
         if(age == "") return 1; // tab
-        // if(kiem tra age khong hop le========================================================================) {
-        //     print(41, 19, "Age is incorrect !!!                   ");
+        if(!tmp2.set_age()) {
+            print(41, 19, "Age is incorrect !!!                   ");
             
-        // } else break;
-        else break;
+        } else break;
     }
 
     char ch;
-    char gender;
 
     while(true) {
         Menu::gotoxy(62, 12);
@@ -275,7 +290,7 @@ bool Console::create_account() {
 
         if(ch == 9) return 1; // tab
         if(ch == '0' || ch == '1') {
-            gender = ch;
+            tmp2.set_gender(ch);
             std::cout << ch;
             break;
         }
@@ -283,10 +298,12 @@ bool Console::create_account() {
 
     std::string address = input(62, 15, false, false, 8);
     std::string country = input(62, 18, false, false, 5);
+    tmp2.set_address(address);
+    tmp2.set_country(country);
     Menu::gotoxy(5, 33);
     // luu 9 thong tin lại =======================================================================================;
     Menu::notification("Account created successfully", 45, 5);
-    
+    User new_user(tmp1, tmp2);
     return 1; // tro ve đăng nhập
 }
 
@@ -374,14 +391,14 @@ void Console::change_information() {
 
 void Console::print_information(){
     Menu::identification_information();
-
-    std::string fullname = "a"; //fullname==============================================================
+    
+    ifstream infile(foler1 + this->user_name + ".txt");
+    std::string full_name, age, gender, country, address, phone_number, ID; //fullname==============================================================
+    infile >> full_name >> address >> country >> phone_number >> age >> gender;
     print(48, 4, fullname);
 
-    std::string age = "a";      //age=================================================;
     print(48, 5, age);
 
-    std::string gender = "a";    //gender=================================================;
     print(48, 6, gender);
 
     std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
@@ -518,6 +535,7 @@ void Console::Start_The_Program() {
     	Menu::print_login_frame();
     	
     	std::string username = Console::input(41, 7, true, false, 1); //username
+
     	
     	if(username == "") { // end
     		break;
@@ -531,9 +549,11 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-		
 
-		std::string password = Console::input(41, 10, true, true, 8); //password
+
+
+        std::string password = Console::input(41, 10, true, true, 8);
+
 		
 		if(password == "") { // end
     		break;
@@ -546,11 +566,19 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-		
-		// if(kiem tra tai khoan va mau khau co hop le khong ======================================================) {
-		// 		Menu::notification("Incorrect username or password", 45, 5);
-		//		continue;
-		// }
+        if(std::fs::exist(foler2 + username + ".txt")) {
+            ifstream infile(foler2 + username + ".txt");
+            this->user_name = username;
+            std::string valid_password;
+            infile >> valid_password;
+            if(!bcrypt::validatePassword(valid_password, bcrypt::generateHash(password))) {
+                Menu::notification("Incorrect username or password", 45, 5);
+                continue; // khoong ro
+            }            
+        } else {
+            Menu::notification("Incorrect username or password", 45, 5);
+            continue;
+        }
 
 		while(true) {	// menu
             Sleep(200);

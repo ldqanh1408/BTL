@@ -3,11 +3,14 @@
 
 #include <iostream>
 #include "Account.h"
+#include "User.h"
 #include "gotp.h"
 
-// Avoid using namespace std in headers to prevent conflicts
-
-namespace Console {
+class Console {
+private:
+    std::string user_name;
+public:
+    Console();
     void print(int x, int y, std::string s);
 
     std::string input(int x, int y, bool is_plus, bool is_password, int mn);
@@ -24,7 +27,7 @@ namespace Console {
 
     void transaction_history();
 
-    void Start_The_Program();
+    void Start_The_Program();    
 }
 
 #endif

@@ -23,20 +23,13 @@ private:
     Wallet wallet; 
 public:
     User();
+    User(Information &i, Account &j);
 
-    void set_account(Account _account);
+    void set_account(Account &_account);
+    
+    void set_information(const Information &_information);
 
-    void set_full_name(const std::string& name);
-
-    void set_address(const std::string& addr);
-
-    void set_country(const std::string& country);
-
-    void set_phone_number(const std::string& phone);
-
-    void set_age(int age);
-
-    void set_gender(bool gender);
+    void set_wallet();
 
     bool change_password();
 

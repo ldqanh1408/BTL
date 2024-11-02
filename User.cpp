@@ -5,6 +5,7 @@
 #include "Wallet.h"
 #include "gotp.h"
 #include "User.h"
+#include "bcrypt.h"
 
 // bool valid_money(std::string money) {
 //     for(char &c : money) {
@@ -14,49 +15,52 @@
 // }
 
 User::User() {}
+User::User(Information &i, Account &j) {
+    set_account(j);
+    set_wallet();
+    set_information(i);
+}
 
 void User::set_account(Account _account) {
-    this->account = _account;
+    this->account = _account; // chưa thêm toán tư = cho account
+    ofstream of(folder2 + account.get_user_name() + ".txt");
+    of << bcrypt::generateHash(account.get_password);
+    of.close();
+    // chưa xử lý ghi file lỗi
+}   
+
+
+void User::set_information(const Information &_information) {
+    this->full_name = _information.get_full_name();
+    this->address = _information.get_adrress();
+    this->country = _information.get_country();
+    this->phone_number = _information.get_phone_number();
+    this->age = _information.get_age();
+    this->gender = _information.get_gender();
+    ofstream of(folder1 + this->account.get_user_name() + ".txt");
+    of << _information;
 }
 
-void User::set_full_name(const std::string& name) {
-    Information::set_full_name(name);
-    if(!gotp::verify_otp()) return;
-    std::cout << "Thay đổi họ và tên thành công!" << std::endl;
-}
-
-void User::set_address(const std::string& addr) {
-    Information::set_address(addr);
-    if(!gotp::verify_otp()) return;
-    std::cout << "Thay đổi địa chỉ thành công!" << std::endl;
-}
-
-void User::set_country(const std::string& country) {
-    Information::set_country(country);
-    if(!gotp::verify_otp()) return;
-    std::cout << "Thay đổi quốc gia thành công!" << std::endl;
-}
-
-void User::set_phone_number(const std::string& phone) {
-    Information::set_phone_number(phone);
-    if(!gotp::verify_otp()) return;
-    std::cout << "Thay đổi số điện thoại thành công!" << std::endl;
-}
-
-void User::set_age(int age) {
-    if (age > 0) {
-        Information::set_age(age);
-        std::cout << "Thay đổi tuổi thành công!" << std::endl;
-        if(!gotp::verify_otp()) return;
-    } else {
-        std::cout << "Tuổi không hợp lệ. Thay đổi thất bại!" << std::endl;
+void User::set_wallet() {
+    auto generate_ID = [&]() -> std::string {
+        std::string res = "";
+        std::uniform_int_distribution<int> uni(1, 9999);
+        for (int i = 0; i < 3; i++) {
+            int tmp = uni(gotp::gen);
+            std::string s = std::to_string(tmp);
+            res += std::string(4 - s.size(), '0') + s;
+        }
+        return res;
+    };
+    while(true) {
+        this->ID = generate_ID();
+        std::string hash = bcrypt::generateHash(ID);
+        if (!std::filesystem::exists(folder3 + hash + ".txt")) break;
     }
-}
 
-void User::set_gender(bool gender) {
-    Information::set_gender(gender);
-    if(!gotp::verify_otp()) return;
-    std::cout << "Thay đổi giới tính thành công!" << std::endl;
+    std::ofstream outfile_ID(folder3 + bcrypt::generateHash(get_ID()) + ".txt"); // tên file
+    outfile_ID << 0;
+    outfile_ID.close();
 }
 
 bool User::change_password() {
