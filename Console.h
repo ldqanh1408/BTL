@@ -2,8 +2,6 @@
 #define CONSOLE_H
 
 #include <iostream>
-#include "Account.h"
-#include "User.h"
 #include "gotp.h"
 
 class Console {
