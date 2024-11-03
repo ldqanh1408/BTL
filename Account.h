@@ -6,7 +6,6 @@
 #include <bitset>
 #include <string>
 
-// Khai báo `folder2` là biến extern để sử dụng trong các tệp khác
 extern std::string folder2;
 
 class Account {

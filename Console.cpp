@@ -381,15 +381,28 @@ void Console::change_information() {
 
 void Console::print_information(){
     Menu::identification_information();
+<<<<<<< HEAD
     std::string balance;
     std::ifstream infile(folder3 + bcrypt::generateHash(cur.Information::get_ID()) + ".txt");
     infile >> balance;
     infile.close();
+=======
+    
+    std::ifstream infile(folder1 + this->user_name + ".txt");
+    std::string full_name, age, gender, country, address, phone_number, ID, balance; //fullname=============================================================
+    infile >> full_name >> address >> country >> phone_number >> age >> gender >> ID;
+    infile.close();
+    infile = std::ifstream(folder3 + bcrypt::generateHash(ID) + ".txt");
+    infile >> balance;
+
+    print(48, 4, full_name);
+>>>>>>> ab0997c84e069ab5496b8741a435f5c494bba59d
 
     print(48, 4, cur.Information::get_full_name());
 
     print(48, 5, std::to_string(cur.Information::get_age()));
 
+<<<<<<< HEAD
     print(48, 6, std::to_string(cur.Information::get_gender()));
 
     // std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
@@ -409,6 +422,25 @@ void Console::print_information(){
 
     // std::string country = "aaaaaaaaa"; //country ======================================
     print(48, 13, cur.Information::get_country());
+=======
+    // std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
+    // std::string balance = "";
+
+    // for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
+    //     balance = tmp[i] + balance;
+    //     if (count == 2 && i != 0) {
+    //         balance = "," + balance;
+    //         count = -1; //
+    //     }
+    // }
+    print(48, 11, balance + "Points");
+
+    // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
+    print(48, 12, phone_number);
+
+    // std::string country = "aaaaaaaaa"; //country ======================================
+    print(48, 13, country);
+>>>>>>> ab0997c84e069ab5496b8741a435f5c494bba59d
 
     Menu::gotoxy(5, 20);
     char ch;
@@ -526,6 +558,10 @@ void Console::Start_The_Program() {
 		}
         if(std::filesystem::exists(folder2 + username + ".txt")) {
             std::ifstream infile(folder2 + username + ".txt");
+<<<<<<< HEAD
+=======
+            this->user_name = username;
+>>>>>>> ab0997c84e069ab5496b8741a435f5c494bba59d
             std::string valid_password;
             infile >> valid_password;
             infile.close();

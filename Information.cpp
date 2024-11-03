@@ -81,3 +81,4 @@ std::ostream& operator<<(std::ostream& os, Information& person) {
        << (person.get_gender() ? "Male" : "Female") << "\n";
     return os;
 }
+

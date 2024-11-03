@@ -1,10 +1,8 @@
 #include "Account.h"
 #include <bitset>
 
-// Khởi tạo biến `folder2`
 std::string folder2 = "data/store_password/";
 
-// Constructor mặc định
 Account::Account() {
     this->user_name = "";
     this->password = "";
