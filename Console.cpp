@@ -243,7 +243,19 @@ bool Console::create_account() {
     if(password == "") return 1;
     else {
         if(!tmp1.set_password(password)) {
-            Menu::notification("Password must contain at least 1 uppercase, lowercase, number, special character and must not contain invalid characters!", 44, 5);
+            system("cls");
+            std::cout << R"(
+                             _____________________________________________________________
+                            |                                                             |
+                            |                    O~~~NOTIFICATION~~~O                     |
+                            |                                                             |
+                            |          Password must contain at least 1 uppercase,        |
+                            |           lowercase, number, special character and          |
+                            |             must not contain invalid characters!            |
+                            |                                                             |
+                            |_____________________________________________________________|)";
+            Menu::gotoxy(5, 20);
+            Sleep(4000);
             return 0;
         }
     }
@@ -252,7 +264,7 @@ bool Console::create_account() {
     if(password_again == "") return 1;
     
     if(password != password_again) {
-        Menu:: notification("Password is incorrect !", 49, 5);
+        Menu:: notification("Password is incorrect!", 50, 5);
         return 0;
     }
 
@@ -262,7 +274,7 @@ bool Console::create_account() {
         if(phone == "") return 1;
         else {
             if(!tmp2.set_phone_number(phone)) {
-                Menu:: notification("Phone number is incorrect !", 49, 5); // không rõ
+                Menu:: notification("Phone number is incorrect!", 50, 5); // không rõ
                 return 0;
             } else break;
         }
@@ -273,7 +285,7 @@ bool Console::create_account() {
     
     std::string age;
     while(true) {
-        age = input(62, 9, false, false, 10);
+        age = input(62, 9, false, false, 1);
         
         if(age == "") return 1; // tab
         if(!tmp2.Information::set_age(stoi(age))) {
@@ -324,7 +336,7 @@ void Console::change_information() {
         if(c == 9) return;
         
         if (c < '1' || c > '8') {
-            Menu::notification("Invalid result !!!", 50, 5);
+            Menu::notification("Invalid result!!!", 50, 5);
         }
     
         std::string old_password = "00000000" /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
