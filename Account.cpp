@@ -1,48 +1,57 @@
-#include <iostream>
-#include <string>
-#include <conio.h>
-#include <Windows.h>
 #include "Account.h"
+#include <bitset>
 
 std::string folder2 = "data/store_password/";
 
 Account::Account() {
+    this->user_name = "";
+    this->password = "";
 }
 
+// Constructor với tham số
 Account::Account(std::string _user_name, std::string _password) {
     this->user_name = _user_name;
     this->password = _password;
 }
 
-std::string Account::get_user_name() { return user_name; } // tí xóa để sửa mục C
-std::string Account::get_password() { return password; } // tí xóa để sửa mục C
+// Hàm getter cho `user_name`
+std::string Account::get_user_name() {
+    return user_name;
+}
+
+// Hàm getter cho `password`
+std::string Account::get_password() {
+    return password;
+}
+
+// Kiểm tra tính hợp lệ của mật khẩu
 bool Account::valid_password(const std::string &_password) {
-    
-    std::bitset<4> valid; 
+    std::bitset<4> valid;
 
     for (char c : _password) {
         if (c >= 'a' && c <= 'z') valid.set(0);
-        else if (c >= 'A' && c <= 'Z') valid.set(1); 
-        else if (c >= '0' && c <= '9') valid.set(2); 
+        else if (c >= 'A' && c <= 'Z') valid.set(1);
+        else if (c >= '0' && c <= '9') valid.set(2);
         else if (c >= char(32) && c <= char(126)) valid.set(3);
         else {
-            return false; 
+            return false;
         }
     }
 
-    return valid.all(); 
+    return valid.all();
 }
 
+// Thiết lập mật khẩu với điều kiện hợp lệ
 bool Account::set_password(const std::string &_password) {
     if (valid_password(_password)) {
         this->password = _password;
-
         return true;
     } else {
         return false;
     }
 }
+
+// Thiết lập tên người dùng
 void Account::set_user_name(const std::string &_user_name) {
     this->user_name = _user_name;
 }
-
