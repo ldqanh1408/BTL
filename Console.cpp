@@ -1,15 +1,5 @@
-#include<iostream>
-#include "Menu.cpp"
-#include "Account.h"
-#include "Information.h"
-#include "User.h"
-#include "gotp.cpp"
 #include "Console.h"
-#include <filesystem>
-namespace fs = filesystem;
-
 Console::Console() {
-    this->user_name = "";
 }
 void Console::print(int x, int y, std::string s) {
     Menu::gotoxy(x, y);
@@ -76,7 +66,7 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
             
     char ch;
     bool clearedPrompt = false;
-    std::string password = "";
+    std::string password = "";  
     int mn;
 
     if(age) mn = 10;
@@ -229,7 +219,7 @@ bool Console::create_account() {
     if(username == "") return 1; //tab
     else {
         std::string file_path = folder1 + username + ".txt";
-        if(fs::exists(file_path)) {
+        if(std::filesystem::exists(file_path)) {
             Menu::notification("Username already exist !", 44, 5); // chưa check
             return 0;
         } else {
@@ -272,9 +262,9 @@ bool Console::create_account() {
     std::string age;
     while(true) {
         age = input(62, 9, false, false, 10);
-
+        
         if(age == "") return 1; // tab
-        if(!tmp2.set_age()) {
+        if(!tmp2.Information::set_age(stoi(age))) {
             print(41, 19, "Age is incorrect !!!                   ");
             
         } else break;
@@ -303,7 +293,7 @@ bool Console::create_account() {
     Menu::gotoxy(5, 33);
     // luu 9 thong tin lại =======================================================================================;
     Menu::notification("Account created successfully", 45, 5);
-    User new_user(tmp1, tmp2);
+    User new_user(tmp2, tmp1);
     return 1; // tro ve đăng nhập
 }
 
@@ -391,33 +381,34 @@ void Console::change_information() {
 
 void Console::print_information(){
     Menu::identification_information();
-    
-    ifstream infile(foler1 + this->user_name + ".txt");
-    std::string full_name, age, gender, country, address, phone_number, ID; //fullname==============================================================
-    infile >> full_name >> address >> country >> phone_number >> age >> gender;
-    print(48, 4, fullname);
+    std::string balance;
+    std::ifstream infile(folder3 + bcrypt::generateHash(cur.Information::get_ID()) + ".txt");
+    infile >> balance;
+    infile.close();
 
-    print(48, 5, age);
+    print(48, 4, cur.Information::get_full_name());
 
-    print(48, 6, gender);
+    print(48, 5, std::to_string(cur.Information::get_age()));
 
-    std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
-    std::string account_balance = "";
+    print(48, 6, std::to_string(cur.Information::get_gender()));
 
-    for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
-        account_balance = tmp[i] + account_balance;
-        if (count == 2 && i != 0) {
-            account_balance = "," + account_balance;
-            count = -1; //
-        }
-    }
-    print(48, 11, account_balance + "VND");
+    // std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
+    // std::string balance = "";
 
-    std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
-    print(48, 12, phone_number);
+    // for (int i = tmp.size() - 1, count = 0; i >= 0; --i, ++count) {
+    //     balance = tmp[i] + balance;
+    //     if (count == 2 && i != 0) {
+    //         balance = "," + balance;
+    //         count = -1; //
+    //     }
+    // }
+    print(48, 11, balance + "Points");
 
-    std::string country = "aaaaaaaaa"; //country ======================================
-    print(48, 13, country);
+    // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
+    print(48, 12, cur.Information::get_phone_number());
+
+    // std::string country = "aaaaaaaaa"; //country ======================================
+    print(48, 13, cur.Information::get_country());
 
     Menu::gotoxy(5, 20);
     char ch;
@@ -436,78 +427,45 @@ void Console::transfer_money() {
     std::string amount = input(41, 6, 0, 0, 1);
     if(amount == "") return;
 
-    /*
-    if(so tien khong hop le) {===================================================================================
-        Menu::notification("Invalid amount !", 50, 5);
-        transfer_money();
-        return;
-    }
-
-    if(so tien khong du) {===================================================================================
-        Menu::notification("Insufficient balance !", 48, 5);
-        transfer_money();
-        return;
-    }
-    */
 
     std::string ID = input(41, 9, 0, 0, 12);
     if(ID == "") return;
 
-    /*
-    if(khong ton tai) {===================================================================================
-        Menu::notification("ID does not exist!", 48, 5);
-        transfer_money();
-    }
-    */
+    //1->"Account does not exist! "
+    //2->"Transaction error please try again!"
+    //3->"Invalid amount !"
+    //4->"Insufficient balance !"
+    //5->"OTP is incorrect !"
+    //6->"tab"
+    //7->"--You have successfully transferred the money--"
 
+    char ch = cur.transfer_money(ID, amount) + '0';
 
-    Menu::gotoxy(56,12); //otp
-    std::string OTP = gotp::generate_otp();
-    std::cout << OTP;
-
-    Menu::gotoxy(47,15);
-    char c;
-    std::string check_otp = "";
-    
-    while(true) {
-        c = _getch();
-        
-        if(c == 9) return; //tab
-        
-        else if(check_otp.size() == 6 && c != 8) {
-            if(c == 13) break;
-            continue;
-        }
-        else if(c == 13) continue;
-        else if(c == 8) {
-            if(!check_otp.empty()) {
-                check_otp.pop_back();
-                Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
-                std::cout << " ";
-                Menu::gotoxy(48 + check_otp.size()*5 - 1,15);
-            }
-        }
-        else {
-            check_otp.push_back(c);
-            std::cout << c;
-            if(check_otp.size() == 6)
-                Menu::gotoxy(48 + check_otp.size()*5 + 1 -5, 15);
-            else
-                Menu::gotoxy(48 + check_otp.size()*5 - 1, 15);
-        }
+    switch (ch) {
+        case '1':
+            Menu::notification("Account does not exist!", 48, 5); // chưa check vị trí
+            break;
+        case '2':
+            Menu::notification("Transaction error, please try again!", 48, 5); // chưa check vị trí
+            break;
+        case '3':
+            Menu::notification("Invalid amount !", 50, 5);
+            break;
+        case '4':
+            Menu::notification("Insufficient balance !", 48, 5);
+            break;
+        case '5':
+            Menu::notification("OTP is incorrect !", 50, 5);
+            break;
+        case '6':
+            //tab
+            return;
+        case '7':
+            Menu::notification("--You have successfully transferred the money--", 37, 5);
+            break;
     }
 
-    if(OTP != check_otp) {
-        Menu::notification("OTP is incorrect !", 50, 5);
-        transfer_money();
-        return;
-    }
-    else {
-        // thao tac chuyen tien luu vao file ==================================================================
-        Menu::notification("--You have successfully transferred the money--", 37, 5);
-        transfer_money();
-        return;
-    }
+    transfer_money();
 
     return;
 }
@@ -566,11 +524,11 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-        if(std::fs::exist(foler2 + username + ".txt")) {
-            ifstream infile(foler2 + username + ".txt");
-            this->user_name = username;
+        if(std::filesystem::exists(folder2 + username + ".txt")) {
+            std::ifstream infile(folder2 + username + ".txt");
             std::string valid_password;
             infile >> valid_password;
+            infile.close();
             if(!bcrypt::validatePassword(valid_password, bcrypt::generateHash(password))) {
                 Menu::notification("Incorrect username or password", 45, 5);
                 continue; // khoong ro
@@ -579,6 +537,10 @@ void Console::Start_The_Program() {
             Menu::notification("Incorrect username or password", 45, 5);
             continue;
         }
+        cur.set_account(Account(username, password), 1);
+        std::ifstream infile(folder1 + username + ".txt");
+        infile >> cur;
+
 
 		while(true) {	// menu
             Sleep(200);

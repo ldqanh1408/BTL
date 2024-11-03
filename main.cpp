@@ -1,11 +1,6 @@
 #include<iostream>
 #include"Console.cpp"
 
-using namespace std;
-namespace fs = filesystem;
-
-
-
 // bool create_account() {
 //     auto generate_password = [&](User &person)->string {
 //         string first_name = "", full_name = person.get_full_name();
@@ -50,5 +45,6 @@ namespace fs = filesystem;
 
 
 int main() {
-	Console::Start_The_Program();
+	Console IMPLEMENT;
+	IMPLEMENT.Start_The_Program();
 }

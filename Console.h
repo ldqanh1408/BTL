@@ -1,14 +1,15 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include <iostream>
-#include "Account.h"
-#include "User.h"
-#include "gotp.h"
+#include<iostream>
+#include "User.cpp"
+#include <filesystem>
+#include <string>
+
 
 class Console {
 private:
-    std::string user_name;
+    User cur;
 public:
     Console();
     void print(int x, int y, std::string s);
@@ -28,6 +29,6 @@ public:
     void transaction_history();
 
     void Start_The_Program();    
-}
+};
 
 #endif
