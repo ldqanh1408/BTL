@@ -14,13 +14,15 @@ public:
     Console();
     void print(int x, int y, std::string s);
 
+    std::string otp(int x, int y);
+
     std::string input(int x, int y, bool is_plus, bool is_password, int mn);
 
-    std::string change(std::string& title, std::string& enter_new, std::string& old_ans, std::string& old_password, bool age, bool gender, bool phone_number);
+    std::string change(std::string& title, std::string& enter_new, std::string& old_ans, bool age, bool gender, bool phone_number);
 
     bool create_account();
 
-    void change_information();
+    void change_information(bool manager);
 
     void print_information();
 
@@ -28,7 +30,22 @@ public:
 
     void transaction_history();
 
+    void list_of_users();
+
+    void log_in_useraccount();
+    
+    void view_list_of_users_account();
+
+    void create_user_account();
+
+    void system_transaction_history();
+
+    void user_operation(bool manager);
+
+    void manager_opertion();
+
     void Start_The_Program();    
+
 };
 
 #endif
