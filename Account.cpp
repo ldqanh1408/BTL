@@ -55,3 +55,7 @@ bool Account::set_password(const std::string &_password) {
 void Account::set_user_name(const std::string &_user_name) {
     this->user_name = _user_name;
 }
+
+bool Account::operator == (Account other) {
+    return this->user_name == other.get_user_name() && this->password == other.get_password();
+}

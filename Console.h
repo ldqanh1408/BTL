@@ -9,6 +9,7 @@
 
 class Console {
 private:
+    const std::string un_manager = "lede", pw_manager = "lede6666";
     User cur;
 public:
     Console();

@@ -21,6 +21,7 @@ public:
     bool valid_password(const std::string &_password);
     bool set_password(const std::string &_password);
     void set_user_name(const std::string &_user_name);
+    bool operator == (Account other);
 };
 
 #endif // ACCOUNT_H

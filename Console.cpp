@@ -1,4 +1,5 @@
 #include "Console.h"
+#include <algorithm>
 
 
 Console::Console() {
@@ -256,20 +257,24 @@ bool Console::create_account() {
     }
 
     std::string fullname = input(62, 6, false, false, 5);
+    tmp2.set_full_name(fullname);
     
     std::string age;
     while(true) {
         age = input(62, 9, false, false, 1);    
         if(age == "") return 1; // tab
-        if(kt(age) == false) {
+
+        reverse(age.begin(), age.end());
+        while(!age.empty() && age.back() == '0') age.pop_back(); 
+        reverse(age.begin(), age.end());
+
+        int _ = age.size() <= 3 ? stoi(age) : -1; 
+        if(!tmp2.Information::set_age(_)) {
             print(62, 9, "Age is incorrect !!!                  ");
             Sleep(1000);
             print(62, 9, "                                      ");
         }
-        else {
-            !tmp2.Information::set_age(stoi(age));
-            break;    
-        } 
+        else break;   
     }
 
     char ch;
@@ -433,17 +438,6 @@ void Console::transfer_money() {
     std::string ID = input(41, 9, 0, 0, 12);
     if(ID == "") return;
 
-    Menu::gotoxy(56,12); //otp
-    std::string OTP = gotp::generate_otp();
-    std::cout << OTP;
-    std::string check_otp = otp(47, 15);
-    if(check_otp == "") return;
-
-    if(OTP != check_otp) {
-        Menu::notification("Incorrect OTP!", 52, 5);
-        transfer_money();
-        return;
-    }
     //1->"Account does not exist! "
     //2->"Transaction error please try again!"
     //3->"Invalid amount !"
@@ -577,6 +571,8 @@ void Console::create_user_account() {
             continue;
         }
         */
+
+       std::string password;
 
         std::string fullname = input(41, 9, 0, 0, 1);
         if(fullname == "") return;
@@ -739,13 +735,13 @@ void Console::Start_The_Program() {
 
     	Menu::print_login_frame();
     	
-    	std::string username = Console::input(41, 7, true, false, 1); //username
+    	std::string user_name = Console::input(41, 7, true, false, 1); //username
 
     	
-    	if(username == "") { // end
+    	if(user_name == "") { // end
     		break;
 		}
-		if(username == "+") {	// create account
+		if(user_name == "+") {	// create account
 			while(true) {
 				if(Console::create_account() == 1) { // bam tab
 					break;
@@ -770,27 +766,35 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-        // if(std::filesystem::exists(folder2 + username + ".txt")) {
-        //     std::ifstream infile(folder2 + username + ".txt");
-        //     std::string valid_password;
-        //     infile >> valid_password;
-        //     infile.close();
-        //     if(!bcrypt::validatePassword(valid_password, bcrypt::generateHash(password))) {
-        //         Menu::notification("Incorrect username or password", 45, 5);
-        //         continue; // khoong ro
-        //     }            
-        // } else {
-        //     Menu::notification("Incorrect username or password", 45, 5);
-        //     continue;
-        // }
-        // cur.set_account(Account(username, password), 1);
-        // std::ifstream infile(folder1 + username + ".txt");
-        // infile >> cur;
+
+        bool user; // truong hop quan li
+        if(un_manager == user_name && pw_manager == password) {
+            user = false;
+        } else {
+            if(std::filesystem::exists(folder2 + user_name + ".txt")) {
+                std::ifstream infile(folder2 + user_name + ".txt");
+                std::string valid_password;
+                infile >> valid_password;
+                infile.close();
+                if(!bcrypt::validatePassword(valid_password, bcrypt::generateHash(password))) {
+                    Menu::notification("Incorrect username or password", 45, 5);
+                    continue; // khoong ro
+                }            
+            } else {
+                Menu::notification("Incorrect username or password", 45, 5);
+                continue;
+            }
+            cur.set_account(Account(user_name, password), 1);
+            std::ifstream infile(folder1 + user_name + ".txt");
+            infile >> cur;
+            
+
+            user = true;
+        }
 
         // kiem tra la quan li hay user, neu la quan li user = 0, neu la user -> user = 1 ==========================================================
-        bool user = 0; // truong hop quan li
 
-        if(user == true) {
+        if(user) {
             user_operation(0);
         }
         else {
