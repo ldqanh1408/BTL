@@ -258,16 +258,23 @@ bool Console::create_account() {
     }
 
     std::string fullname = input(62, 6, false, false, 5);
+    tmp2.set_full_name(fullname);
     
     std::string age;
     while(true) {
-        age = input(62, 9, false, false, 10);
+        age = input(62, 9, false, false, 1);
         
         if(age == "") return 1; // tab
-        if(!tmp2.Information::set_age(stoi(age))) {
+        for(char &c : age) if(!isdigit(c)) {
             print(41, 19, "Age is incorrect !!!                   ");
-            
-        } else break;
+            break;
+        }
+        int _age =  stoi(age);
+        if(age.size() > 3 || _age < 0) print(41, 19, "Age is incorrect !!!                   ");
+        else {
+            tmp2.Information::set_age(_age);
+            break;
+        }
     }
 
     char ch;

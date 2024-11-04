@@ -16,7 +16,7 @@ std::string Information::get_ID() const { return this->ID; }
 // Setter functions
 void Information::set_ID(std::string _ID) { 
     if(!_ID.empty()) {
-        this->set_ID(_ID);
+        this->ID = _ID;
     } else {
         auto generate_ID = [&]() -> std::string {
             std::string res = "";
@@ -32,7 +32,7 @@ void Information::set_ID(std::string _ID) {
         do {
             ID_tmp = generate_ID();
         } while(std::filesystem::exists(folder3 + bcrypt::generateHash(ID_tmp) + ".txt"));
-        this->set_ID(ID_tmp);
+        this->ID = ID_tmp;
         std::ofstream outfile_ID(folder3 + bcrypt::generateHash(ID_tmp) + ".txt"); // tên file
         outfile_ID << 0;
         outfile_ID.close();
@@ -71,14 +71,14 @@ std::istream& operator>>(std::istream& in, Information& data) {
     return in;
 }
 
-std::ostream& operator<<(std::ostream& os, Information& person) {
-    os << person.get_full_name() << "\n"
-       << person.get_address() << "\n"
-       << person.get_country() << "\n"
-       << person.get_phone_number() << "\n"
-       << person.get_ID() << "\n"
-       << person.get_age() << "\n"
-       << (person.get_gender() ? "Male" : "Female") << "\n";
-    return os;
+std::ostream& operator<<(std::ostream& out, Information& data) {
+    out << data.full_name << "\n"
+        << data.address << "\n"
+        << data.country << "\n"
+        << data.phone_number << "\n"
+        << data.ID << "\n"
+        << data.age << "\n"
+        << data.gender << "\n";
+    return out;
 }
 

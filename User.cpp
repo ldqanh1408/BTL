@@ -39,6 +39,7 @@ void User::set_information(Information &_information) {
     this->gender = _information.get_gender();
     std::ofstream outfile(folder1 + this->account.get_user_name() + ".txt");
     outfile << _information;
+    outfile.close();
 }
 
 
