@@ -13,8 +13,8 @@ std::string folder4 = "data/user_transaction_history/",
 
 User::User() {}
 User::User(Information &i, Account &j) {
-    set_account(j);
     Information::set_ID();
+    set_account(j);
     set_information(i);
 }
 

@@ -72,7 +72,7 @@ void Menu::print_user_menu() {
     std::string str = R"(
                                         ________________________________________
                                        |                                        |
-                                       |               MENU BANK                |
+                                       |           USER'S BANKING MENU          |
                                        |________________________________________|
                                        |                                        |
                                        | 1. Change Information                  |
@@ -89,6 +89,28 @@ void Menu::print_user_menu() {
                                        |                                        |
                                        | Note that pressing the 'Tab' will exit |
                                        |________________________________________|)"    ;
+    std::cout << str;
+}
+
+void Menu::print_manager_menu() {
+    system("cls");
+    std::string str = R"(
+                                        ________________________________________
+                                       |                                        |
+                                       |         MANAGER'S BANKING MENU         |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 1. List of Users                       |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 2. Create User Account                 |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 3. System Transaction History          |
+                                       |________________________________________|
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will exit |
+                                       |________________________________________|)"  ;
     std::cout << str;
 }
 
@@ -134,31 +156,37 @@ void Menu::create_account_screen() {
     std::cout << s;                                          
 }
 
-void Menu::create_information_screen() {
+void Menu::create_account_for_user_screen() {
     system("cls");
     std::cout << R"(
-                                 ______________________________________________________________
-                                |                                                              |
-                                |                    CREATE INFORMATION                        |
-                                |______________________________________________________________|
-                                |                                                              |
-                                | 1. Enter Full Name:                                          |
-                                |______________________________________________________________|
-                                |                                                              |
-                                | 2. Enter Age (dd/mm/yyyy):                                   |
-                                |______________________________________________________________|
-                                |                                                              |
-                                | 3. Enter Gender (Male : 1, Female : 0):                      |
-                                |______________________________________________________________|
-                                |                                                              |
-                                | 4. Enter Phone Number:                                       |
-                                |______________________________________________________________|
-                                |                                                              |
-                                | 5. Enter Address:                                            |
-                                |______________________________________________________________|
-                                |                                                              |
-                                | 6. Enter Country:                                            |
-                                |______________________________________________________________|)";
+                                        ________________________________________
+                                       |                                        |
+                                       |     CREATE AN ACCOUNT FOR THE USER     |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 1. Enter User Name:                    |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 2. Enter Full Name:                    |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 3. Enter Age:                          |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 4. Enter Gender (Male : 1, Female : 0) |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 5. Enter Phone Number:                 |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 6. Enter Address:                      |
+                                       |________________________________________|
+                                       |                                        |
+                                       | 7. Enter Country:                      |
+                                       |________________________________________|
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will back |
+                                       |________________________________________|)";
 }
 
 void Menu::print_otp() {
@@ -167,9 +195,6 @@ void Menu::print_otp() {
                                         ________________________________________
                                        |                                        |
                                        | --> CHANGE:                            |
-                                       |________________________________________|
-                                       |                                        |
-                                       | Enter password:                        |
                                        |________________________________________|
                                        |                                        |
                                        | Enter new                              |
@@ -223,7 +248,7 @@ void Menu::transfer_money_screen(){
                                        | Enter ID:                              |
                                        |________________________________________|
                                        |                                        |
-                                       |                  OTP:                  |
+                                       |          OTP:                          |
                                        |   __________________________________   |
                                        |  |                                  |  |
                                        |  | __   __   __   __   __   __   __ |  |
@@ -235,15 +260,74 @@ void Menu::transfer_money_screen(){
     )";
 }
 
-void Menu::print_transaction_history(){
+void Menu::print_transaction_history() {
     system("cls");
     std::string str = R"(
-                                                Note that pressing the 'Tab' will back
-  _________________________________________________________________________________________________________________
- |                              |                                                              |                   |
- |   Date of implementation     |                         Transaction                          |      Status       |
- |______________________________|______________________________________________________________|___________________|
+    TRANSACTION HISTORY     
+    -------------------                                                      Note that pressing the 'Tab' will back
+    _______________________________________________________________________________________________________________
+                                                                                                                  
+     DATE OF IMPLEMEMTATION                           TRANSACTION                                STATUS       
+    _______________________________________________________________________________________________________________
 
 )";
     std::cout << str;
+}
+
+void Menu::print_list_of_users_main() {
+    system("cls");
+    std::string s = R"(
+                                        ________________________________________
+                                       |                                        |
+                                       |              LIST OF USERS             |
+                                       |________________________________________|
+                                       |                                        | 
+                                       | 1. Log In To The User's Account        |
+                                       |________________________________________|
+                                       |                                        |  
+                                       | 2. View List of Users                  |
+                                       |________________________________________|    
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will back |
+                                       |________________________________________|)";
+    std::cout << s;
+}
+
+void Menu::print_log_in_user_account() {
+    system("cls");
+    std::string s = R"(
+                                        ________________________________________
+                                       |                                        |  
+                                       | Enter the username to search for:      |
+                                       |________________________________________|    
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will back |
+                                       |________________________________________|)";
+    std::cout << s;    
+}
+
+void Menu::print_list_of_user() {
+    system("cls");
+    std::cout << R"(
+    LIST OF USERS
+    ------------                                                             Note that pressing the 'Tab' will back
+    _______________________________________________________________________________________________________________
+
+    NO.   ID WALLET       FULL NAME                PHONE NUMBER         POINTS         GENDER      COUNTRY
+    _______________________________________________________________________________________________________________
+
+    )";
+}
+
+void Menu::system_transaction_history_screen(){
+    system("cls");
+    std::cout << R"(                                              
+    SYSTEM TRANSACTION HISTORY
+    --------------------------                                               Note that pressing the 'Tab' will back
+    _______________________________________________________________________________________________________________
+
+    NO.  TRANSACTION TIME          FROM                       TO                           AMOUNT
+    _______________________________________________________________________________________________________________
+
+    )";
 }
