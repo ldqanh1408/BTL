@@ -13,6 +13,9 @@ private:
     User cur;
 public:
     Console();
+
+    void reset();
+
     void print(int x, int y, std::string s);
 
     std::string otp(int x, int y);

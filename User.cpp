@@ -9,7 +9,7 @@
 // }
 namespace fs = std::filesystem;
 std::string folder4 = "data/user_transaction_history/",
-            folder5 = "data/transaction_log/";
+            folder5 = "data/transaction_log.txt";
 
 User::User() {}
 User::User(Information &i, Account &j) {
@@ -30,16 +30,18 @@ void User::set_account(Account _account, bool is_tmp) {
 }   
 
 
-void User::set_information(Information &_information) {
+void User::set_information(Information _information, bool is_tmp) {
     this->full_name = _information.get_full_name();
     this->address = _information.get_address();
     this->country = _information.get_country();
     this->phone_number = _information.get_phone_number();
     this->age = _information.get_age();
     this->gender = _information.get_gender();
-    std::ofstream outfile(folder1 + this->account.get_user_name() + ".txt");
-    outfile << _information;
-    outfile.close();
+    if(!is_tmp) {
+        std::ofstream outfile(folder1 + this->account.get_user_name() + ".txt");
+        outfile << _information;
+        outfile.close();
+    }
 }
 
 
@@ -58,7 +60,7 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         
         char time_buffer[80];
         std::strftime(time_buffer, sizeof(time_buffer), "%Y-%m-%d_%H-%M-%S", tm_info); // Format time
-        std::string error_log_file = folder5 + std::string(time_buffer) + ".txt"; // Create file name
+        std::string error_log_file = folder5; // Create file name
 
         std::ofstream error_log(error_log_file, std::ios::app);
         if (error_log.is_open()) {
@@ -151,13 +153,13 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     std::ofstream update_a(folder4 + ID_A + ".txt", std::ios::app);
     std::ofstream update_b(folder4 + ID_B + ".txt", std::ios::app);
-    std::ofstream update_transaction_log(folder5 + std::string(transaction_buffer) + ".txt", std::ios::app);
+    std::ofstream update_transaction_log(folder5, std::ios::app);
 
     if (update_transaction_log.is_open()) {
 
 
-        update_transaction_log << transaction_buffer
-                            << "Transfer from " << (ID_A)
+        update_transaction_log << std::string(transaction_buffer)
+                            << " Transfer from " << (ID_A)
                             << " to " << (ID_B)
                             << " with amount: " << amount_valid
                             << '\n';
@@ -168,11 +170,11 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         error_transaction_log(amount_valid, "Failed to write transaction log");
     }
 
-    update_a << std::setw(35) << std::left << transaction_buffer               // Căn lề trái, độ rộng 35 cho ngày giao dịch
+    update_a << std::setw(35) << std::left << std::string(transaction_buffer)              // Căn lề trái, độ rộng 35 cho ngày giao dịch
             << std::setw(40) << std::left << (ID_A + " transferred to " + ID_B) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
             << std::setw(10) << std::right << amount_valid                     // Căn lề phải, độ rộng 10 cho số tiền giao dịch
             << std::endl;
-    update_a << std::setw(35) << std::left << transaction_buffer               // Căn lề trái, độ rộng 35 cho ngày giao dịch
+    update_a << std::setw(35) << std::left << std::string(transaction_buffer)              // Căn lề trái, độ rộng 35 cho ngày giao dịch
             << std::setw(40) << std::left << (ID_A + " received from " + ID_B) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
             << std::setw(10) << std::right << amount_valid                     // Căn lề phải, độ rộng 10 cho số tiền giao dịch
             << std::endl;     

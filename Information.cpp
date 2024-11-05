@@ -3,7 +3,10 @@
 std::string folder1 = "data/store_information/", folder3 = "data/store_wallet/";
 std::string file_path1 = "data/store_wallet/total_wallet.txt";
 
-Information::Information() {}
+Information::Information() {
+    this->full_name = this->address = this->country = this->ID = this->phone_number = "";
+    this->age = this->balance = 0;
+}
 
 // Getter functions
 std::string Information::get_full_name() const { return this->full_name; }

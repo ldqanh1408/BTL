@@ -28,7 +28,7 @@ public:
 
     void set_account(Account _account, bool is_tmp = 0);
     
-    void set_information(Information &_information);
+    void set_information(Information _information, bool is_tmp = 0);
 
     int transfer_money(std::string &ID_B, std::string &amount);
 

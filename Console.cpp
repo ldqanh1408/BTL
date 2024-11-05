@@ -6,49 +6,9 @@ Console::Console() {
 }
 
 
-bool kt(std::string age) {
-    if(age.size() > 3) return 0;
-    for(int i = 0; i < age.size(); i++) {
-        if(age[i] > '9' || age[i] < '0') return 0;
-    }
-    if(age[0] == '0') return 0;
-    return stoi(age) < 150;
-}
-
-
-std::string Console::otp(int x, int y) {
-    Menu::gotoxy(x, y);
-    char c;
-    std::string check_otp = "";
-    
-    while(true) {
-        c = _getch();
-        
-        if(c == 9) return ""; //tab
-        
-        else if(check_otp.size() == 6 && c != 8) {
-            if(c == 13) break;
-            continue;
-        }
-        else if(c == 13) continue;
-        else if(c == 8) {
-            if(!check_otp.empty()) {
-                check_otp.pop_back();
-                Menu::gotoxy(48 + check_otp.size()*5 - 1, y);
-                std::cout << " ";
-                Menu::gotoxy(48 + check_otp.size()*5 - 1, y);
-            }
-        }
-        else {
-            check_otp.push_back(c);
-            std::cout << c;
-            if(check_otp.size() == 6)
-                Menu::gotoxy(48 + check_otp.size()*5 + 1 - 5, y);
-            else
-                Menu::gotoxy(48 + check_otp.size()*5 - 1, y);
-        }
-    }
-    return check_otp;
+void Console::reset() {
+    cur.set_account(Account(), 1);
+    cur.set_information(Information(), 1);
 }
 
 
@@ -154,14 +114,10 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
             std::cout << ch;
         }
     }
-    
-    Menu::gotoxy(56,9); //otp
-    std::string OTP = gotp::generate_otp();
-    std::cout << OTP;
-    std::string check_otp = otp(47, 12);
-    if(check_otp == "") return "";
+    int _ = gotp::verify_otp();
 
-    if(OTP != check_otp) {
+
+    if(_ == 5) {
         Menu::notification("Incorrect OTP!", 52, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
     }
@@ -304,7 +260,7 @@ void Console::print_information(){
     //         count = -1; //
     //     }
     // }
-    print(48, 11, balance + "Points");
+    print(48, 11, balance + " Points");
 
     // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
     print(48, 12, cur.Information::get_phone_number());
@@ -339,7 +295,7 @@ void Console::transfer_money() {
     //4->"Insufficient balance !"
     //5->"OTP is incorrect !"
     //6->"tab"
-    //7->"--You have successfully transferred the money--"
+    //7->"OTP is correct !"
 
     char ch = cur.transfer_money(ID, amount) + '0';
 
@@ -649,11 +605,12 @@ void Console::create_user_account() {
 
 void Console::system_transaction_history() {
     Menu::system_transaction_history_screen();
-    //
-    //
-    // thao tac xem lich su giao dich tat ca user ==================================================================
-    //
-    //
+    std::ifstream infile(folder5);
+    std::string sentence;
+    while(getline(infile, sentence)) {
+        std::cout << sentence << std::endl;
+    }
+    infile.close();
     char ch;
     while(true) {
         ch = _getch();
