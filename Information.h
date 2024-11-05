@@ -7,7 +7,8 @@
 #include "blowfish.cpp"
 #include "gotp.cpp"
 #include <filesystem>
-
+#include <algorithm>
+#include <string>
 extern std::string folder1, folder3;
 extern std::string file_path1;
 
@@ -37,7 +38,7 @@ public:
     void set_address(const std::string& _address);
     void set_country(const std::string& _country);
     bool set_phone_number(const std::string& _phone_number);
-    bool set_age(int _age);
+    bool set_age(std::string _age);
     void set_gender(bool _gender);
 
     friend std::istream& operator>>(std::istream &in, Information &data);

@@ -18,6 +18,10 @@ User::User(Information &i, Account &j) {
     set_information(i);
 }
 
+Account User::get_account() const {
+    return this->account; 
+}
+
 void User::set_account(Account _account, bool is_tmp) {
     this->account = _account;
     if(!is_tmp) {

@@ -1,5 +1,6 @@
 #include "Information.h"
 
+
 std::string folder1 = "data/store_information/", folder3 = "data/store_wallet/";
 std::string file_path1 = "data/store_wallet/total_wallet.txt";
 
@@ -74,9 +75,15 @@ bool Information::set_phone_number(const std::string& _phone_number) {
     return true;
 }
 
-bool Information::set_age(int _age) {
-    if(_age < 0) return false;
-    this->age = _age;
+bool Information::set_age(std::string _age) {
+    reverse(_age.begin(), _age.end());
+    while(!_age.empty() && _age.back() == '0') _age.pop_back(); 
+    reverse(_age.begin(), _age.end());
+    for(char &c : _age) if(!isdigit(c)) return false;
+    int _ = _age.size() <= 3 ? stoi(_age) : -1; 
+
+    if(_ < 0) return false;
+    this->age = _;
     return true;
 }
 

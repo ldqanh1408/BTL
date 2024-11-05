@@ -80,7 +80,7 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
     std::string ans = "";
     int mn;
 
-    if(age) mn = 10;
+    if(age) mn = 1;
     else if(gender) mn = 1;
     else if(phone_number) mn = 10;
     else mn = 5;
@@ -120,29 +120,36 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
     if(_ == 5) {
         Menu::notification("Incorrect OTP!", 52, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
+        // return;
     }
 
     else if(age) {
-        //if(ans khong hop le ) {   ===========================================================================
-        //   Menu::notification("Invalid information!", 47, 5);
-        //   ans = change(title, enter_new, old_ans, old_password, age, gender, phone_number);
-        //}
+        
+        //chuaw xong
+        if(!cur.Information::set_age(ans)) {
+            Menu::notification("Invalid information!", 47, 5);
+            ans = change(title, enter_new, old_ans, age, gender, phone_number);
+        }
     }
     else if(gender) {
         if(ans != "1" && ans != "0") {
             Menu::notification("Invalid information!", 50, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
+            // return;
+        } else {
+            cur.set_gender(bool(gender - '0'));
         }
     }
     else if(phone_number) {
-        //if(SDT khong hop le) { ===========================================================================
-        //   Menu::notification("Invalid information!", 48, 5);
-        //   ans = change(title, enter_new, old_ans, old_password, age, gender, phone_number);
-        //}
+        if(!cur.Information::set_phone_number(ans)) {
+          Menu::notification("Invalid information!", 48, 5);
+          ans = change(title, enter_new, old_ans, age, gender, phone_number);
+        }
     }
     else if(ans == old_ans) {
         Menu::notification("Duplicate Old Information!", 47, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
+        // return;
     }
 
     if(ans != "") {
@@ -177,7 +184,7 @@ void Console::change_information(bool manager) {
         switch (c) {
             
             case '1': {//full name
-                std::string old_name = "aa" /* NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMMMMMMMMMMMMMeeeeeeeeeeeeeeeeeeee*/;
+                std::string old_name = cur.get_full_name(); /* NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMMMMMMMMMMMMMeeeeeeeeeeeeeeeeeeee*/;
                 std::string title = "FULL NAME";
                 std::string enter_new = "fullname";
                 std::string name = change(title, enter_new, old_name, 0, 0, 0);
@@ -186,7 +193,7 @@ void Console::change_information(bool manager) {
             }
             
             case '2': {// password
-                std::string old_password = "00000000" /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
+                std::string old_password = cur.get_account().get_password(); /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
                 std::string title = "PASSWORD";
                 std::string enter_new = "password";
                 std::string password_current = change(title, enter_new, old_password, 0, 0, 0);
@@ -194,7 +201,7 @@ void Console::change_information(bool manager) {
             }	
             
             case '3': {//address
-                std::string old_address = "a" /*ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/;
+                std::string old_address = cur.get_address();/*ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/;
                 std::string title = "ADDRESS";
                 std::string enter_new = "address";
                 std::string address = change(title, enter_new, old_address, 0, 0, 0);
@@ -202,7 +209,7 @@ void Console::change_information(bool manager) {
             }
 
             case '4': {
-                std::string old_age = "a";
+                std::string old_age = std::to_string(cur.get_age());
                 std::string title = "AGE";
                 std::string enter_new = "age";
                 std::string age = change(title, enter_new, old_age, 1, 0, 0);
@@ -210,15 +217,17 @@ void Console::change_information(bool manager) {
             }
 
             case '5': {
-                std::string old_gender = "a";
+                std::string old_gender = std::to_string(int(cur.get_gender()));
                 std::string title = "GENDER";
                 std::string enter_new = "gender (Male: 1, Female: 0)";
                 std::string gender = change(title, enter_new, old_gender, 0, 1, 0);
+
+                //sửa
                 break;
             }
 
             case '6': {
-                std::string old_phone_number = "a";
+                std::string old_phone_number = cur.get_phone_number();
                 std::string title = "PHONE NUMBER";
                 std::string enter_new = "phone number";
                 std::string phone_number = change(title, enter_new, old_phone_number, 0, 0, 1);
@@ -226,7 +235,7 @@ void Console::change_information(bool manager) {
             }
 
             case '7': {
-                std::string old_country = "aaaaaa"; //Country ========================================================
+                std::string old_country = cur.get_country(); //Country ========================================================
                 std::string title = "COUNTRY";
                 std::string enter_new = "country";
                 std::string country = change(title, enter_new, old_country, 0, 0, 0);
@@ -240,7 +249,7 @@ void Console::change_information(bool manager) {
 void Console::print_information(){
     Menu::identification_information();
     std::string balance;
-    std::ifstream infile(folder3 + bcrypt::generateHash(cur.Information::get_ID()) + ".txt");
+    std::ifstream infile(folder3 + cur.Information::get_ID() + ".txt");
     infile >> balance;
     infile.close();
 
@@ -494,12 +503,7 @@ bool Console::create_account() {
         age = input(62, 9, false, false, 1);    
         if(age == "") return 1; // tab
 
-        reverse(age.begin(), age.end());
-        while(!age.empty() && age.back() == '0') age.pop_back(); 
-        reverse(age.begin(), age.end());
-        // thiếu check age
-        int _ = age.size() <= 3 ? stoi(age) : -1; 
-        if(!tmp2.Information::set_age(_)) {
+        if(!tmp2.Information::set_age(age)) {
             print(62, 9, "Age is incorrect !!!                  ");
             Sleep(1000);
             print(62, 9, "                                      ");
@@ -561,13 +565,8 @@ void Console::create_user_account() {
         while(true) {
             age = input(41, 12, false, false, 1);
 
-            reverse(age.begin(), age.end());
-            while(!age.empty() && age.back() == '0') age.pop_back(); 
-            reverse(age.begin(), age.end());
-            int _ = age.size() <= 3 ? stoi(age) : -1; 
-            // thiếu điều kiện check age có chữ
             if(age == "") return; //??
-            if(!tmp2.Information::set_age(_)) {
+            if(!tmp2.Information::set_age(age)) {
                 print(41, 19, "Age is incorrect !!!          ");
                 continue;
             } else break;
