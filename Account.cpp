@@ -42,8 +42,8 @@ bool Account::valid_password(const std::string &_password) {
 }
 
 // Thiết lập mật khẩu với điều kiện hợp lệ
-bool Account::set_password(const std::string &_password) {
-    if (valid_password(_password)) {
+bool Account::set_password(const std::string &_password, bool is_auto) {
+    if (is_auto || valid_password(_password)) {
         this->password = _password;
         return true;
     } else {

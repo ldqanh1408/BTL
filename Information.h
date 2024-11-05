@@ -9,10 +9,12 @@
 #include <filesystem>
 
 extern std::string folder1, folder3;
+extern std::string file_path1;
 
 class Information {
 protected:
     std::string full_name, address, country, phone_number, ID;
+    unsigned long long balance;
     int age; 
     bool gender;
 
@@ -26,7 +28,10 @@ public:
     int get_age() const;
     bool get_gender() const;
     std::string get_ID() const;
+    unsigned long long get_balance() const;
 
+
+    void set_balance(unsigned long long _balance);
     void set_ID(std::string _ID = "");
     void set_full_name(const std::string& _full_name);
     void set_address(const std::string& _address);

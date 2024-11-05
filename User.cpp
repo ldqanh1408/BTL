@@ -73,6 +73,7 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         }
     };
 
+    std::string ID_A = this->get_ID();
     std::string hash_a = bcrypt::generateHash(this->get_ID());
     std::string hash_b = bcrypt::generateHash(ID_B);
     std::string wallet_b = folder3 + hash_b + ".txt";
@@ -145,28 +146,37 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     std::time_t now = std::time(nullptr);
     struct std::tm *tm_info = std::localtime(&now);
-    
-    char transaction_buffer[80];
+    char transaction_buffer[30];
     std::strftime(transaction_buffer, sizeof(transaction_buffer), "%Y-%m-%d_%H-%M-%S", tm_info); // Format time
-    std::string transaction_log_file = folder5 + std::string(transaction_buffer) + ".txt";
 
-    std::ofstream update_a(folder4 + this->get_ID() + ".txt", std::ios::app);
+    std::ofstream update_a(folder4 + ID_A + ".txt", std::ios::app);
     std::ofstream update_b(folder4 + ID_B + ".txt", std::ios::app);
-    std::ofstream update_transaction_log(transaction_log_file, std::ios::app);
+    std::ofstream update_transaction_log(folder5 + std::string(transaction_buffer) + ".txt", std::ios::app);
 
     if (update_transaction_log.is_open()) {
-        update_transaction_log << std::ctime(&now) << " - " << "Completed Transfer"
-                               << " | From: " << " (ID: " << this->get_ID() << ")"
-                               << " | To: " << " (ID: " << ID_B << ")"
-                               << " | Amount: " << amount_valid << '\n';
+
+
+        update_transaction_log << transaction_buffer
+                            << "Transfer from " << (ID_A)
+                            << " to " << (ID_B)
+                            << " with amount: " << amount_valid
+                            << '\n';
+
         update_transaction_log.flush();
         update_transaction_log.close();
     } else {
         error_transaction_log(amount_valid, "Failed to write transaction log");
     }
 
-    update_a << "You have transferred " << amount_valid << " points to " << ID_B << std::endl;
-    update_b << "You have received " << amount_valid << " points from " << this->get_ID()  << std::endl;
+    update_a << std::setw(35) << std::left << transaction_buffer               // Căn lề trái, độ rộng 35 cho ngày giao dịch
+            << std::setw(40) << std::left << (ID_A + " transferred to " + ID_B) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
+            << std::setw(10) << std::right << amount_valid                     // Căn lề phải, độ rộng 10 cho số tiền giao dịch
+            << std::endl;
+    update_a << std::setw(35) << std::left << transaction_buffer               // Căn lề trái, độ rộng 35 cho ngày giao dịch
+            << std::setw(40) << std::left << (ID_A + " received from " + ID_B) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
+            << std::setw(10) << std::right << amount_valid                     // Căn lề phải, độ rộng 10 cho số tiền giao dịch
+            << std::endl;     
+
 
     update_a.flush();
     if (!update_a.good()) {

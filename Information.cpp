@@ -1,6 +1,7 @@
 #include "Information.h"
 
 std::string folder1 = "data/store_information/", folder3 = "data/store_wallet/";
+std::string file_path1 = "data/store_wallet/total_wallet.txt";
 
 Information::Information() {}
 
@@ -12,8 +13,12 @@ std::string Information::get_phone_number() const { return this->phone_number; }
 int Information::get_age() const { return this->age; }
 bool Information::get_gender() const { return this->gender; }
 std::string Information::get_ID() const { return this->ID; }
+unsigned long long Information::get_balance() const {return this->balance;}
 
 // Setter functions
+void Information::set_balance(unsigned long long _balance) {
+    this->balance = _balance;
+}
 void Information::set_ID(std::string _ID) { 
     if(!_ID.empty()) {
         this->ID = _ID;
@@ -28,14 +33,30 @@ void Information::set_ID(std::string _ID) {
             }
             return res;
         };
+        auto generate_balance = [&]()->unsigned long long {
+            std::uniform_int_distribution<unsigned short> uni(0, 65535);
+            return uni(gotp::gen);
+        };
         std::string ID_tmp;
+        this->balance = generate_balance();
+        unsigned long long total_wallet;
         do {
             ID_tmp = generate_ID();
         } while(std::filesystem::exists(folder3 + ID_tmp + ".txt"));
+
         this->set_ID(ID_tmp);
         std::ofstream outfile_ID(folder3 + ID_tmp + ".txt"); // tên file
-        outfile_ID << 0;
+        outfile_ID << balance;
         outfile_ID.close();
+
+        std::ifstream infile(file_path1);
+        infile >> total_wallet;
+        total_wallet -= this->balance;
+        infile.close();
+        std::ofstream outfile(file_path1);
+        outfile << total_wallet;
+        outfile.close();
+
     }
 }
 void Information::set_full_name(const std::string& _full_name) { this->full_name = _full_name; }
@@ -67,6 +88,8 @@ std::istream& operator>>(std::istream& in, Information& data) {
     in >> data.ID;
     in >> data.age;
     in >> data.gender;
+    std::ifstream infile(folder3 + data.ID + ".txt");
+    infile >> data.balance;
 
     return in;
 }

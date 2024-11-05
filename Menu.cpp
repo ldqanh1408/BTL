@@ -267,7 +267,7 @@ void Menu::print_transaction_history() {
     -------------------                                                      Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
                                                                                                                   
-     DATE OF IMPLEMEMTATION                           TRANSACTION                                STATUS       
+    DATE OF IMPLEMENTATION               TRANSACTION                                  AMOUNT    
     _______________________________________________________________________________________________________________
 
 )";
@@ -313,7 +313,7 @@ void Menu::print_list_of_user() {
     ------------                                                             Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
 
-    NO.   ID WALLET       FULL NAME                PHONE NUMBER         POINTS         GENDER      COUNTRY
+    ID WALLET     FULL NAME                PHONE NUMBER        POINTS             GENDER       COUNTRY
     _______________________________________________________________________________________________________________
 
     )";

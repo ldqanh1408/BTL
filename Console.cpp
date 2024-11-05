@@ -196,111 +196,6 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
 }
 
 
-bool Console::create_account() {
-    Menu::create_account_screen();
-    
-    Account tmp1; Information tmp2;
-    std::string username = input(21, 6, false, false, 1);
-
-    if(username == "") return 1; //tab
-    else {
-        std::string file_path = folder1 + username + ".txt";
-        if(std::filesystem::exists(file_path)) {
-            Menu::notification("Username already exist!", 48, 5); // chưa check
-            return 0;
-        } else {
-            tmp1.set_user_name(username);
-        }
-    }
-
-    std::string password = input(21, 9, false, true, 8);
-    if(password == "") return 1;
-    else {
-        if(!tmp1.set_password(password)) {
-            system("cls");
-            std::cout << R"(
-                             _____________________________________________________________
-                            |                                                             |
-                            |                    O~~~NOTIFICATION~~~O                     |
-                            |                                                             |
-                            |          Password must contain at least 1 uppercase,        |
-                            |           lowercase, number, special character and          |
-                            |             must not contain invalid characters!            |
-                            |                                                             |
-                            |_____________________________________________________________|)";
-            Menu::gotoxy(5, 20);
-            Sleep(4000);
-            return 0;
-        }
-    }
-    
-    std::string password_again = input(21, 12, false, true, 8);
-    if(password_again == "") return 1;
-    
-    if(password != password_again) {
-        Menu:: notification("Password is incorrect!", 48, 5);
-        return 0;
-    }
-
-    std::string phone;
-    while(true) {
-        phone = input(21, 15, false, false, 10);
-        if(phone == "") return 1;
-        else {
-            if(!tmp2.set_phone_number(phone)) {
-                print(21, 15, "Phone number is incorrect!"); // không rõ
-                Sleep(1000);
-                print(21, 15, "                                      ");
-                continue;
-            } else break;
-        }
-    }
-
-    std::string fullname = input(62, 6, false, false, 5);
-    tmp2.set_full_name(fullname);
-    
-    std::string age;
-    while(true) {
-        age = input(62, 9, false, false, 1);    
-        if(age == "") return 1; // tab
-
-        reverse(age.begin(), age.end());
-        while(!age.empty() && age.back() == '0') age.pop_back(); 
-        reverse(age.begin(), age.end());
-        // thiếu check age
-        int _ = age.size() <= 3 ? stoi(age) : -1; 
-        if(!tmp2.Information::set_age(_)) {
-            print(62, 9, "Age is incorrect !!!                  ");
-            Sleep(1000);
-            print(62, 9, "                                      ");
-        }
-        else break;   
-    }
-
-    char ch;
-    while(true) {
-        Menu::gotoxy(62, 12);
-        ch = _getch();
-        std::cout << "                                       ";
-        Menu::gotoxy(62, 12);
-
-        if(ch == 9) return 1; // tab
-        if(ch == '0' || ch == '1') {
-            tmp2.set_gender(ch);
-            std::cout << ch;
-            break;
-        }
-    }
-
-    std::string address = input(62, 15, false, false, 5);
-    std::string country = input(62, 18, false, false, 5);
-    tmp2.set_address(address);
-    tmp2.set_country(country);
-    // luu 9 thong tin lại =======================================================================================;
-    Menu::notification("Account created successfully", 45, 5);
-    User new_user(tmp2, tmp1);
-    return 1; // tro ve đăng nhập
-}
 
 
 void Console::change_information(bool manager) {
@@ -481,10 +376,11 @@ void Console::transfer_money() {
 void Console::transaction_history() {
     Menu::print_transaction_history();
 
-    //
-    // thao tac in lich su giao dich ===================================================================
-    //
-    //
+    std::ifstream infile(folder4 + cur.get_ID() + ".txt");
+    std::string sentence;
+    while(getline(infile, sentence)) {
+        std::cout << sentence;
+    }
 
     char ch;
     while(true) {
@@ -500,10 +396,15 @@ void Console::log_in_useraccount() {
         std::string username = input(41, 3, 0, 0, 1);
 
         if(username == "") return;
-        //kiem tra ten nguoi dung co ton tai hay khong ========================================================================
-        //neu khong ton tai 
-        //Menu::notification("username does not exist", 49, 5);
-        //continue;
+        if(std::filesystem::exists(folder2 + username + ".txt")) {
+            Menu::notification("username does not exist", 49, 5);
+            continue;
+        } else {
+            std::ifstream infile(folder1 + username + ".txt");
+            infile >> cur;
+            cur.set_account(Account(username, ""), 1);
+            infile.close();
+        }
         user_operation(1);
     }
 }
@@ -512,10 +413,22 @@ void Console::log_in_useraccount() {
 void Console::view_list_of_users_account() {
     Menu::print_list_of_user();
 
-    //
-    // thao tac xem danh sach nguoi dung ==============================================================
-    //
-    //
+    for (const auto& entry : fs::directory_iterator(folder1)) {
+        if (entry.is_regular_file()) { 
+            std::ifstream infile(entry.path());
+            Information tmp;
+
+            infile >> tmp;
+            std::cout << std::left
+                    << std::setw(12) << tmp.get_ID() 
+                    << std::setw(24) << tmp.get_full_name()
+                    << std::setw(18) << tmp.get_phone_number()
+                    << std::setw(18) << tmp.get_balance() 
+                    << std::setw(12) << (tmp.get_gender() ? "Male" : "Female")
+                    << tmp.get_country()
+                    << std::endl;
+        }
+    }
 
     char c;
     while(true) {
@@ -557,74 +470,176 @@ void Console::list_of_users() {
         }
     }
 }
+bool Console::create_account() {
+    Menu::create_account_screen();
+    
+    Account tmp1; Information tmp2;
+    std::string username = input(21, 6, false, false, 1);
 
+    if(username == "") return 1; //tab
+    else {
+        std::string file_path = folder1 + username + ".txt";
+        if(std::filesystem::exists(file_path)) {
+            Menu::notification("Username already exist!", 48, 5); // chưa check
+            return 0;
+        } else {
+            tmp1.set_user_name(username);
+        }
+    }
 
+    std::string password = input(21, 9, false, true, 8);
+    if(password == "") return 1;
+    else {
+        if(!tmp1.set_password(password)) {
+            system("cls");
+            std::cout << R"(
+                             _____________________________________________________________
+                            |                                                             |
+                            |                    O~~~NOTIFICATION~~~O                     |
+                            |                                                             |
+                            |          Password must contain at least 1 uppercase,        |
+                            |           lowercase, number, special character and          |
+                            |             must not contain invalid characters!            |
+                            |                                                             |
+                            |_____________________________________________________________|)";
+            Menu::gotoxy(5, 20);
+            Sleep(4000);
+            return 0;
+        }
+    }
+    
+    std::string password_again = input(21, 12, false, true, 8);
+    if(password_again == "") return 1;
+    
+    if(password != password_again) {
+        Menu:: notification("Password is incorrect!", 48, 5);
+        return 0;
+    }
+
+    std::string phone;
+    while(true) {
+        phone = input(21, 15, false, false, 10);
+        if(phone == "") return 1;
+        else {
+            if(!tmp2.set_phone_number(phone)) {
+                print(21, 15, "Phone number is incorrect!"); // không rõ
+                Sleep(1000);
+                print(21, 15, "                                      ");
+                continue;
+            } else break;
+        }
+    }
+
+    std::string fullname = input(62, 6, false, false, 5);
+    tmp2.set_full_name(fullname);
+    
+    std::string age;
+    while(true) {
+        age = input(62, 9, false, false, 1);    
+        if(age == "") return 1; // tab
+
+        reverse(age.begin(), age.end());
+        while(!age.empty() && age.back() == '0') age.pop_back(); 
+        reverse(age.begin(), age.end());
+        // thiếu check age
+        int _ = age.size() <= 3 ? stoi(age) : -1; 
+        if(!tmp2.Information::set_age(_)) {
+            print(62, 9, "Age is incorrect !!!                  ");
+            Sleep(1000);
+            print(62, 9, "                                      ");
+        }
+        else break;   
+    }
+
+    char ch;
+    while(true) {
+        Menu::gotoxy(62, 12);
+        ch = _getch();
+        std::cout << "                                       ";
+        Menu::gotoxy(62, 12);
+
+        if(ch == 9) return 1; // tab
+        if(ch == '0' || ch == '1') {
+            tmp2.set_gender(ch);
+            std::cout << ch;
+            break;
+        }
+    }
+
+    std::string address = input(62, 15, false, false, 5);
+    std::string country = input(62, 18, false, false, 5);
+    tmp2.set_address(address);
+    tmp2.set_country(country);
+    // luu 9 thong tin lại =======================================================================================;
+    Menu::notification("Account created successfully", 45, 5);
+    User new_user(tmp2, tmp1);
+    return 1; // tro ve đăng nhập
+}
+
+// chưa check kĩ
 void Console::create_user_account() {
     while(true) {
         Menu::create_account_for_user_screen();
+        Account tmp1; Information tmp2;
 
         std::string username = input(41, 6, 0, 0, 1);
         if(username == "") return;
-        /*
-        if(username da ton tai) {
-            Menu::notification("Username already exist!", 48, 5);=====================================
+        
+        if(std::filesystem::exists(folder2 + username + ".txt")) {
+            Menu::notification("Username already exist!", 48, 5);
             continue;
+        } else {
+            tmp1.set_user_name(username);
         }
-        */
+        
 
-       std::string password;
+        std::string password;
 
         std::string fullname = input(41, 9, 0, 0, 1);
         if(fullname == "") return;
+        tmp2.set_full_name(fullname);
+        for(char &c : fullname) tolower(c);
+
 
         std::string age;
         while(true) {
             age = input(41, 12, false, false, 1);
-            
-            if(age == "") return;
-            if(kt(age) == false) {
+
+            reverse(age.begin(), age.end());
+            while(!age.empty() && age.back() == '0') age.pop_back(); 
+            reverse(age.begin(), age.end());
+            int _ = age.size() <= 3 ? stoi(age) : -1; 
+            // thiếu điều kiện check age có chữ
+            if(age == "") return; //??
+            if(!tmp2.Information::set_age(_)) {
                 print(41, 19, "Age is incorrect !!!          ");
                 continue;
-            }
-            else {
-                //============================================luu tuoi vao========================================================
-                break;
-            }
+            } else break;
         }
 
         char ch;
         while(true) {
-            Menu::gotoxy(41, 12);
+            Menu::gotoxy(62, 12);
             ch = _getch();
             std::cout << "                                       ";
-            Menu::gotoxy(41, 12);
+            Menu::gotoxy(62, 12);
 
             if(ch == 9) return; // tab
             if(ch == '0' || ch == '1') {
+                tmp2.set_gender(ch);
                 std::cout << ch;
                 break;
             }
         }
 
-        std::string phone;
-        while(true) {
-            phone = input(41, 15, false, false, 10);
-            if(phone == "") return;
-            
-            /* if(phonenumber khong hop le ===================================================================) {
-                print(41, 15, "Phone number is incorrect");
-                continue;
-            }
-            */
-        }
+        password = fullname +  '&' + age + '&' + ch;
+        tmp1.set_password(password, 1);
 
-        std::string address = input(41, 18, false, false, 5);
-        if(address == "") return;
-
-        std::string country = input(41, 21, false, false, 5);
-        if(country == "") return;
-
-        // luu cac thong tin ben tren ================================================================================
+        std::string address = input(62, 15, false, false, 5);
+        std::string country = input(62, 18, false, false, 5);
+        tmp2.set_address(address);
+        tmp2.set_country(country);
+        User new_user(tmp2, tmp1);
 
         Menu::notification("Account created successfully", 45, 5);
         return;
