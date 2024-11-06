@@ -18,7 +18,7 @@ User::User(Information &i, Account &j) {
     set_information(i);
 }
 
-Account User::get_account() const {
+Account &User::get_account() {
     return this->account; 
 }
 
@@ -128,15 +128,16 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     outfile_a << balance_a;
     outfile_a.flush();
     if (!outfile_a.good()) {
-        error_transaction_log(amount_valid, "Failed to write to wallet A");
-        //thiếu
+        // error_transaction_log(amount_valid, "Failed to write to wallet A");
+        return 8;
     }
 
     outfile_b << balance_b;
     outfile_b.flush();
     if (!outfile_b.good()) {
-        error_transaction_log(amount_valid, "Failed to write to wallet B");
-        //thiếu
+        // error_transaction_log(amount_valid, "Failed to write to wallet B");
+        return 8;
+        
     }
 
     outfile_a.close();
@@ -146,8 +147,9 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         fs::rename(temp_wallet_a, wallet_a);
         fs::rename(temp_wallet_b, wallet_b);
     } catch (const std::exception &e) {
-        error_transaction_log(amount_valid, "Error renaming file after write");
-        //thiếu
+        // error_transaction_log(amount_valid, "Error renaming file after write");
+        return 8;
+
     }
 
     std::time_t now = std::time(nullptr);
@@ -171,7 +173,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         update_transaction_log.flush();
         update_transaction_log.close();
     } else {
-        error_transaction_log(amount_valid, "Failed to write transaction log");
+        // error_transaction_log(amount_valid, "Failed to write transaction log");
+        return 8;
     }
 
     update_a << std::setw(35) << std::left << std::string(transaction_buffer)              // Căn lề trái, độ rộng 35 cho ngày giao dịch
@@ -186,12 +189,14 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     update_a.flush();
     if (!update_a.good()) {
-        error_transaction_log(amount_valid, "Failed to update notification for account A");
+        // error_transaction_log(amount_valid, "Failed to update notification for account A");
+        return 8;
     }
 
     update_b.flush();
     if (!update_b.good()) {
-        error_transaction_log(amount_valid, "Failed to update notification for account B");
+        // error_transaction_log(amount_valid, "Failed to update notification for account B");
+        return 8;
     }
 
     update_a.close();

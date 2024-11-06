@@ -26,7 +26,7 @@ public:
     User();
     User(Information &i, Account &j);
 
-    Account get_account() const;
+    Account &get_account();
 
     void set_account(Account _account, bool is_tmp = 0);
     

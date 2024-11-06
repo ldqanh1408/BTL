@@ -188,7 +188,8 @@ void Console::change_information(bool manager) {
                 std::string title = "FULL NAME";
                 std::string enter_new = "fullname";
                 std::string name = change(title, enter_new, old_name, 0, 0, 0);
-                // if !name.emmtpy() thi luu lai, lam voi tat ca cac truong hop o ben duoi ===============================================
+                cur.set_full_name(name);
+                // if !name.emmtpy() thi luu lai, lam voi tat ca cac truong hop o ben duoi ======== =======================================
                 break;
             }
             
@@ -197,7 +198,8 @@ void Console::change_information(bool manager) {
                 std::string title = "PASSWORD";
                 std::string enter_new = "password";
                 std::string password_current = change(title, enter_new, old_password, 0, 0, 0);
-                break;
+                cur.get_account().set_password(password_current);
+                break;  
             }	
             
             case '3': {//address
@@ -205,6 +207,7 @@ void Console::change_information(bool manager) {
                 std::string title = "ADDRESS";
                 std::string enter_new = "address";
                 std::string address = change(title, enter_new, old_address, 0, 0, 0);
+                cur.set_address(address);
                 break;
             }
 
@@ -221,7 +224,6 @@ void Console::change_information(bool manager) {
                 std::string title = "GENDER";
                 std::string enter_new = "gender (Male: 1, Female: 0)";
                 std::string gender = change(title, enter_new, old_gender, 0, 1, 0);
-
                 //sửa
                 break;
             }
@@ -239,6 +241,7 @@ void Console::change_information(bool manager) {
                 std::string title = "COUNTRY";
                 std::string enter_new = "country";
                 std::string country = change(title, enter_new, old_country, 0, 0, 0);
+                cur.set_country(country);
                 break;
             }
         }
@@ -305,6 +308,7 @@ void Console::transfer_money() {
     //5->"OTP is incorrect !"
     //6->"tab"
     //7->"OTP is correct !"
+    //8->error
 
     char ch = cur.transfer_money(ID, amount) + '0';
 
@@ -328,8 +332,11 @@ void Console::transfer_money() {
             //tab
             return;
         case '7':
+            //backup
             Menu::notification("--You have successfully transferred the money--", 37, 5);
             break;
+        case '8':
+            //restore
     }
 
     transfer_money();
@@ -703,6 +710,7 @@ void Console::manager_opertion() {
 void Console::Start_The_Program() {
 
     while(true) {	// Login
+        Console::reset();
 
     	Menu::print_login_frame();
     	
