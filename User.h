@@ -1,18 +1,39 @@
-#include<iostream>
-#include"Account.h"
-#include"Information.h"
-using namespace std;
+#ifndef USER_H
+#define USER_H
+
+#include <iostream>
+#include <iomanip>
+#include "Account.cpp"
+#include "Information.cpp"
+#include <filesystem>
+#include "User.h"
+#include <fstream>
+
+extern std::string folder4, folder5;
+namespace fs = std::filesystem;
+
+// bool valid_money(std::string money) {
+//     for(char &c : money) {
+//         if(!std::isdigit(c)) return false;
+//     }
+//     return true;
+// }
 
 class User : public Information {
 private:
-    Account account; 
+    Account account;
 public:
-    User() {}
-    void set_user_name(string _user_name) {
-        this->account.set_user_name(_user_name);
-    }
-    void set_password(string _password) {
-        this->account.set_password(_password);
-    }
+    User();
+    User(Information &i, Account &j);
+
+    Account &get_account();
+
+    void set_account(Account _account, bool is_tmp = 0);
     
+    void set_information(Information _information, bool is_tmp = 0);
+
+    int transfer_money(std::string &ID_B, std::string &amount);
+
 };
+
+#endif

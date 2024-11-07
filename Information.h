@@ -1,37 +1,48 @@
-#include<iostream>
-using namespace std;
+#ifndef INFORMATION_H
+#define INFORMATION_H
+
+#include <iostream>
+#include <fstream>
+#include "bcrypt.cpp"
+#include "blowfish.cpp"
+#include "gotp.cpp"
+#include <filesystem>
+#include <algorithm>
+#include <string>
+extern std::string folder1, folder3;
+extern std::string file_path1;
 
 class Information {
-private:
-    string full_name, address, country, phone_number;
-    int age; bool gender;
+protected:
+    std::string full_name, address, country, phone_number, ID;
+    unsigned long long balance;
+    int age; 
+    bool gender;
+
 public:
-    Information() {}
+    Information();
     
-    string get_full_name() {return this->full_name;}
-    string get_address() {return this->address;}
-    string get_country() {return this->country;}
-    string get_phone_number() {return this->phone_number;}
-    int get_age() {return this->age;}
-    bool get_gender() {return this->gender;}    
+    std::string get_full_name() const;
+    std::string get_address() const;
+    std::string get_country() const;
+    std::string get_phone_number() const;
+    int get_age() const;
+    bool get_gender() const;
+    std::string get_ID() const;
+    unsigned long long get_balance() const;
 
-    friend istream& operator>> (istream &in, Information &data) {
-        cout << "Nhap thong tin nguoi dung:" << endl;
-        cout << "Ho va ten: ";
-        getline(in, data.full_name);
-        cout << endl << "Tuoi: ";
-        in >> data.age;
-        cout << endl << "Dia chi: ";
-        getline(in, data.address);
-        cout << endl << "Quoc gia: ";
-        getline(in, data.country);
-        cout << endl << "So dien thoai: ";
-        getline(in, data.phone_number);
-        cout << endl << "Gioi tinh (1: Nam, 0: Nu): ";
-        in >> data.gender;
 
-        return in;
-    }
+    void set_balance(unsigned long long _balance);
+    void set_ID(std::string _ID = "");
+    void set_full_name(const std::string& _full_name);
+    void set_address(const std::string& _address);
+    void set_country(const std::string& _country);
+    bool set_phone_number(const std::string& _phone_number);
+    bool set_age(std::string _age);
+    void set_gender(bool _gender);
 
-    
+    friend std::istream& operator>>(std::istream &in, Information &data);
+    friend std::ostream& operator<<(std::ostream &os, Information &person);
 };
+
+#endif
