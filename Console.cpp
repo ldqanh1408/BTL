@@ -337,6 +337,7 @@ void Console::transfer_money() {
             break;
         case '8':
             //restore
+            break;
     }
 
     transfer_money();
