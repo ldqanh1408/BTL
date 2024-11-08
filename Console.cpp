@@ -120,14 +120,13 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
     if(_ == 5) {
         Menu::notification("Incorrect OTP!", 52, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
-        // return;
     }
 
     else if(age) {
         
         //chuaw xong
         if(!cur.Information::set_age(ans)) {
-            Menu::notification("Invalid information!", 47, 5);
+            Menu::notification("Invalid information!", 50, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
@@ -135,21 +134,19 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
         if(ans != "1" && ans != "0") {
             Menu::notification("Invalid information!", 50, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
-            // return;
         } else {
             cur.set_gender(bool(gender - '0'));
         }
     }
     else if(phone_number) {
         if(!cur.Information::set_phone_number(ans)) {
-          Menu::notification("Invalid information!", 48, 5);
+          Menu::notification("Invalid information!", 50, 5);
           ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
     else if(ans == old_ans) {
-        Menu::notification("Duplicate Old Information!", 47, 5);
+        Menu::notification("Duplicate Old Information!", 49, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
-        // return;
     }
 
     if(ans != "") {
@@ -178,7 +175,7 @@ void Console::change_information(bool manager) {
             Menu::notification("Invalid result!!!", 50, 5);
         }
         if(manager && c == '2') {
-            Menu::notification("The manager isn't  allowed to change the password", 43, 5);
+            Menu::notification("The manager isn't  allowed to change the password", 37, 5);
             continue;
         }
         switch (c) {
@@ -360,7 +357,7 @@ void Console::transaction_history() {
     std::ifstream infile(folder4 + cur.get_ID() + ".txt");
     std::string sentence;
     while(getline(infile, sentence)) {
-        std::cout << sentence;
+        std::cout << sentence << std::endl;
     }
 
     char ch;
@@ -542,9 +539,11 @@ bool Console::create_account() {
             break;
         }
     }
-
     std::string address = input(62, 15, false, false, 5);
+    if(address == "") return 1;
     std::string country = input(62, 18, false, false, 5);
+    if(country == "") return 1;
+    
     tmp2.set_address(address);
     tmp2.set_country(country);
     // luu 9 thong tin lại =======================================================================================;
@@ -582,19 +581,19 @@ void Console::create_user_account() {
         while(true) {
             age = input(41, 12, false, false, 1);
 
-            if(age == "") return; //??
+            if(age == "") return;
             if(!tmp2.Information::set_age(age)) {
-                print(41, 19, "Age is incorrect !!!          ");
+                print(41, 12, "Age is incorrect !!!          ");
                 continue;
             } else break;
         }
 
         char ch;
         while(true) {
-            Menu::gotoxy(62, 12);
+            Menu::gotoxy(41, 15);
             ch = _getch();
             std::cout << "                                       ";
-            Menu::gotoxy(62, 12);
+            Menu::gotoxy(41, 15);
 
             if(ch == 9) return; // tab
             if(ch == '0' || ch == '1') {
@@ -607,8 +606,26 @@ void Console::create_user_account() {
         password = fullname +  '&' + age + '&' + ch;
         tmp1.set_password(password, 1);
 
-        std::string address = input(62, 15, false, false, 5);
-        std::string country = input(62, 18, false, false, 5);
+        std::string phone;
+        while(true) {
+            phone = input(41, 18, false, false, 10);
+            if(phone == "") return;
+            else {
+                if(!tmp2.set_phone_number(phone)) {
+                    print(41, 18, "Phone number is incorrect!"); // không rõ
+                    Sleep(1000);
+                    print(41, 18, "                                      ");
+                    continue;
+                } else break;
+            }
+        }
+
+        std::string address = input(41, 21, false, false, 5);
+        if(address == "") return;
+        std::string country = input(41, 24, false, false, 5);
+        if(country == "") return;
+
+        // luu std ==========================================================
         tmp2.set_address(address);
         tmp2.set_country(country);
         User new_user(tmp2, tmp1);
