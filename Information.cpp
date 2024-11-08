@@ -48,7 +48,7 @@ void Information::set_ID(std::string _ID) {
             ID_tmp = generate_ID();
         } while(std::filesystem::exists(folder3 + ID_tmp + ".txt"));
 
-        this->set_ID(ID_tmp);
+        this->ID = ID_tmp;
         std::ofstream outfile_ID(folder3 + ID_tmp + ".txt"); // tên file
         outfile_ID << balance;
         outfile_ID.close();

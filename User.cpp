@@ -41,9 +41,10 @@ void User::set_information(Information _information, bool is_tmp) {
     this->phone_number = _information.get_phone_number();
     this->age = _information.get_age();
     this->gender = _information.get_gender();
+
     if(!is_tmp) {
         std::ofstream outfile(folder1 + this->account.get_user_name() + ".txt");
-        outfile << _information;
+        outfile << static_cast<Information&>(*this);
         outfile.close();
     }
 }
@@ -80,12 +81,10 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     };
 
     std::string ID_A = this->get_ID();
-    std::string hash_a = bcrypt::generateHash(this->get_ID());
-    std::string hash_b = bcrypt::generateHash(ID_B);
-    std::string wallet_b = folder3 + hash_b + ".txt";
-    std::string wallet_a = folder3 + hash_a + ".txt";
+    std::string wallet_b = folder3 + ID_A + ".txt";
+    std::string wallet_a = folder3 + ID_B + ".txt";
 
-    if (!fs::exists(wallet_b) || (this->get_ID() == ID_B)) {
+    if (!fs::exists(wallet_b) || (ID_A == ID_B)) {
         return 1;
     }
 
@@ -97,9 +96,9 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     std::ifstream infile_a(wallet_a);
     std::ifstream infile_b(wallet_b);
 
-    if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
-        return 2;
-    }
+    // if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
+    //     return 2;
+    // }
 
     unsigned long long balance_a, balance_b, amount_valid = 0;
     infile_a >> balance_a;
