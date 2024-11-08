@@ -175,7 +175,7 @@ void Console::change_information(bool manager) {
             Menu::notification("Invalid result!!!", 50, 5);
         }
         if(manager && c == '2') {
-            Menu::notification("The manager isn't  allowed to change the password", 43, 5);
+            Menu::notification("The manager isn't  allowed to change the password", 37, 5);
             continue;
         }
         switch (c) {
@@ -539,10 +539,11 @@ bool Console::create_account() {
             break;
         }
     }
-
-    std::string phone_number = input(62, 15, false, false, 10);
-    std::string address = input(62, 18, false, false, 5);
-    std::string country = input(62, 21, false, false, 5);
+    std::string address = input(62, 15, false, false, 5);
+    if(address == "") return 1;
+    std::string country = input(62, 18, false, false, 5);
+    if(country == "") return 1;
+    
     tmp2.set_address(address);
     tmp2.set_country(country);
     // luu 9 thong tin lại =======================================================================================;
