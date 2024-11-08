@@ -9,7 +9,7 @@
 // }
 namespace fs = std::filesystem;
 std::string F_USER_TRANSACTION_HISTORY = "data/user_transaction_history/",
-            folder5 = "data/transaction_log.txt";
+            F_TRANSACTION_LOG = "data/transaction_log.txt";
 
 User::User() {}
 User::User(Information &i, Account &j) {
@@ -132,7 +132,7 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     std::ofstream update_a(F_USER_TRANSACTION_HISTORY + ID_A + ".txt", std::ios::app);
     std::ofstream update_b(F_USER_TRANSACTION_HISTORY + ID_B + ".txt", std::ios::app);
-    std::ofstream update_transaction_log(folder5, std::ios::app);
+    std::ofstream update_transaction_log(F_TRANSACTION_LOG, std::ios::app);
 
     if (update_transaction_log.is_open()) {
 
@@ -147,7 +147,7 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         update_transaction_log.close();
     } else {
         
-        Cloud::restore(folder5);
+        Cloud::restore(F_TRANSACTION_LOG);
         return 8;
     }
 
