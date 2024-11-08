@@ -57,29 +57,6 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         }
         return true;
     };
-
-    auto error_transaction_log = [&](unsigned long long amount, const std::string &error_msg) {
-        // Get the current time
-        std::time_t now = std::time(nullptr);
-        struct std::tm *tm_info = std::localtime(&now);
-        
-        char time_buffer[80];
-        std::strftime(time_buffer, sizeof(time_buffer), "%Y-%m-%d_%H-%M-%S", tm_info); // Format time
-        std::string error_log_file = folder5; // Create file name
-
-        std::ofstream error_log(error_log_file, std::ios::app);
-        if (error_log.is_open()) {
-            error_log << std::ctime(&now) << " - " << "Transaction Error: " << error_msg
-                      << " | From: " <<  " (ID: " << this->get_ID() << ")"
-                      << " | To: " << " (ID: " << ID_B << ")"
-                      << " | Amount: " << amount << '\n';
-            error_log.flush();
-            error_log.close();
-        } else {
-            // backup
-        }
-    };
-
     std::string ID_A = this->get_ID();
     std::string wallet_a = folder3 + ID_A + ".txt";
     std::string wallet_b = folder3 + ID_B + ".txt";
@@ -90,18 +67,15 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     std::string temp_wallet_a = wallet_a + ".tmp";
     std::string temp_wallet_b = wallet_b + ".tmp";
-    auto cleanup_temp_files = [&]() -> void {
-        std::remove(temp_wallet_a.c_str());
-        std::remove(temp_wallet_b.c_str());
-    };
     std::ofstream outfile_a(temp_wallet_a);
     std::ofstream outfile_b(temp_wallet_b);
     std::ifstream infile_a(wallet_a);
     std::ifstream infile_b(wallet_b);
 
-    // if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
-    //     return 2;
-    // }
+    if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
+        
+        return 2;
+    }
 
     unsigned long long balance_a, balance_b, amount_valid = 0;
     infile_a >> balance_a;
@@ -114,24 +88,17 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
             amount_valid = amount_valid * 10ULL + 1ULL * (c - '0');
         }
     } else {
-
-        if (std::remove(temp_wallet_a.c_str()) != 0 || std::remove(temp_wallet_b.c_str()) != 0) {
-            return 8;
-        }
+        
         return 3;
     }
 
     if (balance_a < amount_valid) {
-        if (std::remove(temp_wallet_a.c_str()) != 0 || std::remove(temp_wallet_b.c_str()) != 0) {
-            return 8;
-        }
+        
         return 4;
     } else {
         int last_noti = gotp::verify_otp();
         if (last_noti != 7) {
-            if (std::remove(temp_wallet_a.c_str()) != 0 || std::remove(temp_wallet_b.c_str()) != 0) {
-                return 8;
-            }
+            
             return last_noti;
         }
     }
@@ -142,14 +109,14 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     outfile_a << balance_a;
     outfile_a.flush();
     if (!outfile_a.good()) {
-        // error_transaction_log(amount_valid, "Failed to write to wallet A");
+        Cloud::restore(temp_wallet_a);
         return 8;
     }
 
     outfile_b << balance_b;
     outfile_b.flush();
     if (!outfile_b.good()) {
-        // error_transaction_log(amount_valid, "Failed to write to wallet B");
+        Cloud::restore(temp_wallet_b);
         return 8;
         
     }
@@ -179,7 +146,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         update_transaction_log.flush();
         update_transaction_log.close();
     } else {
-        // error_transaction_log(amount_valid, "Failed to write transaction log");
+        
+        Cloud::restore(folder5);
         return 8;
     }
 
@@ -195,26 +163,35 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     update_a.flush();
     if (!update_a.good()) {
-        // error_transaction_log(amount_valid, "Failed to update notification for account A");
+        
+        Cloud::restore(folder4 + ID_A + ".txt");
         return 8;
     }
 
     update_b.flush();
     if (!update_b.good()) {
-        // error_transaction_log(amount_valid, "Failed to update notification for account B");
+        
+        Cloud::restore(folder4 + ID_B + ".txt");
         return 8;
-    }
-
-    try {
-        fs::rename(temp_wallet_a, wallet_a);
-        fs::rename(temp_wallet_b, wallet_b);
-    } catch (const std::exception &e) {
-        // error_transaction_log(amount_valid, "Error renaming file after write");
-        return 8;
-
     }
     update_a.close();
     update_b.close();
+
+    try {
+        fs::rename(temp_wallet_a, wallet_a);
+    } catch (const std::exception &e) {
+        
+        Cloud::restore(wallet_a);
+        return 8;
+    }
+    try {
+        fs::rename(temp_wallet_b, wallet_b);
+    } catch (const std::exception &e) {
+        
+        Cloud::restore(wallet_b);
+        return 8;
+    }
+
     return 7;
 }
 

@@ -7,6 +7,7 @@ std::string file_path1 = "data/store_wallet/total_wallet.txt";
 Information::Information() {
     this->full_name = this->address = this->country = this->ID = this->phone_number = "";
     this->age = this->balance = 0;
+    this->gender = -1;
 }
 
 // Getter functions

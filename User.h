@@ -12,13 +12,6 @@
 extern std::string folder4, folder5;
 namespace fs = std::filesystem;
 
-// bool valid_money(std::string money) {
-//     for(char &c : money) {
-//         if(!std::isdigit(c)) return false;
-//     }
-//     return true;
-// }
-
 class User : public Information {
 private:
     Account account;

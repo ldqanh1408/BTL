@@ -5,6 +5,7 @@
 #include <fstream>
 #include "bcrypt.cpp"
 #include "blowfish.cpp"
+#include "Cloud.cpp"
 #include "gotp.cpp"
 #include <filesystem>
 #include <algorithm>
@@ -17,7 +18,7 @@ protected:
     std::string full_name, address, country, phone_number, ID;
     unsigned long long balance;
     int age; 
-    bool gender;
+    int gender;
 
 public:
     Information();
