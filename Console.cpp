@@ -248,10 +248,10 @@ void Console::change_information(bool manager) {
         }
         
         if(c == '2') {
-            std::ofstream outfile(folder2 + cur->get_account().get_user_name() + ".txt");
+            std::ofstream outfile(F_PASSWORD + cur->get_account().get_user_name() + ".txt");
             outfile << bcrypt::generateHash(cur->get_account().get_password());
         } else {
-            std::ofstream outfile(folder1 + cur->get_account().get_user_name() + ".txt");
+            std::ofstream outfile(F_INFORMATION + cur->get_account().get_user_name() + ".txt");
             outfile << cur;
         }
     }
@@ -262,7 +262,7 @@ void Console::change_information(bool manager) {
 void Console::print_information(){
     Menu::identification_information();
     std::string balance;
-    std::ifstream infile(folder3 + cur->Information::get_ID() + ".txt");
+    std::ifstream infile(F_POINTS + cur->Information::get_ID() + ".txt");
     infile >> balance;
     infile.close();
 
@@ -358,7 +358,7 @@ void Console::transfer_money() {
 void Console::transaction_history() {
     Menu::print_transaction_history();
 
-    std::ifstream infile(folder4 + cur->get_ID() + ".txt");
+    std::ifstream infile(F_USER_TRANSACTION_HISTORY + cur->get_ID() + ".txt");
     std::string sentence;
     while(getline(infile, sentence)) {
         std::cout << sentence << std::endl;
@@ -378,8 +378,8 @@ void Console::log_in_useraccount() {
         std::string username = input(41, 3, 0, 0, 1);
 
         if(username == "") return;
-        if(std::filesystem::exists(folder1 + username + ".txt")) {
-            std::ifstream infile(folder1 + username + ".txt");
+        if(std::filesystem::exists(F_INFORMATION + username + ".txt")) {
+            std::ifstream infile(F_INFORMATION + username + ".txt");
             cur = new User();
             infile >> *cur;
             cur->set_account(Account(username, ""), 1);
@@ -397,7 +397,7 @@ void Console::log_in_useraccount() {
 void Console::view_list_of_users_account() {
     Menu::print_list_of_user();
 
-    for (const auto& entry : fs::directory_iterator(folder1)) {
+    for (const auto& entry : fs::directory_iterator(F_INFORMATION)) {
         if (entry.is_regular_file()) { 
             std::ifstream infile(entry.path());
             Information tmp;
@@ -462,7 +462,7 @@ bool Console::create_account() {
 
     if(username == "") return 1; //tab
     else {
-        std::string file_path = folder1 + username + ".txt";
+        std::string file_path = F_INFORMATION + username + ".txt";
         if(std::filesystem::exists(file_path)) {
             Menu::notification("Username already exist!", 48, 5); // chưa check
             return 0;
@@ -567,7 +567,7 @@ void Console::create_user_account() {
         std::string username = input(41, 6, 0, 0, 1);
         if(username == "") return;
         
-        if(std::filesystem::exists(folder2 + username + ".txt")) {
+        if(std::filesystem::exists(F_PASSWORD + username + ".txt")) {
             Menu::notification("Username already exist!", 48, 5);
             continue;
         } else {
@@ -645,7 +645,7 @@ void Console::create_user_account() {
 
 void Console::system_transaction_history() {
     Menu::system_transaction_history_screen();
-    std::ifstream infile(folder5);
+    std::ifstream infile(F_TRANSACTION_LOG);
     std::string sentence;
     while(getline(infile, sentence)) {
         std::cout << sentence << std::endl;
@@ -783,8 +783,8 @@ void Console::Start_The_Program() {
         if(un_manager == user_name && pw_manager == password) {
             user = false;
         } else {
-            if(std::filesystem::exists(folder2 + user_name + ".txt")) {
-                std::ifstream infile(folder2 + user_name + ".txt");
+            if(std::filesystem::exists(F_PASSWORD + user_name + ".txt")) {
+                std::ifstream infile(F_PASSWORD + user_name + ".txt");
                 std::string valid_password;
                 infile >> valid_password;
                 infile.close();
@@ -797,7 +797,7 @@ void Console::Start_The_Program() {
                 continue;
             }
             cur->set_account(Account(user_name, password), 1);
-            std::ifstream infile(folder1 + user_name + ".txt");
+            std::ifstream infile(F_INFORMATION + user_name + ".txt");
             cur = new User();
             infile >> *cur;
             
