@@ -81,8 +81,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     };
 
     std::string ID_A = this->get_ID();
-    std::string wallet_b = folder3 + ID_A + ".txt";
-    std::string wallet_a = folder3 + ID_B + ".txt";
+    std::string wallet_a = folder3 + ID_A + ".txt";
+    std::string wallet_b = folder3 + ID_B + ".txt";
 
     if (!fs::exists(wallet_b) || (ID_A == ID_B)) {
         return 1;
@@ -180,8 +180,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
             << std::setw(40) << std::left << (ID_A + " transferred to " + ID_B) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
             << std::setw(10) << std::right << amount_valid                     // Căn lề phải, độ rộng 10 cho số tiền giao dịch
             << std::endl;
-    update_a << std::setw(35) << std::left << std::string(transaction_buffer)              // Căn lề trái, độ rộng 35 cho ngày giao dịch
-            << std::setw(40) << std::left << (ID_A + " received from " + ID_B) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
+    update_b << std::setw(35) << std::left << std::string(transaction_buffer)              // Căn lề trái, độ rộng 35 cho ngày giao dịch
+            << std::setw(40) << std::left << (ID_B + " received from " + ID_A) // Căn lề trái, độ rộng 40 cho chuỗi "ID_A transferred to ID_B"
             << std::setw(10) << std::right << amount_valid                     // Căn lề phải, độ rộng 10 cho số tiền giao dịch
             << std::endl;     
 
