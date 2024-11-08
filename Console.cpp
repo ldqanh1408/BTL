@@ -242,6 +242,14 @@ void Console::change_information(bool manager) {
                 break;
             }
         }
+        
+        if(c == '2') {
+            std::ofstream outfile(folder2 + cur.get_account().get_user_name() + ".txt");
+            outfile << bcrypt::generateHash(cur.get_account().get_password());
+        } else {
+            std::ofstream outfile(folder1 + cur.get_account().get_user_name() + ".txt");
+            outfile << cur;
+        }
     }
 }
 
@@ -366,7 +374,7 @@ void Console::log_in_useraccount() {
         std::string username = input(41, 3, 0, 0, 1);
 
         if(username == "") return;
-        if(std::filesystem::exists(folder2 + username + ".txt")) {
+        if(std::filesystem::exists(folder1 + username + ".txt")) {
             Menu::notification("username does not exist", 49, 5);
             continue;
         } else {
@@ -374,7 +382,7 @@ void Console::log_in_useraccount() {
             infile >> cur;
             cur.set_account(Account(username, ""), 1);
             infile.close();
-        }
+        }   
         user_operation(1);
     }
 }

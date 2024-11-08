@@ -90,7 +90,10 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
 
     std::string temp_wallet_a = wallet_a + ".tmp";
     std::string temp_wallet_b = wallet_b + ".tmp";
-
+    auto cleanup_temp_files = [&]() -> void {
+        std::remove(temp_wallet_a.c_str());
+        std::remove(temp_wallet_b.c_str());
+    };
     std::ofstream outfile_a(temp_wallet_a);
     std::ofstream outfile_b(temp_wallet_b);
     std::ifstream infile_a(wallet_a);
@@ -111,14 +114,26 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
             amount_valid = amount_valid * 10ULL + 1ULL * (c - '0');
         }
     } else {
+
+        if (std::remove(temp_wallet_a.c_str()) != 0 || std::remove(temp_wallet_b.c_str()) != 0) {
+            return 8;
+        }
         return 3;
     }
 
     if (balance_a < amount_valid) {
+        if (std::remove(temp_wallet_a.c_str()) != 0 || std::remove(temp_wallet_b.c_str()) != 0) {
+            return 8;
+        }
         return 4;
     } else {
         int last_noti = gotp::verify_otp();
-        if (last_noti != 7) return last_noti;
+        if (last_noti != 7) {
+            if (std::remove(temp_wallet_a.c_str()) != 0 || std::remove(temp_wallet_b.c_str()) != 0) {
+                return 8;
+            }
+            return last_noti;
+        }
     }
 
     balance_a -= amount_valid;
@@ -142,14 +157,6 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     outfile_a.close();
     outfile_b.close();
 
-    try {
-        fs::rename(temp_wallet_a, wallet_a);
-        fs::rename(temp_wallet_b, wallet_b);
-    } catch (const std::exception &e) {
-        // error_transaction_log(amount_valid, "Error renaming file after write");
-        return 8;
-
-    }
 
     std::time_t now = std::time(nullptr);
     struct std::tm *tm_info = std::localtime(&now);
@@ -198,6 +205,14 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         return 8;
     }
 
+    try {
+        fs::rename(temp_wallet_a, wallet_a);
+        fs::rename(temp_wallet_b, wallet_b);
+    } catch (const std::exception &e) {
+        // error_transaction_log(amount_valid, "Error renaming file after write");
+        return 8;
+
+    }
     update_a.close();
     update_b.close();
     return 7;
