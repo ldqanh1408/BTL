@@ -1,7 +1,7 @@
 #include "Account.h"
 #include <bitset>
 
-std::string folder2 = "data/store_password/";
+std::string F_PASSWORD = "data/store_password/";
 
 Account::Account() {
     this->user_name = "";

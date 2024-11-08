@@ -1,7 +1,7 @@
 #include "Information.h"
 
 
-std::string folder1 = "data/store_information/", folder3 = "data/store_wallet/";
+std::string F_INFORMATION = "data/store_information/", F_POINTS = "data/store_wallet/";
 std::string file_path1 = "data/store_wallet/total_wallet.txt";
 
 Information::Information() {
@@ -47,10 +47,10 @@ void Information::set_ID(std::string _ID) {
         unsigned long long total_wallet;
         do {
             ID_tmp = generate_ID();
-        } while(std::filesystem::exists(folder3 + ID_tmp + ".txt"));
+        } while(std::filesystem::exists(F_POINTS + ID_tmp + ".txt"));
 
         this->ID = ID_tmp;
-        std::ofstream outfile_ID(folder3 + ID_tmp + ".txt"); // tên file
+        std::ofstream outfile_ID(F_POINTS + ID_tmp + ".txt"); // tên file
         outfile_ID << balance;
         outfile_ID.close();
 
@@ -99,7 +99,7 @@ std::istream& operator>>(std::istream& in, Information& data) {
     in >> data.ID;
     in >> data.age;
     in >> data.gender;
-    std::ifstream infile(folder3 + data.ID + ".txt");
+    std::ifstream infile(F_POINTS + data.ID + ".txt");
     infile >> data.balance;
 
     return in;

@@ -6,7 +6,7 @@
 #include <bitset>
 #include <string>
 
-extern std::string folder2;
+extern std::string F_PASSWORD;
 
 class Account {
 private:

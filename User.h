@@ -9,7 +9,7 @@
 #include "User.h"
 #include <fstream>
 
-extern std::string folder4, folder5;
+extern std::string F_USER_TRANSACTION_HISTORY, folder5; //F_USER_TRANSACTION_HISTORY
 namespace fs = std::filesystem;
 
 class User : public Information {

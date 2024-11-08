@@ -8,7 +8,7 @@
 //     return true;
 // }
 namespace fs = std::filesystem;
-std::string folder4 = "data/user_transaction_history/",
+std::string F_USER_TRANSACTION_HISTORY = "data/user_transaction_history/",
             folder5 = "data/transaction_log.txt";
 
 User::User() {}
@@ -26,7 +26,7 @@ void User::set_account(Account _account, bool is_tmp) {
     this->account = _account;
     if(!is_tmp) {
          // chưa thêm toán tư = cho account
-        std::ofstream of(folder2 + account.get_user_name() + ".txt");
+        std::ofstream of(F_PASSWORD + account.get_user_name() + ".txt");
         of << bcrypt::generateHash(account.get_password());
         of.close();
         // chưa xử lý ghi file lỗi
@@ -43,7 +43,7 @@ void User::set_information(Information _information, bool is_tmp) {
     this->gender = _information.get_gender();
 
     if(!is_tmp) {
-        std::ofstream outfile(folder1 + this->account.get_user_name() + ".txt");
+        std::ofstream outfile(F_INFORMATION + this->account.get_user_name() + ".txt");
         outfile << static_cast<Information&>(*this);
         outfile.close();
     }
@@ -58,8 +58,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         return true;
     };
     std::string ID_A = this->get_ID();
-    std::string wallet_a = folder3 + ID_A + ".txt";
-    std::string wallet_b = folder3 + ID_B + ".txt";
+    std::string wallet_a = F_POINTS + ID_A + ".txt";
+    std::string wallet_b = F_POINTS + ID_B + ".txt";
 
     if (!fs::exists(wallet_b) || (ID_A == ID_B)) {
         return 1;
@@ -130,8 +130,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     char transaction_buffer[30];
     std::strftime(transaction_buffer, sizeof(transaction_buffer), "%Y-%m-%d_%H-%M-%S", tm_info); // Format time
 
-    std::ofstream update_a(folder4 + ID_A + ".txt", std::ios::app);
-    std::ofstream update_b(folder4 + ID_B + ".txt", std::ios::app);
+    std::ofstream update_a(F_USER_TRANSACTION_HISTORY + ID_A + ".txt", std::ios::app);
+    std::ofstream update_b(F_USER_TRANSACTION_HISTORY + ID_B + ".txt", std::ios::app);
     std::ofstream update_transaction_log(folder5, std::ios::app);
 
     if (update_transaction_log.is_open()) {
@@ -164,14 +164,14 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     update_a.flush();
     if (!update_a.good()) {
         
-        Cloud::restore(folder4 + ID_A + ".txt");
+        Cloud::restore(F_USER_TRANSACTION_HISTORY + ID_A + ".txt");
         return 8;
     }
 
     update_b.flush();
     if (!update_b.good()) {
         
-        Cloud::restore(folder4 + ID_B + ".txt");
+        Cloud::restore(F_USER_TRANSACTION_HISTORY + ID_B + ".txt");
         return 8;
     }
     update_a.close();

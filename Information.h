@@ -10,7 +10,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <string>
-extern std::string folder1, folder3;
+extern std::string F_INFORMATION, F_INFORMATION;
 extern std::string file_path1;
 
 class Information {
