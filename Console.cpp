@@ -375,15 +375,16 @@ void Console::log_in_useraccount() {
 
         if(username == "") return;
         if(std::filesystem::exists(folder1 + username + ".txt")) {
-            Menu::notification("username does not exist", 49, 5);
-            continue;
-        } else {
             std::ifstream infile(folder1 + username + ".txt");
             infile >> cur;
             cur.set_account(Account(username, ""), 1);
             infile.close();
+            user_operation(1);
+
+        } else {
+            Menu::notification("username does not exist", 49, 5);
+            continue;            
         }   
-        user_operation(1);
     }
 }
 
