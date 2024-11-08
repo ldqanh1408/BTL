@@ -756,7 +756,7 @@ void Console::Start_The_Program() {
                 std::string valid_password;
                 infile >> valid_password;
                 infile.close();
-                if(!bcrypt::validatePassword(valid_password, bcrypt::generateHash(password))) {
+                if(!bcrypt::validatePassword(password, valid_password)) {
                     Menu::notification("Incorrect username or password", 45, 5);
                     continue; // khoong ro
                 }            
