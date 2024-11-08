@@ -539,8 +539,9 @@ bool Console::create_account() {
         }
     }
 
-    std::string address = input(62, 15, false, false, 5);
-    std::string country = input(62, 18, false, false, 5);
+    std::string phone_number = input(62, 15, false, false, 10);
+    std::string address = input(62, 18, false, false, 5);
+    std::string country = input(62, 21, false, false, 5);
     tmp2.set_address(address);
     tmp2.set_country(country);
     // luu 9 thong tin lại =======================================================================================;
@@ -603,8 +604,26 @@ void Console::create_user_account() {
         password = fullname +  '&' + age + '&' + ch;
         tmp1.set_password(password, 1);
 
-        std::string address = input(41, 18, false, false, 5);
-        std::string country = input(41, 21, false, false, 5);
+        std::string phone;
+        while(true) {
+            phone = input(41, 18, false, false, 10);
+            if(phone == "") return;
+            else {
+                if(!tmp2.set_phone_number(phone)) {
+                    print(41, 18, "Phone number is incorrect!"); // không rõ
+                    Sleep(1000);
+                    print(41, 18, "                                      ");
+                    continue;
+                } else break;
+            }
+        }
+
+        std::string address = input(41, 21, false, false, 5);
+        if(address == "") return;
+        std::string country = input(41, 24, false, false, 5);
+        if(country == "") return;
+
+        // luu std ==========================================================
         tmp2.set_address(address);
         tmp2.set_country(country);
         User new_user(tmp2, tmp1);
