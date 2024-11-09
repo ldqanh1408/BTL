@@ -506,7 +506,7 @@ bool Console::create_account() {
         if(phone == "") return 1;
         else {
             if(!tmp2.set_phone_number(phone)) {
-                print(21, 15, "Phone number is incorrect!"); // không rõ
+                print(21, 15, "Phone number is incorrect!           "); // không rõ
                 Sleep(1000);
                 print(21, 15, "                                      ");
                 continue;
