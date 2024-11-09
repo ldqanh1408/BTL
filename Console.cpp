@@ -117,7 +117,7 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
         }
     }
     int _ = gotp::verify_otp(9);
-    if(int _ = 6) return "";
+    if(_ == 6) return "";
 
     if(_ == 5) {
         Menu::notification("Incorrect OTP!", 52, 5);
@@ -128,26 +128,24 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
         
         //chuaw xong
         if(!cur.Information::set_age(ans)) {
-            Menu::notification("Invalid information!", 50, 5);
+            Menu::notification("Invalid information!", 49, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
     else if(gender) {
         if(ans != "1" && ans != "0") {
-            Menu::notification("Invalid information!", 50, 5);
+            Menu::notification("Invalid information!", 49, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
-        } else {
-            cur.set_gender(bool(gender - '0'));
         }
     }
     else if(phone_number) {
         if(!cur.Information::set_phone_number(ans)) {
-          Menu::notification("Invalid information!", 50, 5);
+          Menu::notification("Invalid information!", 49, 5);
           ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
     else if(ans == old_ans) {
-        Menu::notification("Duplicate Old Information!", 49, 5);
+        Menu::notification("Duplicate Old Information!", 47, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
     }
 
@@ -189,7 +187,7 @@ void Console::change_information(bool manager) {
                 std::string title = "FULL NAME";
                 std::string enter_new = "fullname";
                 std::string name = change(title, enter_new, old_name, 0, 0, 0);
-                cur.set_full_name(name);
+                if(name != "") cur.set_full_name(name);
                 // if !name.emmtpy() thi luu lai, lam voi tat ca cac truong hop o ben duoi ======== =======================================
                 break;
             }
@@ -199,7 +197,7 @@ void Console::change_information(bool manager) {
                 std::string title = "PASSWORD";
                 std::string enter_new = "password";
                 std::string password_current = change(title, enter_new, old_password, 0, 0, 0);
-                cur.get_account().set_password(password_current);
+                if(password_current != "") cur.get_account().set_password(password_current);
                 break;  
             }	
             
@@ -208,7 +206,7 @@ void Console::change_information(bool manager) {
                 std::string title = "ADDRESS";
                 std::string enter_new = "address";
                 std::string address = change(title, enter_new, old_address, 0, 0, 0);
-                cur.set_address(address);
+                if(address != "") cur.set_address(address);
                 break;
             }
 
@@ -217,6 +215,7 @@ void Console::change_information(bool manager) {
                 std::string title = "AGE";
                 std::string enter_new = "age";
                 std::string age = change(title, enter_new, old_age, 1, 0, 0);
+                if(age != "") cur.set_age(age);
                 break;
             }
 
@@ -225,7 +224,7 @@ void Console::change_information(bool manager) {
                 std::string title = "GENDER";
                 std::string enter_new = "gender (Male: 1, Female: 0)";
                 std::string gender = change(title, enter_new, old_gender, 0, 1, 0);
-                //sửa
+                if(gender != "") cur.set_gender(bool(gender[0] - '0'));
                 break;
             }
 
@@ -234,6 +233,7 @@ void Console::change_information(bool manager) {
                 std::string title = "PHONE NUMBER";
                 std::string enter_new = "phone number";
                 std::string phone_number = change(title, enter_new, old_phone_number, 0, 0, 1);
+                if(phone_number != "") cur.set_phone_number(phone_number);
                 break;
             }
 
@@ -242,7 +242,7 @@ void Console::change_information(bool manager) {
                 std::string title = "COUNTRY";
                 std::string enter_new = "country";
                 std::string country = change(title, enter_new, old_country, 0, 0, 0);
-                cur.set_country(country);
+                if(country != "") cur.set_country(country);
                 break;
             }
         }

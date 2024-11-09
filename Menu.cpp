@@ -218,7 +218,7 @@ void Menu::identification_information() {
     --------------------------------------------------------------------------------------
     
     Full Name:                              
-    Date of Birth:
+    Age:          
     Gender:
     
 
