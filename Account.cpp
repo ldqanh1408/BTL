@@ -41,6 +41,11 @@ bool Account::valid_password(const std::string &_password) {
     return valid.all();
 }
 
+bool Account::is_auto_password(std::string full_name, int age, int gender) {
+    for(char &c : full_name) tolower(c);
+    return this->password == (full_name + '&' + std::to_string(age) + '&' + std::to_string(gender));
+}
+
 // Thiết lập mật khẩu với điều kiện hợp lệ
 bool Account::set_password(const std::string &_password, bool is_auto) {
     if (is_auto || valid_password(_password)) {
