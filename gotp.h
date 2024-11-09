@@ -10,7 +10,7 @@ namespace gotp {
 
     std::string generate_otp();
 
-    int verify_otp();
+    int verify_otp(int y);
 
 }
 #endif

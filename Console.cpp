@@ -116,7 +116,7 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
             std::cout << ch;
         }
     }
-    int _ = gotp::verify_otp();
+    int _ = gotp::verify_otp(9);
     if(int _ = 6) return "";
 
     if(_ == 5) {
