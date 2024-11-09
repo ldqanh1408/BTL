@@ -3,14 +3,14 @@
 
 
 Console::Console() {
-    cur = nullptr;
+    // cur = nullptr;
 }
 
 
 void Console::reset() {
-    cur = nullptr;
-    // cur.set_account(Account(), 1);
-    // cur.set_information(Information(), 1);
+    // cur = nullptr;
+    cur.set_account(Account(), 1);
+    cur.set_information(Information(), 1);
 }
 
 
@@ -127,7 +127,7 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
     else if(age) {
         
         //chuaw xong
-        if(!cur->Information::set_age(ans)) {
+        if(!cur.Information::set_age(ans)) {
             Menu::notification("Invalid information!", 50, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
@@ -137,11 +137,11 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
             Menu::notification("Invalid information!", 50, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
         } else {
-            cur->set_gender(bool(gender - '0'));
+            cur.set_gender(bool(gender - '0'));
         }
     }
     else if(phone_number) {
-        if(!cur->Information::set_phone_number(ans)) {
+        if(!cur.Information::set_phone_number(ans)) {
           Menu::notification("Invalid information!", 50, 5);
           ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
@@ -185,35 +185,35 @@ void Console::change_information(bool manager) {
         switch (c) {
             
             case '1': {//full name
-                std::string old_name = cur->get_full_name(); /* NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMMMMMMMMMMMMMeeeeeeeeeeeeeeeeeeee*/;
+                std::string old_name = cur.get_full_name(); /* NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMMMMMMMMMMMMMeeeeeeeeeeeeeeeeeeee*/;
                 std::string title = "FULL NAME";
                 std::string enter_new = "fullname";
                 std::string name = change(title, enter_new, old_name, 0, 0, 0);
-                cur->set_full_name(name);
+                cur.set_full_name(name);
                 // if !name.emmtpy() thi luu lai, lam voi tat ca cac truong hop o ben duoi ======== =======================================
                 break;
             }
             
             case '2': {// password
-                std::string old_password = cur->get_account().get_password(); /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
+                std::string old_password = cur.get_account().get_password(); /* PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWORDDDDDDDDD?*/;
                 std::string title = "PASSWORD";
                 std::string enter_new = "password";
                 std::string password_current = change(title, enter_new, old_password, 0, 0, 0);
-                cur->get_account().set_password(password_current);
+                cur.get_account().set_password(password_current);
                 break;  
             }	
             
             case '3': {//address
-                std::string old_address = cur->get_address();/*ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/;
+                std::string old_address = cur.get_address();/*ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/;
                 std::string title = "ADDRESS";
                 std::string enter_new = "address";
                 std::string address = change(title, enter_new, old_address, 0, 0, 0);
-                cur->set_address(address);
+                cur.set_address(address);
                 break;
             }
 
             case '4': {
-                std::string old_age = std::to_string(cur->get_age());
+                std::string old_age = std::to_string(cur.get_age());
                 std::string title = "AGE";
                 std::string enter_new = "age";
                 std::string age = change(title, enter_new, old_age, 1, 0, 0);
@@ -221,7 +221,7 @@ void Console::change_information(bool manager) {
             }
 
             case '5': {
-                std::string old_gender = std::to_string(int(cur->get_gender()));
+                std::string old_gender = std::to_string(int(cur.get_gender()));
                 std::string title = "GENDER";
                 std::string enter_new = "gender (Male: 1, Female: 0)";
                 std::string gender = change(title, enter_new, old_gender, 0, 1, 0);
@@ -230,7 +230,7 @@ void Console::change_information(bool manager) {
             }
 
             case '6': {
-                std::string old_phone_number = cur->get_phone_number();
+                std::string old_phone_number = cur.get_phone_number();
                 std::string title = "PHONE NUMBER";
                 std::string enter_new = "phone number";
                 std::string phone_number = change(title, enter_new, old_phone_number, 0, 0, 1);
@@ -238,20 +238,20 @@ void Console::change_information(bool manager) {
             }
 
             case '7': {
-                std::string old_country = cur->get_country(); //Country ========================================================
+                std::string old_country = cur.get_country(); //Country ========================================================
                 std::string title = "COUNTRY";
                 std::string enter_new = "country";
                 std::string country = change(title, enter_new, old_country, 0, 0, 0);
-                cur->set_country(country);
+                cur.set_country(country);
                 break;
             }
         }
         
         if(c == '2') {
-            std::ofstream outfile(F_PASSWORD + cur->get_account().get_user_name() + ".txt");
-            outfile << bcrypt::generateHash(cur->get_account().get_password());
+            std::ofstream outfile(F_PASSWORD + cur.get_account().get_user_name() + ".txt");
+            outfile << bcrypt::generateHash(cur.get_account().get_password());
         } else {
-            std::ofstream outfile(F_INFORMATION + cur->get_account().get_user_name() + ".txt");
+            std::ofstream outfile(F_INFORMATION + cur.get_account().get_user_name() + ".txt");
             outfile << cur;
         }
     }
@@ -262,15 +262,15 @@ void Console::change_information(bool manager) {
 void Console::print_information(){
     Menu::identification_information();
     std::string balance;
-    std::ifstream infile(F_POINTS + cur->Information::get_ID() + ".txt");
+    std::ifstream infile(F_POINTS + cur.Information::get_ID() + ".txt");
     infile >> balance;
     infile.close();
 
-    print(48, 4, cur->Information::get_full_name());
+    print(48, 4, cur.Information::get_full_name());
 
-    print(48, 5, std::to_string(cur->Information::get_age()));
+    print(48, 5, std::to_string(cur.Information::get_age()));
 
-    print(48, 6, std::to_string(cur->Information::get_gender()));
+    print(48, 6, std::to_string(cur.Information::get_gender()));
 
     // std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
     // std::string balance = "";
@@ -285,10 +285,10 @@ void Console::print_information(){
     print(48, 11, balance + " Points");
 
     // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
-    print(48, 12, cur->Information::get_phone_number());
+    print(48, 12, cur.Information::get_phone_number());
 
     // std::string country = "aaaaaaaaa"; //country ======================================
-    print(48, 13, cur->Information::get_country());
+    print(48, 13, cur.Information::get_country());
 
     Menu::gotoxy(5, 20);
     char ch;
@@ -320,7 +320,7 @@ void Console::transfer_money() {
     //7->"OTP is correct !"
     //8->error
 
-    char ch = cur->transfer_money(ID, amount) + '0';
+    char ch = cur.transfer_money(ID, amount) + '0';
 
     switch (ch) {
         case '1':
@@ -358,7 +358,7 @@ void Console::transfer_money() {
 void Console::transaction_history() {
     Menu::print_transaction_history();
 
-    std::ifstream infile(F_USER_TRANSACTION_HISTORY + cur->get_ID() + ".txt");
+    std::ifstream infile(F_USER_TRANSACTION_HISTORY + cur.get_ID() + ".txt");
     std::string sentence;
     while(getline(infile, sentence)) {
         std::cout << sentence << std::endl;
@@ -380,9 +380,9 @@ void Console::log_in_useraccount() {
         if(username == "") return;
         if(std::filesystem::exists(F_INFORMATION + username + ".txt")) {
             std::ifstream infile(F_INFORMATION + username + ".txt");
-            cur = new User();
-            infile >> *cur;
-            cur->set_account(Account(username, ""), 1);
+            // cur = new User();
+            infile >> cur;
+            cur.set_account(Account(username, ""), 1);
             infile.close();
             user_operation(1);
 
@@ -796,10 +796,10 @@ void Console::Start_The_Program() {
                 Menu::notification("Incorrect username or password", 45, 5);
                 continue;
             }
-            cur->set_account(Account(user_name, password), 1);
+            cur.set_account(Account(user_name, password), 1);
             std::ifstream infile(F_INFORMATION + user_name + ".txt");
-            cur = new User();
-            infile >> *cur;
+            // cur = new User();
+            infile >> cur;
             
 
             user = true;
