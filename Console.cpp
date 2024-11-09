@@ -740,6 +740,41 @@ void Console::manager_opertion() {
 }
 
 
+bool Console::create_password() {
+    Menu::print_create_password();
+
+    std::string password = input(41, 6, false, true, 8);
+    if(password == "") return 1;
+    std::string password_again = input(41, 9, false, true, 8);
+    if(password_again == "") return 1;
+
+    /*if(password khong hop le) {===========================================================================
+        system("cls");
+         std::cout << R"(
+                             _____________________________________________________________
+                            |                                                             |
+                            |                    O~~~NOTIFICATION~~~O                     |
+                            |                                                             |
+                            |          Password must contain at least 1 uppercase,        |
+                            |           lowercase, number, special character and          |
+                            |             must not contain invalid characters!            |
+                            |                                                             |
+                            |_____________________________________________________________|)";
+        Menu::gotoxy(5, 20);
+        Sleep(4000);
+        return 0;
+    } */
+
+    if(password != password_again) {
+        Menu::notification("Password is incorrect!", 48, 5);
+        return 0;
+    }
+
+    Menu::notification("Password created successfully", 45, 5);
+    // luu lai ================================================================================================
+    return 1;
+}
+
 
 void Console::Start_The_Program() {
 
@@ -750,7 +785,6 @@ void Console::Start_The_Program() {
     	
     	std::string user_name = Console::input(41, 7, true, false, 1); //username
 
-    	
     	if(user_name == "") { // end
     		break;
 		}
@@ -762,6 +796,17 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
+                        
+        /*
+        if(kiem tra username do manager tao) { ===========================================================
+            while(true) {
+				if(Console::create_password() == 1) { // bam tab hoac dang ki thanh cong
+					break;
+				}
+			}
+			continue; // tro ve giao dien dang nhap
+        }
+        */
 
 
         std::string password = Console::input(41, 10, true, true, 8);
@@ -780,6 +825,7 @@ void Console::Start_The_Program() {
 		}
 
         bool user; // truong hop quan li
+
         if(un_manager == user_name && pw_manager == password) {
             user = false;
         } else {

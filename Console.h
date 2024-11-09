@@ -42,6 +42,8 @@ public:
 
     void create_user_account();
 
+    bool create_password();
+
     void system_transaction_history();
 
     void user_operation(bool manager);

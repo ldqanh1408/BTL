@@ -18,6 +18,7 @@ namespace Menu {
     void notification(std::string s, int x, int y);
     void create_account_screen();
     void create_account_for_user_screen();
+    void print_create_password();
     void print_otp();
     void identification_information();
     void transfer_money_screen();
@@ -26,6 +27,7 @@ namespace Menu {
     void print_list_of_users_main();
     void print_log_in_user_account();
     void system_transaction_history_screen();
+    void print_password_user();
 }
 
 #endif

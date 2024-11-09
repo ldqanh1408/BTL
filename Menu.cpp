@@ -331,3 +331,22 @@ void Menu::system_transaction_history_screen(){
 
     )";
 }
+
+void Menu::print_create_password() {
+    system("cls");
+    std::string s = R"(
+                                        ________________________________________
+                                       |                                        |  
+                                       |            CREATE PASSWORD             |
+                                       |________________________________________|    
+                                       |                                        |
+                                       | Enter password                         |
+                                       |________________________________________|
+                                       |                                        |  
+                                       | Enter password again                   |
+                                       |________________________________________|    
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will back |
+                                       |________________________________________|)";
+    std::cout << s;    
+}
