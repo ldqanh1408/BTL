@@ -313,7 +313,7 @@ void Menu::print_list_of_user() {
     ------------                                                             Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
 
-    ID WALLET            FULL NAME          PHONE NUMBER         POINTS            ADDRESS          COUNTRY
+    ID WALLET            FULL NAME          PHONE NUMBER         POINTS        ADDRESS            COUNTRY
     _______________________________________________________________________________________________________________
 
     )";

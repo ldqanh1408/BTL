@@ -362,7 +362,7 @@ void Console::transaction_history() {
     std::string sentence;
     std::cout << "    ";
     while(getline(infile, sentence)) {
-        std::cout << sentence << std::endl;
+        std::cout << sentence << std::endl << "    ";
     }
 
     char ch;
@@ -398,22 +398,24 @@ void Console::log_in_useraccount() {
 void Console::view_list_of_users_account() {
     Menu::print_list_of_user();
 
-    for (const auto& entry : fs::directory_iterator(F_INFORMATION)) {
-        if (entry.is_regular_file()) { 
-            std::ifstream infile(entry.path());
-            Information tmp;
+for (const auto& entry : fs::directory_iterator(F_INFORMATION)) {
+    if (entry.is_regular_file()) { 
+        std::ifstream infile(entry.path());
+        Information tmp;
 
-            infile >> tmp;
-            std::cout
-                << std::left << std::setw(12) << tmp.get_ID() << "         "
-                << std::setw(15) << tmp.get_full_name()
-                << std::setw(18) << tmp.get_phone_number()
-                << std::setw(25) << tmp.get_balance()
-                << std::setw(20) << tmp.get_address()
-                << std::setw(15) << tmp.get_country()
-                << std::endl << "    ";
-        }
+        infile >> tmp;
+        std::cout << std::left
+            << std::setw(20) << tmp.get_ID()             // ID WALLET
+            << std::setw(20) << tmp.get_full_name()      // FULL NAME
+            << std::setw(21) << tmp.get_phone_number()   // PHONE NUMBER
+            << std::setw(10) << tmp.get_balance()    // POINTS
+            << std::setw(20) << tmp.get_address()        // ADDRESS
+            << tmp.get_country()                         // COUNTRY
+            << std::endl << "    ";
     }
+}
+
+
 
     
     char c;
