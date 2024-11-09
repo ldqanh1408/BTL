@@ -589,7 +589,7 @@ void Console::create_user_account() {
 
             if(age == "") return;
             if(!tmp2.Information::set_age(age)) {
-                print(41, 12, "Age is incorrect !!!          ");
+                print(41, 12, "Age is incorrect !!!                  ");
                 continue;
             } else break;
         }
@@ -618,7 +618,7 @@ void Console::create_user_account() {
             if(phone == "") return;
             else {
                 if(!tmp2.set_phone_number(phone)) {
-                    print(41, 18, "Phone number is incorrect!"); // không rõ
+                    print(41, 18, "Phone number is incorrect!            "); // không rõ
                     Sleep(1000);
                     print(41, 18, "                                      ");
                     continue;
