@@ -313,7 +313,7 @@ void Menu::print_list_of_user() {
     ------------                                                             Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
 
-    ID WALLET     FULL NAME                PHONE NUMBER        POINTS             GENDER       COUNTRY
+    ID WALLET            FULL NAME          PHONE NUMBER         POINTS            ADDRESS          COUNTRY
     _______________________________________________________________________________________________________________
 
     )";
@@ -326,7 +326,7 @@ void Menu::system_transaction_history_screen(){
     --------------------------                                               Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
 
-    NO.  TRANSACTION TIME          FROM                       TO                           AMOUNT
+         TRANSACTION TIME                                 TRANSACTION
     _______________________________________________________________________________________________________________
 
     )";

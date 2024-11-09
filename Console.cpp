@@ -360,6 +360,7 @@ void Console::transaction_history() {
 
     std::ifstream infile(F_USER_TRANSACTION_HISTORY + cur.get_ID() + ".txt");
     std::string sentence;
+    std::cout << "    ";
     while(getline(infile, sentence)) {
         std::cout << sentence << std::endl;
     }
@@ -403,17 +404,18 @@ void Console::view_list_of_users_account() {
             Information tmp;
 
             infile >> tmp;
-            std::cout << std::left
-                    << std::setw(12) << tmp.get_ID() 
-                    << std::setw(24) << tmp.get_full_name()
-                    << std::setw(18) << tmp.get_phone_number()
-                    << std::setw(18) << tmp.get_balance() 
-                    << std::setw(12) << (tmp.get_gender() ? "Male" : "Female")
-                    << tmp.get_country()
-                    << std::endl;
+            std::cout
+                << std::left << std::setw(12) << tmp.get_ID() << "         "
+                << std::setw(15) << tmp.get_full_name()
+                << std::setw(18) << tmp.get_phone_number()
+                << std::setw(25) << tmp.get_balance()
+                << std::setw(20) << tmp.get_address()
+                << std::setw(15) << tmp.get_country()
+                << std::endl << "    ";
         }
     }
 
+    
     char c;
     while(true) {
         c = _getch();
@@ -646,9 +648,15 @@ void Console::create_user_account() {
 void Console::system_transaction_history() {
     Menu::system_transaction_history_screen();
     std::ifstream infile(F_TRANSACTION_LOG);
-    std::string sentence;
+    std::string sentence, transaction_time = "", transaction = "";
+    int i;
+    std::cout << "    ";
     while(getline(infile, sentence)) {
-        std::cout << sentence << std::endl;
+        i = 0; transaction = ""; transaction_time = "";
+        while(i < sentence.size() && sentence[i] != ' ') transaction_time += sentence[i++];
+        while(i < sentence.size()) transaction += sentence[++i];
+        std::cout << transaction_time << "            " << transaction << std::endl << "        ";
+
     }
     infile.close();
     char ch;
