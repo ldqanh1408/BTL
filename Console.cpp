@@ -128,7 +128,7 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
         
         //chuaw xong
         if(!cur.Information::set_age(ans)) {
-            Menu::notification("Invalid information!", 49, 5);
+            Menu::notification("Invalid information!", 40, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
@@ -740,6 +740,42 @@ void Console::manager_opertion() {
 }
 
 
+bool Console::create_password() {
+    Menu::print_create_password();
+
+    std::string password = input(41, 6, false, true, 8);
+    if(password == "") return 1;
+    std::string password_again = input(41, 9, false, true, 8);
+    if(password_again == "") return 1;
+
+    if(cur.get_account().set_password(password)) {
+        system("cls");
+         std::cout << R"(
+                             _____________________________________________________________
+                            |                                                             |
+                            |                    O~~~NOTIFICATION~~~O                     |
+                            |                                                             |
+                            |          Password must contain at least 1 uppercase,        |
+                            |           lowercase, number, special character and          |
+                            |             must not contain invalid characters!            |
+                            |                                                             |
+                            |_____________________________________________________________|)";
+        Menu::gotoxy(5, 20);
+        Sleep(4000);
+        return 0;
+    } 
+
+    if(password != password_again) {
+        Menu::notification("Password is incorrect!", 48, 5);
+        return 0;
+    }
+
+
+    Menu::notification("Password created successfully", 45, 5);
+    // luu lai ================================================================================================
+    return 1;
+}
+
 
 void Console::Start_The_Program() {
 
@@ -750,7 +786,6 @@ void Console::Start_The_Program() {
     	
     	std::string user_name = Console::input(41, 7, true, false, 1); //username
 
-    	
     	if(user_name == "") { // end
     		break;
 		}
@@ -762,6 +797,9 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
+                        
+        
+        
 
 
         std::string password = Console::input(41, 10, true, true, 8);
@@ -778,8 +816,8 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-
         bool user; // truong hop quan li
+
         if(un_manager == user_name && pw_manager == password) {
             user = false;
         } else {
@@ -798,8 +836,16 @@ void Console::Start_The_Program() {
             }
             cur.set_account(Account(user_name, password), 1);
             std::ifstream infile(F_INFORMATION + user_name + ".txt");
-            // cur = new User();
+            
             infile >> cur;
+            if(cur.get_account().is_auto_password(cur.get_full_name(), cur.get_age(), cur.get_gender())) {
+                while(true) {
+                    if(Console::create_password() == 1) { // bam tab hoac dang ki thanh cong
+                        break;
+                    }
+                }
+                continue; // tro ve giao dien dang nhap
+            }
             
 
             user = true;
