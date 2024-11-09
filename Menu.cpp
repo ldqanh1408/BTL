@@ -218,7 +218,7 @@ void Menu::identification_information() {
     --------------------------------------------------------------------------------------
     
     Full Name:                              
-    Date of Birth:
+    Age:          
     Gender:
     
 
@@ -313,7 +313,7 @@ void Menu::print_list_of_user() {
     ------------                                                             Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
 
-    ID WALLET     FULL NAME                PHONE NUMBER        POINTS             GENDER       COUNTRY
+    ID WALLET            FULL NAME          PHONE NUMBER         POINTS        ADDRESS            COUNTRY
     _______________________________________________________________________________________________________________
 
     )";
@@ -326,8 +326,27 @@ void Menu::system_transaction_history_screen(){
     --------------------------                                               Note that pressing the 'Tab' will back
     _______________________________________________________________________________________________________________
 
-    NO.  TRANSACTION TIME          FROM                       TO                           AMOUNT
+         TRANSACTION TIME                                 TRANSACTION
     _______________________________________________________________________________________________________________
 
     )";
+}
+
+void Menu::print_create_password() {
+    system("cls");
+    std::string s = R"(
+                                        ________________________________________
+                                       |                                        |  
+                                       |            CREATE PASSWORD             |
+                                       |________________________________________|    
+                                       |                                        |
+                                       | Enter password                         |
+                                       |________________________________________|
+                                       |                                        |  
+                                       | Enter password again                   |
+                                       |________________________________________|    
+                                       |                                        |
+                                       | Note that pressing the 'Tab' will back |
+                                       |________________________________________|)";
+    std::cout << s;    
 }

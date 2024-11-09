@@ -96,7 +96,7 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         
         return 4;
     } else {
-        int last_noti = gotp::verify_otp();
+        int last_noti = gotp::verify_otp(12);
         if (last_noti != 7) {
             
             return last_noti;

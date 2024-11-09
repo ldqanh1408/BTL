@@ -10,12 +10,12 @@ std::string gotp::generate_otp() {
     return otp;
 }
 
-int gotp::verify_otp() {
-    Menu::gotoxy(56,9); //otp
+int gotp::verify_otp(int y) {
+    Menu::gotoxy(56, y); //otp
     std::string OTP = gotp::generate_otp();
     std::cout << OTP;
 
-    Menu::gotoxy(47,12);
+    Menu::gotoxy(47, y + 3);
     char c;
     std::string check_otp = "";
     
@@ -32,18 +32,18 @@ int gotp::verify_otp() {
         else if(c == 8) {
             if(!check_otp.empty()) {
                 check_otp.pop_back();
-                Menu::gotoxy(48 + check_otp.size()*5 - 1,12);
+                Menu::gotoxy(48 + check_otp.size()*5 - 1, y + 3);
                 std::cout << " ";
-                Menu::gotoxy(48 + check_otp.size()*5 - 1,12);
+                Menu::gotoxy(48 + check_otp.size()*5 - 1, y + 3);
             }
         }
         else {
             check_otp.push_back(c);
             std::cout << c;
             if(check_otp.size() == 6)
-                Menu::gotoxy(48 + check_otp.size()*5 + 1 -5, 12);
+                Menu::gotoxy(48 + check_otp.size()*5 + 1 -5, y + 3);
             else
-                Menu::gotoxy(48 + check_otp.size()*5 - 1, 12);
+                Menu::gotoxy(48 + check_otp.size()*5 - 1, y + 3);
         }
     }
     return OTP == check_otp ? 7 : 5;

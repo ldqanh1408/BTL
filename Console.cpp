@@ -116,8 +116,8 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
             std::cout << ch;
         }
     }
-    int _ = gotp::verify_otp();
-
+    int _ = gotp::verify_otp(9);
+    if(_ == 6) return "";
 
     if(_ == 5) {
         Menu::notification("Incorrect OTP!", 52, 5);
@@ -128,26 +128,24 @@ std::string Console::change(std::string& title, std::string& enter_new, std::str
         
         //chuaw xong
         if(!cur.Information::set_age(ans)) {
-            Menu::notification("Invalid information!", 50, 5);
+            Menu::notification("Invalid information!", 40, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
     else if(gender) {
         if(ans != "1" && ans != "0") {
-            Menu::notification("Invalid information!", 50, 5);
+            Menu::notification("Invalid information!", 49, 5);
             ans = change(title, enter_new, old_ans, age, gender, phone_number);
-        } else {
-            cur.set_gender(bool(gender - '0'));
         }
     }
     else if(phone_number) {
         if(!cur.Information::set_phone_number(ans)) {
-          Menu::notification("Invalid information!", 50, 5);
+          Menu::notification("Invalid information!", 49, 5);
           ans = change(title, enter_new, old_ans, age, gender, phone_number);
         }
     }
     else if(ans == old_ans) {
-        Menu::notification("Duplicate Old Information!", 49, 5);
+        Menu::notification("Duplicate Old Information!", 47, 5);
         ans = change(title, enter_new, old_ans, 0, 0, 0);
     }
 
@@ -189,7 +187,7 @@ void Console::change_information(bool manager) {
                 std::string title = "FULL NAME";
                 std::string enter_new = "fullname";
                 std::string name = change(title, enter_new, old_name, 0, 0, 0);
-                cur.set_full_name(name);
+                if(name != "") cur.set_full_name(name);
                 // if !name.emmtpy() thi luu lai, lam voi tat ca cac truong hop o ben duoi ======== =======================================
                 break;
             }
@@ -199,7 +197,7 @@ void Console::change_information(bool manager) {
                 std::string title = "PASSWORD";
                 std::string enter_new = "password";
                 std::string password_current = change(title, enter_new, old_password, 0, 0, 0);
-                cur.get_account().set_password(password_current);
+                if(password_current != "") cur.get_account().set_password(password_current);
                 break;  
             }	
             
@@ -208,7 +206,7 @@ void Console::change_information(bool manager) {
                 std::string title = "ADDRESS";
                 std::string enter_new = "address";
                 std::string address = change(title, enter_new, old_address, 0, 0, 0);
-                cur.set_address(address);
+                if(address != "") cur.set_address(address);
                 break;
             }
 
@@ -217,6 +215,7 @@ void Console::change_information(bool manager) {
                 std::string title = "AGE";
                 std::string enter_new = "age";
                 std::string age = change(title, enter_new, old_age, 1, 0, 0);
+                if(age != "") cur.set_age(age);
                 break;
             }
 
@@ -225,7 +224,7 @@ void Console::change_information(bool manager) {
                 std::string title = "GENDER";
                 std::string enter_new = "gender (Male: 1, Female: 0)";
                 std::string gender = change(title, enter_new, old_gender, 0, 1, 0);
-                //sửa
+                if(gender != "") cur.set_gender(bool(gender[0] - '0'));
                 break;
             }
 
@@ -234,6 +233,7 @@ void Console::change_information(bool manager) {
                 std::string title = "PHONE NUMBER";
                 std::string enter_new = "phone number";
                 std::string phone_number = change(title, enter_new, old_phone_number, 0, 0, 1);
+                if(phone_number != "") cur.set_phone_number(phone_number);
                 break;
             }
 
@@ -242,7 +242,7 @@ void Console::change_information(bool manager) {
                 std::string title = "COUNTRY";
                 std::string enter_new = "country";
                 std::string country = change(title, enter_new, old_country, 0, 0, 0);
-                cur.set_country(country);
+                if(country != "") cur.set_country(country);
                 break;
             }
         }
@@ -324,10 +324,10 @@ void Console::transfer_money() {
 
     switch (ch) {
         case '1':
-            Menu::notification("Account does not exist!", 48, 5); // chưa check vị trí
+            Menu::notification("Account does not exist!", 47, 5); // chưa check vị trí
             break;
         case '2':
-            Menu::notification("Transaction error, please try again!", 46, 5); // chưa check vị trí
+            Menu::notification("Transaction error, please try again!", 42, 5); // chưa check vị trí
             break;
         case '3':
             Menu::notification("Invalid amount!", 50, 5);
@@ -360,8 +360,9 @@ void Console::transaction_history() {
 
     std::ifstream infile(F_USER_TRANSACTION_HISTORY + cur.get_ID() + ".txt");
     std::string sentence;
+    std::cout << "    ";
     while(getline(infile, sentence)) {
-        std::cout << sentence << std::endl;
+        std::cout << sentence << std::endl << "    ";
     }
 
     char ch;
@@ -397,23 +398,26 @@ void Console::log_in_useraccount() {
 void Console::view_list_of_users_account() {
     Menu::print_list_of_user();
 
-    for (const auto& entry : fs::directory_iterator(F_INFORMATION)) {
-        if (entry.is_regular_file()) { 
-            std::ifstream infile(entry.path());
-            Information tmp;
+for (const auto& entry : fs::directory_iterator(F_INFORMATION)) {
+    if (entry.is_regular_file()) { 
+        std::ifstream infile(entry.path());
+        Information tmp;
 
-            infile >> tmp;
-            std::cout << std::left
-                    << std::setw(12) << tmp.get_ID() 
-                    << std::setw(24) << tmp.get_full_name()
-                    << std::setw(18) << tmp.get_phone_number()
-                    << std::setw(18) << tmp.get_balance() 
-                    << std::setw(12) << (tmp.get_gender() ? "Male" : "Female")
-                    << tmp.get_country()
-                    << std::endl;
-        }
+        infile >> tmp;
+        std::cout << std::left
+            << std::setw(20) << tmp.get_ID()             // ID WALLET
+            << std::setw(20) << tmp.get_full_name()      // FULL NAME
+            << std::setw(21) << tmp.get_phone_number()   // PHONE NUMBER
+            << std::setw(10) << tmp.get_balance()    // POINTS
+            << std::setw(20) << tmp.get_address()        // ADDRESS
+            << tmp.get_country()                         // COUNTRY
+            << std::endl << "    ";
     }
+}
 
+
+
+    
     char c;
     while(true) {
         c = _getch();
@@ -506,7 +510,7 @@ bool Console::create_account() {
         if(phone == "") return 1;
         else {
             if(!tmp2.set_phone_number(phone)) {
-                print(21, 15, "Phone number is incorrect!"); // không rõ
+                print(21, 15, "Phone number is incorrect!            "); // không rõ
                 Sleep(1000);
                 print(21, 15, "                                      ");
                 continue;
@@ -589,7 +593,7 @@ void Console::create_user_account() {
 
             if(age == "") return;
             if(!tmp2.Information::set_age(age)) {
-                print(41, 12, "Age is incorrect !!!          ");
+                print(41, 12, "Age is incorrect !!!                  ");
                 continue;
             } else break;
         }
@@ -618,7 +622,7 @@ void Console::create_user_account() {
             if(phone == "") return;
             else {
                 if(!tmp2.set_phone_number(phone)) {
-                    print(41, 18, "Phone number is incorrect!"); // không rõ
+                    print(41, 18, "Phone number is incorrect!            "); // không rõ
                     Sleep(1000);
                     print(41, 18, "                                      ");
                     continue;
@@ -646,9 +650,15 @@ void Console::create_user_account() {
 void Console::system_transaction_history() {
     Menu::system_transaction_history_screen();
     std::ifstream infile(F_TRANSACTION_LOG);
-    std::string sentence;
+    std::string sentence, transaction_time = "", transaction = "";
+    int i;
+    std::cout << "    ";
     while(getline(infile, sentence)) {
-        std::cout << sentence << std::endl;
+        i = 0; transaction = ""; transaction_time = "";
+        while(i < sentence.size() && sentence[i] != ' ') transaction_time += sentence[i++];
+        while(i < sentence.size()) transaction += sentence[++i];
+        std::cout << transaction_time << "            " << transaction << std::endl << "        ";
+
     }
     infile.close();
     char ch;
@@ -740,6 +750,42 @@ void Console::manager_opertion() {
 }
 
 
+bool Console::create_password() {
+    Menu::print_create_password();
+
+    std::string password = input(41, 6, false, true, 8);
+    if(password == "") return 1;
+    std::string password_again = input(41, 9, false, true, 8);
+    if(password_again == "") return 1;
+
+    if(cur.get_account().set_password(password)) {
+        system("cls");
+         std::cout << R"(
+                             _____________________________________________________________
+                            |                                                             |
+                            |                    O~~~NOTIFICATION~~~O                     |
+                            |                                                             |
+                            |          Password must contain at least 1 uppercase,        |
+                            |           lowercase, number, special character and          |
+                            |             must not contain invalid characters!            |
+                            |                                                             |
+                            |_____________________________________________________________|)";
+        Menu::gotoxy(5, 20);
+        Sleep(4000);
+        return 0;
+    } 
+
+    if(password != password_again) {
+        Menu::notification("Password is incorrect!", 48, 5);
+        return 0;
+    }
+
+
+    Menu::notification("Password created successfully", 45, 5);
+    // luu lai ================================================================================================
+    return 1;
+}
+
 
 void Console::Start_The_Program() {
 
@@ -750,7 +796,6 @@ void Console::Start_The_Program() {
     	
     	std::string user_name = Console::input(41, 7, true, false, 1); //username
 
-    	
     	if(user_name == "") { // end
     		break;
 		}
@@ -762,6 +807,9 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
+                        
+        
+        
 
 
         std::string password = Console::input(41, 10, true, true, 8);
@@ -778,8 +826,8 @@ void Console::Start_The_Program() {
 			}
 			continue; // tro ve giao dien dang nhap
 		}
-
         bool user; // truong hop quan li
+
         if(un_manager == user_name && pw_manager == password) {
             user = false;
         } else {
@@ -798,8 +846,16 @@ void Console::Start_The_Program() {
             }
             cur.set_account(Account(user_name, password), 1);
             std::ifstream infile(F_INFORMATION + user_name + ".txt");
-            // cur = new User();
+            
             infile >> cur;
+            if(cur.get_account().is_auto_password(cur.get_full_name(), cur.get_age(), cur.get_gender())) {
+                while(true) {
+                    if(Console::create_password() == 1) { // bam tab hoac dang ki thanh cong
+                        break;
+                    }
+                }
+                continue; // tro ve giao dien dang nhap
+            }
             
 
             user = true;
