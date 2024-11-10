@@ -261,10 +261,10 @@ void Console::change_information(bool manager) {
 
 void Console::print_information(){
     Menu::identification_information();
-    std::string balance;
-    std::ifstream infile(F_POINTS + cur.Information::get_ID() + ".txt");
-    infile >> balance;
-    infile.close();
+    // std::string balance;
+    // std::ifstream infile(F_POINTS + cur.Information::get_ID() + ".txt");
+    // infile >> balance;
+    // infile.close();
 
     print(48, 4, cur.Information::get_full_name());
 
@@ -282,7 +282,7 @@ void Console::print_information(){
     //         count = -1; //
     //     }
     // }
-    print(48, 11, balance + " Points");
+    print(48, 11, cur.Information::get_balance() + " Points");
 
     // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
     print(48, 12, cur.Information::get_phone_number());
@@ -467,7 +467,7 @@ bool Console::create_account() {
     if(username == "") return 1; //tab
     else {
         std::string file_path = F_INFORMATION + username + ".txt";
-        if(!std::filesystem::exists(file_path)) {
+        if(std::filesystem::exists(file_path)) {
             Menu::notification("Username already exist!", 48, 5); // chưa check
             return 0;
         } else {
