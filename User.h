@@ -17,7 +17,7 @@ private:
     Account account;
 public:
     User();
-    User(Information &i, Account &j);
+    User(Information &i, Account j);
 
     Account &get_account();
 
