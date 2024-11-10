@@ -758,7 +758,7 @@ bool Console::create_password() {
     std::string password_again = input(41, 9, false, true, 8);
     if(password_again == "") return 1;
 
-    if(cur.get_account().set_password(password)) {
+    if(!cur.get_account().valid_password(password)) {
         system("cls");
          std::cout << R"(
                              _____________________________________________________________
@@ -780,8 +780,9 @@ bool Console::create_password() {
         return 0;
     }
 
-
+    cur.get_account().set_password(password);
     Menu::notification("Password created successfully", 45, 5);
+    Cloud::backup();
     // luu lai ================================================================================================
     return 1;
 }

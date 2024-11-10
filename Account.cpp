@@ -50,6 +50,8 @@ bool Account::is_auto_password(std::string full_name, int age, int gender) {
 bool Account::set_password(const std::string &_password, bool is_auto) {
     if (is_auto || valid_password(_password)) {
         this->password = _password;
+        std::ofstream outfile(F_PASSWORD + this->get_user_name() + ".txt");
+        outfile << bcrypt::generateHash(this->password);
         return true;
     } else {
         return false;
