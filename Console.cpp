@@ -467,7 +467,7 @@ bool Console::create_account() {
     if(username == "") return 1; //tab
     else {
         std::string file_path = F_INFORMATION + username + ".txt";
-        if(!std::filesystem::exists(file_path)) {
+        if(std::filesystem::exists(file_path)) {
             Menu::notification("Username already exist!", 48, 5); // chưa check
             return 0;
         } else {
