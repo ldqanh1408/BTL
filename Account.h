@@ -5,6 +5,8 @@
 #include <iostream>
 #include <bitset>
 #include <string>
+#include "bcrypt.h"
+#include <fstream>
 
 extern std::string F_PASSWORD;
 
