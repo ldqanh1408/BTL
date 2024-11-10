@@ -12,7 +12,7 @@ std::string F_USER_TRANSACTION_HISTORY = "data/user_transaction_history/",
             F_TRANSACTION_LOG = "data/transaction_log.txt";
 
 User::User() {}
-User::User(Information &i, Account &j) {
+User::User(Information &i, Account j) {
     Information::set_ID();
     set_account(j);
     set_information(i);
