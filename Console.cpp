@@ -282,7 +282,7 @@ void Console::print_information(){
     //         count = -1; //
     //     }
     // }
-    print(48, 11, cur.Information::get_balance() + " Points");
+    print(48, 11, std::to_string(cur.Information::get_balance()) + " Points");
 
     // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
     print(48, 12, cur.Information::get_phone_number());
@@ -382,7 +382,7 @@ void Console::log_in_useraccount() {
         if(std::filesystem::exists(F_INFORMATION + username + ".txt")) {
             std::ifstream infile(F_INFORMATION + username + ".txt");
             // cur = new User();
-            infile >> cur;
+            infile >> static_cast<Information&>(cur);
             cur.set_account(Account(username, ""), 1);
             infile.close();
             user_operation(1);
@@ -848,7 +848,7 @@ void Console::Start_The_Program() {
             cur.set_account(Account(user_name, password), 1);
             std::ifstream infile(F_INFORMATION + user_name + ".txt");
             
-            infile >> cur;
+            infile >> static_cast<Information&>(cur);
             if(cur.get_account().is_auto_password(cur.get_full_name(), cur.get_age(), cur.get_gender())) {
                 while(true) {
                     if(Console::create_password() == 1) { // bam tab hoac dang ki thanh cong
