@@ -781,6 +781,9 @@ bool Console::create_password() {
     }
 
     cur.get_account().set_password(password);
+    std::ofstream outfile(F_PASSWORD + cur.get_account().get_user_name() + ".txt");
+    outfile << bcrypt::generateHash(password);
+    
     Menu::notification("Password created successfully", 45, 5);
     Cloud::backup();
     // luu lai ================================================================================================
