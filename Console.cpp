@@ -755,8 +755,6 @@ bool Console::create_password() {
 
     std::string password = input(41, 6, false, true, 8);
     if(password == "") return 1;
-    std::string password_again = input(41, 9, false, true, 8);
-    if(password_again == "") return 1;
 
     if(!cur.get_account().valid_password(password)) {
         system("cls");
@@ -774,6 +772,8 @@ bool Console::create_password() {
         Sleep(4000);
         return 0;
     } 
+    std::string password_again = input(41, 9, false, true, 8);
+    if(password_again == "") return 1;
 
     if(password != password_again) {
         Menu::notification("Password is incorrect!", 48, 5);
