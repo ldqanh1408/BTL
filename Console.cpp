@@ -270,7 +270,7 @@ void Console::print_information(){
 
     print(48, 5, std::to_string(cur.Information::get_age()));
 
-    print(48, 6, std::to_string(cur.Information::get_gender()));
+    print(48, 5, (cur.Information::get_gender() == 1 ? "Male" : "Female"));
 
     // std::string tmp = "aaaaaaaaaaaaaa";  //account balance=================================================;
     // std::string balance = "";
