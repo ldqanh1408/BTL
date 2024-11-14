@@ -6,3 +6,6 @@
 3.Cài đặt git.
   3.1. Truy cập vào https://git-scm.com/downloads/win, và tải 1 trong 2 bản "Standalone Installer" tương thích với máy.
   3.2. Tạo tài khoản trên https://github.com, nếu chưa có.
+4.Thiết lập hệ thống.
+  4.1. Tạo 1 Repositories trên github(https://github.com)
+  4.2. 
