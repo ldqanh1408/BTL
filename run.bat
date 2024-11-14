@@ -1,5 +1,6 @@
 @echo off
 
+mode con: cols=200 lines=60
 :: Di chuyển đến thư mục chứa file .bat
 cd /d "%~dp0"
 
