@@ -9,11 +9,6 @@ void Cloud::backup() {
     char buffer[20];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", ltm);
     
-    std::string folder_path = "data\\store_wallet";
-
-    // Xóa tất cả các file .tmp trong thư mục cụ thể
-    command = "del /q \"" + folder_path + "\\*.tmp\" > nul 2>&1"; 
-    std::system(command.c_str());
     // Thêm tất cả các tệp vào staging
     command = "git add . > nul 2>&1";
     std::system(command.c_str());
@@ -25,6 +20,15 @@ void Cloud::backup() {
 
     // Đẩy thay đổi lên nhánh chính (hoặc nhánh mong muốn)
     command = "git push origin main > nul 2>&1";
+    std::system(command.c_str());
+}
+
+bool Cloud::delete_tmp() {
+    std::string command;
+    std::string folder_path = "data\\store_wallet";
+
+    // Xóa tất cả các file .tmp trong thư mục cụ thể
+    command = "del /q \"" + folder_path + "\\*.tmp\" > nul 2>&1"; 
     std::system(command.c_str());
 }
 

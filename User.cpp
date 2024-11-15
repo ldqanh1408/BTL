@@ -73,8 +73,7 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     std::ifstream infile_b(wallet_b);
 
     if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
-        // fs::remove(wallet_a + ".tmp");
-        // fs::remove(wallet_b + ".tmp");
+        Cloud::delete_tmp();
         return 2;
     }
 
@@ -89,16 +88,17 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
             amount_valid = amount_valid * 10ULL + 1ULL * (c - '0');
         }
     } else {
-
+        Cloud::delete_tmp();
         return 3;
     }
 
     if (balance_a < amount_valid) {
+        Cloud::delete_tmp();
         return 4;
     } else {
         int last_noti = gotp::verify_otp(12);
         if (last_noti != 7) {
-
+            Cloud::delete_tmp();
             return last_noti;
         }
     }

@@ -914,7 +914,6 @@ void Console::Start_The_Program() {
             manager_opertion();
         }
 	}
-    Cloud::backup();
 	Menu::notification("The program has ended", 49, 5); // Thong bao ket thuc
     return;
 }
