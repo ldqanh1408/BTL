@@ -35,6 +35,30 @@
 
 6. Để chạy chương trình vào folder vừa tạo ở bước 5.1 và double click vào run.bat để sử dụng.
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Sơ lược về hệ thống:
+- tài khoản của manager năm trong class Console của file header phần private: 
+	un_manager = "lede", (tài khoản)
+	pw_manager = "lede6666" (mật khẩu)
+có thể thay đổi bằng cách thay thế "lede" và "lede6666" bằng tên hoặc mật khẩu khác mong muốn.
+
+- class User kế thừa public class Information và "has-a" class Account
+- class Console dùng để "has-a" class User dùng để thực hiện các năng hệ thống.
+- namespace Cloud dùng để sử dụng để sao lưu và phục hồi dữ liệu hệ thống trên GitHub
+- namespace gotp dùng để tạo, hiện thị và xác thực OTP.
+- namespace Menu dùng để hiện thị các chức năng hệ thống.
+- một file main.cpp dùng để chạy chương trình khi double click vào run.bat
+- các file còn lại trừ folder thư viện băm kiểu brcypt cho mật khẩu (thư viện này tải bên ngoài về).
+- 1 folder data:
+	- folder: store_information: lưu trữ đối tượng class Information(với tên file là "user_name" của class Account)
+	- folder: store_password: lưu trữ mật khẩu(với tên file là "user_name" của class Account)
+	- folder: store_walet: lưu trữ tiền(với tên file là "ID" của class Information) và trong này lưu trữ ví tổng (tên là "total_wallet.txt") sẽ trích ra radom từ 0 - > giá trị lớn nhất 	của kiểu dữ liệu unsigned short.
+	- folder: user_transaction_history: lưu trữ lịch sử giao dịch của từng người dùng (với tên file là "ID" của class Information)
+	- file: transaction_log : lưu trữ lịch sử giao dịch của hệ thống.
+- mọi thay đổi điều được sao lưu và khi gặp lỗi giao dịch hệ thống sẽ tự động restore.
+
+
 
   
 

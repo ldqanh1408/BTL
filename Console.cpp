@@ -282,7 +282,7 @@ void Console::print_information(){
     //         count = -1; //
     //     }
     // }
-    print(48, 11, std::to_string(cur.Information::get_balance()) + " Points");
+    print(48, 11, std::to_string(cur.Information::get_balance()) + " Points with ID: " + cur.Information::get_ID());
 
     // std::string phone_number = "aaaaaaaaaa"; //phone number==========================================
     print(48, 12, cur.Information::get_phone_number());
