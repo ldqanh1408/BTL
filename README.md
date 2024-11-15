@@ -58,7 +58,7 @@ Sơ lược về hệ thống:
 	- folder: user_transaction_history: lưu trữ lịch sử giao dịch của từng người dùng (với tên file là "ID" của class Information)
 	- file: transaction_log : lưu trữ lịch sử giao dịch của hệ thống.
 - mọi thay đổi điều được sao lưu và khi gặp lỗi thì lỗi hệ thống sẽ tự restore.
-- hệ thống này chưa được tối ưu về mặt thuật toán và logic nên sẽ có đôi lúc khá chậm.
+- hệ thống này chưa được tối ưu về mặt thuật toán và bộ nhớ nên sẽ có đôi lúc khá chậm.
 
 Logic hệ thống: 
 ![image](https://github.com/user-attachments/assets/ae4b8bd2-9760-4883-a8ad-91964fb9dcc9)
