@@ -90,20 +90,15 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
         }
     } else {
 
-        fs::remove(temp_wallet_a); 
-        fs::remove(temp_wallet_b);
         return 3;
     }
 
     if (balance_a < amount_valid) {
-        fs::remove(temp_wallet_a);
-        fs::remove(temp_wallet_b);
         return 4;
     } else {
         int last_noti = gotp::verify_otp(12);
         if (last_noti != 7) {
-            fs::remove(temp_wallet_a); 
-            fs::remove(temp_wallet_b);
+
             return last_noti;
         }
     }
