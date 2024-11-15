@@ -2,7 +2,7 @@
 
 
 std::string F_INFORMATION = "data/store_information/", F_POINTS = "data/store_wallet/";
-std::string file_path1 = "data/store_wallet/total_wallet.txt";
+std::string F_TOTAL_WALLET = "data/store_wallet/total_wallet.txt";
 
 Information::Information() {
     this->full_name = this->address = this->country = this->ID = this->phone_number = "";
@@ -54,11 +54,11 @@ void Information::set_ID(std::string _ID) {
         outfile_ID << balance;
         outfile_ID.close();
 
-        std::ifstream infile(file_path1);
+        std::ifstream infile(F_TOTAL_WALLET);
         infile >> total_wallet;
         total_wallet -= this->balance;
         infile.close();
-        std::ofstream outfile(file_path1);
+        std::ofstream outfile(F_TOTAL_WALLET);
         outfile << total_wallet;
         outfile.close();
 

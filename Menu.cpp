@@ -227,6 +227,7 @@ void Menu::identification_information() {
     Account Balance:
     Phone Number:
     Country:
+    Address:
     
     --------------------------------------------------------------------------------------
                              Note that pressing the 'Tab' will back    

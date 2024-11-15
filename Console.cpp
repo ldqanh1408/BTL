@@ -328,6 +328,8 @@ void Console::print_information(){
     // std::string country = "aaaaaaaaa"; //country ======================================
     print(48, 13, cur.Information::get_country());
 
+    print(48, 14, cur.Information::get_address());
+
     Menu::gotoxy(5, 20);
     char ch;
     while(1) {
