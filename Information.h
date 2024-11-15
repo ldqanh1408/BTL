@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <string>
 extern std::string F_INFORMATION, F_INFORMATION;
-extern std::string file_path1;
+extern std::string F_TOTAL_WALLET;
 
 class Information {
 protected:
