@@ -10,7 +10,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <string>
-extern std::string F_INFORMATION, F_INFORMATION;
+extern std::string F_INFORMATION, F_POINTS;
 extern std::string F_TOTAL_WALLET;
 
 class Information {

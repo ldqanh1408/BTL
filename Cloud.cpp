@@ -9,9 +9,11 @@ void Cloud::backup() {
     char buffer[20];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", ltm);
     
-    command = "del /q *.tmp > nul 2>&1";  // xóa tất cả file *.tmp trong thư mục hiện tại
-    std::system(command.c_str());
+    std::string folder_path = "data\\store_wallet";
 
+    // Xóa tất cả các file .tmp trong thư mục cụ thể
+    command = "del /q \"" + folder_path + "\\*.tmp\" > nul 2>&1"; 
+    std::system(command.c_str());
     // Thêm tất cả các tệp vào staging
     command = "git add . > nul 2>&1";
     std::system(command.c_str());

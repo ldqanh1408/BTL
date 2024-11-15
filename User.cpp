@@ -73,8 +73,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     std::ifstream infile_b(wallet_b);
 
     if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
-        fs::remove(wallet_a + ".tmp");
-        fs::remove(wallet_b + ".tmp");
+        // fs::remove(wallet_a + ".tmp");
+        // fs::remove(wallet_b + ".tmp");
         return 2;
     }
 
