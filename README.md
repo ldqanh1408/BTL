@@ -1,3 +1,5 @@
+Cài Đặt chương trình:
+
 - 1. Tải Visual Studio Code
   - 1.1 Truy cập Visual Studio Code.
   - 1.2 Tải xuống và cài đặt phiên bản phù hợp với hệ điều hành của bạn.
@@ -37,10 +39,10 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Sơ lược về hệ thống:
-- tài khoản của manager năm trong class Console của file header phần private: 
-	un_manager = "lede", (tài khoản)
-	pw_manager = "lede6666" (mật khẩu)
-có thể thay đổi bằng cách thay thế "lede" và "lede6666" bằng tên hoặc mật khẩu khác mong muốn.
+- tài khoản của manager năm trong class Console của file header phần private dạng nhưu sau:
+	- const std::un_manager = "lede", (tài khoản)
+	- const std::pw_manager = "lede6666" (mật khẩu)
+- có thể thay đổi bằng cách thay thế "lede" và "lede6666" bằng tên hoặc mật khẩu khác mong muốn.
 
 - class User kế thừa public class Information và "has-a" class Account
 - class Console dùng để "has-a" class User dùng để thực hiện các năng hệ thống.
