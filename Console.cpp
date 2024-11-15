@@ -250,9 +250,47 @@ void Console::change_information(bool manager) {
         if(c == '2') {
             std::ofstream outfile(F_PASSWORD + cur.get_account().get_user_name() + ".txt");
             outfile << bcrypt::generateHash(cur.get_account().get_password());
+            outfile.flush();
+            if(!outfile.good()) {
+                outfile.close();
+                Cloud::restore(F_PASSWORD + cur.get_account().get_user_name() + ".txt");
+                system("cls");
+                std::cout << R"(
+                                    _____________________________________________________________
+                                    |                                                             |
+                                    |                    O~~~NOTIFICATION~~~O                     |
+                                    |                                                             |
+                                    |                                                             |
+                                    |               System error please try again!                |
+                                    |                                                             |
+                                    |                                                             |
+                                    |_____________________________________________________________|)";
+                Menu::gotoxy(5, 20);
+                Sleep(4000);
+            }
         } else {
             std::ofstream outfile(F_INFORMATION + cur.get_account().get_user_name() + ".txt");
             outfile << cur;
+            outfile.flush();
+            if(!outfile.good()) {
+                outfile.close();
+                Cloud::restore(F_INFORMATION + cur.get_account().get_user_name() + ".txt");
+                std::ifstream infile(F_INFORMATION + cur.get_account().get_user_name() + ".txt");
+                infile >> static_cast<Information&>(cur);
+                system("cls");
+                std::cout << R"(
+                                    _____________________________________________________________
+                                    |                                                             |
+                                    |                    O~~~NOTIFICATION~~~O                     |
+                                    |                                                             |
+                                    |                                                             |
+                                    |               System error please try again!                |
+                                    |                                                             |
+                                    |                                                             |
+                                    |_____________________________________________________________|)";
+                Menu::gotoxy(5, 20);
+                Sleep(4000);
+            }
         }
     }
     Cloud::backup();
