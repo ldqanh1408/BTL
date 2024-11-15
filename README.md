@@ -57,7 +57,7 @@ Sơ lược về hệ thống:
 	- folder: store_walet: lưu trữ tiền(với tên file là "ID" của class Information) và trong này lưu trữ ví tổng (tên là "total_wallet.txt") sẽ trích ra radom từ 0 - > giá trị lớn nhất 	của kiểu dữ liệu unsigned short.
 	- folder: user_transaction_history: lưu trữ lịch sử giao dịch của từng người dùng (với tên file là "ID" của class Information)
 	- file: transaction_log : lưu trữ lịch sử giao dịch của hệ thống.
-- mọi thay đổi điều được sao lưu và khi gặp lỗi giao dịch hệ thống sẽ tự động restore.
+- mọi thay đổi điều được sao lưu và khi gặp lỗi thì lỗi hệ thống sẽ tự restore.
 
 
 
