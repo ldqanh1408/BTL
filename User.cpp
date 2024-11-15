@@ -73,8 +73,8 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     std::ifstream infile_b(wallet_b);
 
     if (!infile_a || !infile_b || !outfile_a || !outfile_b) {
-        // std::filesystem::remove(wallet_a + ".tmp");
-        // std::filesystem::remove(wallet_b + ".tmp");
+        fs::remove(wallet_a + ".tmp");
+        fs::remove(wallet_b + ".tmp");
         return 2;
     }
 
@@ -89,20 +89,22 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
             amount_valid = amount_valid * 10ULL + 1ULL * (c - '0');
         }
     } else {
-        // std::filesystem::remove(wallet_a + ".tmp");
-        // std::filesystem::remove(wallet_b + ".tmp");
+        Cloud::restore(wallet_a + ".tmp");
+        Cloud::restore(wallet_b + ".tmp");
+        // fs::remove(wallet_a + ".tmp");
+        // fs::remove(wallet_b + ".tmp");
         return 3;
     }
 
     if (balance_a < amount_valid) {
-        // std::filesystem::remove(wallet_a + ".tmp");
-        // std::filesystem::remove(wallet_b + ".tmp");
+        Cloud::restore(wallet_a + ".tmp");
+        Cloud::restore(wallet_b + ".tmp");
         return 4;
     } else {
         int last_noti = gotp::verify_otp(12);
         if (last_noti != 7) {
-            // std::filesystem::remove(wallet_a + ".tmp");
-            // std::filesystem::remove(wallet_b + ".tmp");
+            Cloud::restore(wallet_a + ".tmp");
+            Cloud::restore(wallet_b + ".tmp");
             return last_noti;
         }
     }
@@ -113,14 +115,12 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
     outfile_a << balance_a;
     outfile_a.flush();
     if (!outfile_a.good()) {
-        Cloud::restore(temp_wallet_a);
         return 8;
     }
 
     outfile_b << balance_b;
     outfile_b.flush();
     if (!outfile_b.good()) {
-        Cloud::restore(temp_wallet_b);
         return 8;
         
     }
