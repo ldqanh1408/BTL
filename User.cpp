@@ -89,22 +89,21 @@ int User::transfer_money(std::string &ID_B, std::string &amount) {
             amount_valid = amount_valid * 10ULL + 1ULL * (c - '0');
         }
     } else {
-        Cloud::restore(wallet_a + ".tmp");
-        Cloud::restore(wallet_b + ".tmp");
-        // fs::remove(wallet_a + ".tmp");
-        // fs::remove(wallet_b + ".tmp");
+
+        fs::remove(temp_wallet_a); 
+        fs::remove(temp_wallet_b);
         return 3;
     }
 
     if (balance_a < amount_valid) {
-        Cloud::restore(wallet_a + ".tmp");
-        Cloud::restore(wallet_b + ".tmp");
+        fs::remove(temp_wallet_a);
+        fs::remove(temp_wallet_b);
         return 4;
     } else {
         int last_noti = gotp::verify_otp(12);
         if (last_noti != 7) {
-            Cloud::restore(wallet_a + ".tmp");
-            Cloud::restore(wallet_b + ".tmp");
+            fs::remove(temp_wallet_a); 
+            fs::remove(temp_wallet_b);
             return last_noti;
         }
     }
