@@ -832,7 +832,7 @@ bool Console::create_password() {
 
 
 void Console::Start_The_Program() {
-
+    Cloud::backup();
     while(true) {	// Login
         Console::reset();
 
