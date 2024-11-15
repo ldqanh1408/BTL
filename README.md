@@ -61,6 +61,7 @@ Sơ lược về hệ thống:
 - hệ thống này chưa được tối ưu về mặt thuật toán và logic nên sẽ có đôi lúc khá chậm.
 
 
+![image](https://github.com/user-attachments/assets/ae4b8bd2-9760-4883-a8ad-91964fb9dcc9)
 
   
 
