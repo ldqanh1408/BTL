@@ -63,7 +63,7 @@ Sơ lược về hệ thống:
 Logic hệ thống: 
 ![image](https://github.com/user-attachments/assets/ae4b8bd2-9760-4883-a8ad-91964fb9dcc9)
 
--Lưu ý: hệ thống có thể gặp lỗi xung đột kiểu dữ liệu của thư viện có sẵn trong visual studio code mặc dù đã test máy khác nhưng lỗi này vẫn là tiềm năng, vậy nên để fix được lỗi này manager chạy chương trình bằng cách gõ: 
+-Lưu ý: hệ thống có thể gặp lỗi xung đột kiểu dữ liệu của thư viện có sẵn trong visual studio code mặc dù đã test máy khác nhưng lỗi này vẫn là tiềm năng, vậy nên để fix được lỗi này manager chạy chương trình bằng cách đăng nhập vào visual studio code và mở terminal và gõ lần lượt: 
 	- g++ -o main main.cpp -static
  	- ./main
 -sau đó ctrl + click vào những đường dẫn đẫn đến file bị bug ở terminal sửa "byte"->"my_byte";
