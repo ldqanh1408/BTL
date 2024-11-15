@@ -8,6 +8,7 @@ namespace Cloud {
     void backup();
     void restore(std::string position);
     bool is_tracked(std::string position);
+    void delete_tmp();
 }
 
 #endif // ACCOUNT_H

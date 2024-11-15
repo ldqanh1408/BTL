@@ -23,7 +23,7 @@ void Cloud::backup() {
     std::system(command.c_str());
 }
 
-bool Cloud::delete_tmp() {
+void Cloud::delete_tmp() {
     std::string command;
     std::string folder_path = "data\\store_wallet";
 
