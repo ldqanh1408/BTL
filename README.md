@@ -1,5 +1,3 @@
-![screencapture-uis-ptithcm-edu-vn-2024-12-17-21_18_23](https://github.com/user-attachments/assets/5f4f749b-ad9f-446e-8c4f-1612b9777159)
-
 Cài Đặt chương trình:
 
 - 1. Tải Visual Studio Code
