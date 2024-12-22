@@ -34,7 +34,7 @@ Cài Đặt chương trình:
        - git remote add origin "URL của remote repository vừa tạo ở bước 4.1"
        - git pull origin main
 
-- 6. Để chạy chương trình vào folder vừa tạo ở bước 5.1 và double click vào run.bat để sử dụng.
+- 6.Để chạy chương trình vào folder vừa tạo ở bước 5.1 và double click vào run.bat để sử dụng.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
